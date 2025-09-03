@@ -17,24 +17,31 @@
                     </a>
                 </p>
             </div>
-            <form class="mt-8 space-y-6" action="#" method="POST">
+            <form class="mt-8 space-y-6" action="{{ route('register') }}" method="POST">
+                @csrf
                 <div class="space-y-4">
                     <div>
                         <label for="nama-lengkap" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Nama Lengkap
                         </label>
-                        <input id="nama-lengkap" name="nama_lengkap" type="text" autocomplete="name" required 
-                               class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors" 
+                        <input id="nama-lengkap" name="name" type="text" autocomplete="name" required value="{{ old('name') }}"
+                               class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('name') ? 'border-red-500' : 'border-gray-300' }}" 
                                placeholder="Masukkan nama lengkap Anda">
+                        @error('name')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="email-address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Email
                         </label>
-                        <input id="email-address" name="email" type="email" autocomplete="email" required 
-                               class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors" 
+                        <input id="email-address" name="email" type="email" autocomplete="email" required value="{{ old('email') }}"
+                               class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('email') ? 'border-red-500' : 'border-gray-300' }}" 
                                placeholder="Masukkan email Anda">
+                        @error('email')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
@@ -42,8 +49,11 @@
                             Password
                         </label>
                         <input id="password" name="password" type="password" autocomplete="new-password" required 
-                               class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors" 
+                               class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('password') ? 'border-red-500' : 'border-gray-300' }}" 
                                placeholder="Masukkan password Anda">
+                        @error('password')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
@@ -51,8 +61,11 @@
                             Konfirmasi Password
                         </label>
                         <input id="password-confirm" name="password_confirmation" type="password" autocomplete="new-password" required 
-                               class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors" 
+                               class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('password_confirmation') ? 'border-red-500' : 'border-gray-300' }}" 
                                placeholder="Konfirmasi password Anda">
+                        @error('password_confirmation')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
@@ -60,14 +73,17 @@
                             Daftar Sebagai
                         </label>
                         <select id="user-type" name="user_type" required 
-                                class="appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors">
+                                class="appearance-none relative block w-full px-3 py-3 border text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('user_type') ? 'border-red-500' : 'border-gray-300' }}">
                             <option value="" class="text-gray-500">Pilih jenis akun...</option>
-                            <option value="publik" class="text-gray-900 dark:text-white">Publik</option>
-                            <option value="donatur_buku" class="text-gray-900 dark:text-white">Donatur Buku</option>
-                            <option value="relawan" class="text-gray-900 dark:text-white">Relawan</option>
-                            <option value="peserta_pelatihan" class="text-gray-900 dark:text-white">Peserta Pelatihan</option>
-                            <option value="investor" class="text-gray-900 dark:text-white">Investor</option>
+                            <option value="publik" class="text-gray-900 dark:text-white" {{ old('user_type') == 'publik' ? 'selected' : '' }}>Publik</option>
+                            <option value="donatur_buku" class="text-gray-900 dark:text-white" {{ old('user_type') == 'donatur_buku' ? 'selected' : '' }}>Donatur Buku</option>
+                            <option value="relawan" class="text-gray-900 dark:text-white" {{ old('user_type') == 'relawan' ? 'selected' : '' }}>Relawan</option>
+                            <option value="peserta_pelatihan" class="text-gray-900 dark:text-white" {{ old('user_type') == 'peserta_pelatihan' ? 'selected' : '' }}>Peserta Pelatihan</option>
+                            <option value="investor" class="text-gray-900 dark:text-white" {{ old('user_type') == 'investor' ? 'selected' : '' }}>Investor</option>
                         </select>
+                        @error('user_type')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 

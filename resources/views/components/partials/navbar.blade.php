@@ -17,7 +17,7 @@
                 <a href="/sponsorship" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Sponsorship</a>
             </div>
 
-            <!-- Desktop Right Side (Dark Mode Toggle + Login Button) -->
+            <!-- Desktop Right Side (Dark Mode Toggle + Auth Section) -->
             <div class="hidden lg:flex items-center space-x-3">
                 <!-- Dark Mode Toggle -->
                 <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300" title="Toggle dark mode">
@@ -31,11 +31,69 @@
                     </svg>
                 </button>
                 
-                <!-- Login Button -->
-                <a href="/login" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center transition-all duration-300 whitespace-nowrap">
-                    <span class="hidden xl:inline">Masuk</span>
-                    <span class="xl:hidden">Masuk</span>
-                </a>
+                <!-- Authentication Section -->
+                @auth
+                    <!-- User Profile Dropdown -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                @if(auth()->user()->avatar)
+                                    <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full object-cover">
+                                @else
+                                    <span class="text-white text-sm font-medium">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                @endif
+                            </div>
+                            <span class="hidden xl:inline font-medium">{{ auth()->user()->name }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                            <!-- User Info -->
+                            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ auth()->user()->name }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</p>
+                                <p class="text-xs text-green-600 dark:text-green-400 mt-1">{{ auth()->user()->role_name }}</p>
+                            </div>
+                            
+                            <!-- Dashboard Link -->
+                            <a href="{{ auth()->user()->dashboard_url }}" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                                </svg>
+                                Dashboard
+                            </a>
+                            
+                            <!-- Profile Link -->
+                            <a href="/dashboard/profile" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                Profile
+                            </a>
+                            
+                            <!-- Logout -->
+                            <form method="POST" action="{{ route('logout') }}" class="block">
+                                @csrf
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <!-- Login Button for Guests -->
+                    <a href="/login" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center transition-all duration-300 whitespace-nowrap">
+                        <span class="hidden xl:inline">Masuk</span>
+                        <span class="xl:hidden">Masuk</span>
+                    </a>
+                @endauth
             </div>
 
             <!-- Mobile menu controls -->
@@ -73,11 +131,58 @@
                 <a href="/sponsorship" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors">Sponsorship</a>
             </div>
             
-            <!-- Mobile Login Button -->
+            <!-- Mobile Authentication Section -->
             <div class="pt-4 border-t border-gray-200 dark:border-gray-600">
-                <a href="/login" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-sm font-medium w-full flex items-center justify-center transition-all duration-300">
-                    Masuk
-                </a>
+                @auth
+                    <!-- Mobile User Info -->
+                    <div class="px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg mb-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                @if(auth()->user()->avatar)
+                                    <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-10 h-10 rounded-full object-cover">
+                                @else
+                                    <span class="text-white font-medium">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                @endif
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ auth()->user()->name }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</p>
+                                <p class="text-xs text-green-600 dark:text-green-400">{{ auth()->user()->role_name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Dashboard & Profile Links -->
+                    <div class="space-y-2">
+                        <a href="{{ auth()->user()->dashboard_url }}" class="flex items-center px-3 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                        <a href="/dashboard/profile" class="flex items-center px-3 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7-7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            Profile
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="flex items-center w-full px-3 py-2 text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <!-- Mobile Login Button for Guests -->
+                    <a href="/login" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-sm font-medium w-full flex items-center justify-center transition-all duration-300">
+                        Masuk
+                    </a>
+                @endauth
             </div>
         </div>
     </div>

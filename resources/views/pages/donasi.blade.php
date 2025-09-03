@@ -7,163 +7,177 @@
                     Donasi Buku
                 </h1>
                 <p class="text-xl mb-8 max-w-2xl mx-auto">
-                    Berbagi adalah peduli. Donasikan buku Anda dan berikan kesempatan belajar kepada yang membutuhkan
+                    Berbagi adalah peduli. Lihat buku-buku yang telah didonasikan oleh para dermawan
+                </p>
+                
+                <!-- Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-3xl font-bold mb-2">{{ number_format($stats['total_books']) }}</div>
+                        <div class="text-sm opacity-90">Total Buku Terdonasi</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-3xl font-bold mb-2">{{ number_format($stats['total_donors']) }}</div>
+                        <div class="text-sm opacity-90">Donatur Aktif</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-3xl font-bold mb-2">{{ number_format($stats['categories']) }}</div>
+                        <div class="text-sm opacity-90">Kategori Buku</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Books Collection Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Buku-Buku yang Telah Didonasi</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300">
+                Koleksi buku dari para donatur yang telah terverifikasi dan siap untuk dibaca
+            </p>
+        </div>
+
+        @if($verifiedBooks->count() > 0)
+            <!-- Books Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
+                @foreach($verifiedBooks as $book)
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                        <!-- Book Cover -->
+                        <div class="aspect-[2/3] bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
+                            @if($book->cover_image)
+                                <img src="{{ $book->cover_image_url }}" 
+                                     alt="{{ $book->title }}" 
+                                     class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
+                                    </svg>
+                                </div>
+                            @endif
+                            
+                            <!-- Status Badge -->
+                            <div class="absolute top-1 right-1">
+                                <span class="px-1.5 py-0.5 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100 rounded-full">
+                                    ✓
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Book Details -->
+                        <div class="p-3">
+                            <h3 class="font-semibold text-sm text-gray-900 dark:text-white mb-1 line-clamp-2 leading-tight">
+                                {{ $book->title }}
+                            </h3>
+                            
+                            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2 line-clamp-1">
+                                {{ $book->author }}
+                            </p>
+                            
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                @if($book->category)
+                                    <span class="inline-block px-1.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 rounded">
+                                        {{ ucfirst(str_replace('-', ' ', $book->category)) }}
+                                    </span>
+                                @endif
+                                
+                                @if($book->condition)
+                                    <span class="inline-block px-1.5 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 rounded">
+                                        {{ ucfirst(str_replace('-', ' ', $book->condition)) }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <!-- Donor Info -->
+                            @if($book->donor)
+                                <div class="pt-2 border-t border-gray-200 dark:border-gray-600">
+                                    <div class="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <span class="truncate">{{ $book->donor->name }}</span>
+                                    </div>
+                                    @if($book->donated_at)
+                                        <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                            </svg>
+                                            {{ $book->donated_at->format('d M Y') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex justify-center">
+                {{ $verifiedBooks->links() }}
+            </div>
+        @else
+            <!-- Empty State -->
+            <div class="text-center py-12">
+                <svg class="w-24 h-24 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Belum Ada Buku Terdonasi</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                    Jadilah yang pertama memberikan donasi buku untuk berbagi ilmu pengetahuan
                 </p>
             </div>
-        </div>
+        @endif
     </div>
 
-    <!-- Login Required Notice -->
-    <div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 dark:border-yellow-500 p-6 mb-8">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-yellow-400 dark:text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm text-yellow-700 dark:text-yellow-300">
-                        <strong>Perhatian:</strong> Anda perlu masuk ke akun terlebih dahulu untuk dapat mendonasikan buku.
-                        <button class="ml-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors">
-                            Masuk dengan Google
-                        </button>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Donation Form -->
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 transition-colors duration-300">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Form Donasi Buku</h2>
+    <!-- Call to Action Section -->
+    <div class="bg-gray-50 dark:bg-gray-700 py-16 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                Ingin Berkontribusi?
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                Bergabunglah dengan para donatur lainnya dan berikan akses pendidikan kepada yang membutuhkan
+            </p>
             
-            <form class="space-y-6">
-                <!-- Personal Information -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Lengkap</label>
-                        <input type="text" id="name" name="name" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+            @auth
+                @if(auth()->user()->hasRole(['Admin', 'Donatur Buku']))
+                    <a href="{{ auth()->user()->dashboard_url }}" 
+                       class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-300">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Donasi Buku Sekarang
+                    </a>
+                @else
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 max-w-md mx-auto">
+                        <p class="text-blue-800 dark:text-blue-200 mb-4">
+                            Untuk dapat mendonasikan buku, silakan hubungi admin untuk mendapatkan akses sebagai donatur.
+                        </p>
+                        <a href="mailto:admin@rumahliterasi.com" 
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-300">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            Hubungi Admin
+                        </a>
                     </div>
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                        <input type="email" id="email" name="email" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                    </div>
+                @endif
+            @else
+                <div class="space-y-4">
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Silakan masuk terlebih dahulu untuk dapat berdonasi
+                    </p>
+                    <a href="/login" 
+                       class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-300">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                        </svg>
+                        Masuk untuk Berdonasi
+                    </a>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor Telepon</label>
-                        <input type="tel" id="phone" name="phone" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                    </div>
-                    <div>
-                        <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kota</label>
-                        <input type="text" id="city" name="city" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                    </div>
-                </div>
-
-                <!-- Book Information -->
-                <div class="border-t border-gray-200 dark:border-gray-600 pt-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Informasi Buku</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="book_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Judul Buku</label>
-                            <input type="text" id="book_title" name="book_title" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                        </div>
-                        <div>
-                            <label for="author" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Penulis</label>
-                            <input type="text" id="author" name="author" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                        <div>
-                            <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kategori</label>
-                            <select id="category" name="category" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                                <option value="">Pilih Kategori</option>
-                                <option value="pendidikan">Pendidikan</option>
-                                <option value="fiksi">Fiksi</option>
-                                <option value="non-fiksi">Non-Fiksi</option>
-                                <option value="anak">Anak-anak</option>
-                                <option value="agama">Agama</option>
-                                <option value="sains">Sains & Teknologi</option>
-                                <option value="sejarah">Sejarah</option>
-                                <option value="lainnya">Lainnya</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="condition" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kondisi Buku</label>
-                            <select id="condition" name="condition" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                                <option value="">Pilih Kondisi</option>
-                                <option value="baru">Baru</option>
-                                <option value="seperti-baru">Seperti Baru</option>
-                                <option value="baik">Baik</option>
-                                <option value="cukup">Cukup</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah</label>
-                            <input type="number" id="quantity" name="quantity" min="1" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                        </div>
-                    </div>
-
-                    <div class="mt-6">
-                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Deskripsi Tambahan</label>
-                        <textarea id="description" name="description" rows="3" class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Ceritakan tentang buku yang akan didonasikan..."></textarea>
-                    </div>
-                </div>
-
-                <!-- Pickup Information -->
-                <div class="border-t border-gray-200 dark:border-gray-600 pt-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Informasi Pickup</h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Metode Pengambilan</label>
-                            <div class="mt-2 space-y-2">
-                                <div class="flex items-center">
-                                    <input id="pickup_home" name="pickup_method" type="radio" value="home" class="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 dark:border-gray-600 dark:bg-gray-700">
-                                    <label for="pickup_home" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Dijemput di rumah</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="pickup_dropoff" name="pickup_method" type="radio" value="dropoff" class="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 dark:border-gray-600 dark:bg-gray-700">
-                                    <label for="pickup_dropoff" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Saya antar ke titik kumpul</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alamat Lengkap</label>
-                            <textarea id="address" name="address" rows="3" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Masukkan alamat lengkap untuk pickup atau titik kumpul terdekat"></textarea>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="pickup_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal Pickup</label>
-                                <input type="date" id="pickup_date" name="pickup_date" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                            </div>
-                            <div>
-                                <label for="pickup_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Waktu yang Diinginkan</label>
-                                <select id="pickup_time" name="pickup_time" required class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                                    <option value="">Pilih Waktu</option>
-                                    <option value="pagi">Pagi (08:00 - 12:00)</option>
-                                    <option value="siang">Siang (12:00 - 15:00)</option>
-                                    <option value="sore">Sore (15:00 - 18:00)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="pt-6">
-                    <button type="submit" class="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 font-medium text-lg">
-                        Kirim Donasi Buku
-                    </button>
-                </div>
-            </form>
+            @endauth
         </div>
     </div>
 
