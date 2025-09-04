@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonasiController;
+use App\Http\Controllers\SponsorshipController;
 
 Route::get('/', function () {
     return view('pages.index');
@@ -15,9 +16,7 @@ Route::get('/pelatihan', function () {
     return view('pages.pelatihan');
 });
 
-Route::get('/sponsorship', function () {
-    return view('pages.sponsorship');
-});
+Route::get('/sponsorship', [SponsorshipController::class, 'publicPage'])->name('sponsorship.public');
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -120,4 +119,16 @@ Route::middleware(['auth', 'role:Donatur Buku'])->group(function () {
     Route::get('/donations/{donation}/edit', [App\Http\Controllers\DonationController::class, 'edit'])->name('donations.edit');
     Route::put('/donations/{donation}', [App\Http\Controllers\DonationController::class, 'update'])->name('donations.update');
     Route::patch('/donations/{donation}/cancel', [App\Http\Controllers\DonationController::class, 'cancel'])->name('donations.cancel');
+});
+
+// Investor routes (protected by investor role)
+Route::middleware(['auth', 'role:Investor'])->group(function () {
+    // Sponsorship Management for Investor
+    Route::get('/sponsorships', [SponsorshipController::class, 'index'])->name('sponsorships.index');
+    Route::get('/sponsorships/create', [SponsorshipController::class, 'create'])->name('sponsorships.create');
+    Route::post('/sponsorships', [SponsorshipController::class, 'store'])->name('sponsorships.store');
+    Route::get('/sponsorships/{sponsorship}', [SponsorshipController::class, 'show'])->name('sponsorships.show');
+    Route::get('/sponsorships/{sponsorship}/edit', [SponsorshipController::class, 'edit'])->name('sponsorships.edit');
+    Route::put('/sponsorships/{sponsorship}', [SponsorshipController::class, 'update'])->name('sponsorships.update');
+    Route::put('/investor/profile', [SponsorshipController::class, 'updateProfile'])->name('investor.profile.update');
 });

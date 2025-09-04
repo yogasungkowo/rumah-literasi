@@ -150,14 +150,12 @@ class DashboardController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        $stats = [
-            'total_investment' => 50000000,
-            'active_projects' => 4,
-            'roi_percentage' => 15.5,
-            'people_impacted' => 1500,
-        ];
+        // Load investor profile and sponsorships
+        $user->load(['investor', 'sponsorships' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }]);
 
-        return view('dashboard.investor', compact('user', 'stats'));
+        return view('dashboard.investor', compact('user'));
     }
 
     /**

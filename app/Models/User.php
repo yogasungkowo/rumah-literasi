@@ -105,4 +105,20 @@ class User extends Authenticatable
             default => route('dashboard.publik'),
         };
     }
+
+    /**
+     * Get investor profile relationship
+     */
+    public function investor()
+    {
+        return $this->hasOne(Investor::class);
+    }
+
+    /**
+     * Get user's sponsorships
+     */
+    public function sponsorships()
+    {
+        return $this->hasMany(Sponsorship::class, 'sponsor_id');
+    }
 }

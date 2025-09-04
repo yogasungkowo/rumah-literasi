@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Rumah Literasi - Literasi Ranggi' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Fallback FontAwesome dari jsDelivr jika CDN utama gagal -->
+    <script>
+        // Check if FontAwesome loaded, if not load from backup CDN
+        document.addEventListener('DOMContentLoaded', function() {
+            const testIcon = document.createElement('i');
+            testIcon.className = 'fas fa-home';
+            testIcon.style.position = 'absolute';
+            testIcon.style.left = '-9999px';
+            document.body.appendChild(testIcon);
+            
+            const computedStyle = window.getComputedStyle(testIcon, ':before');
+            if (computedStyle.content === 'none' || computedStyle.content === '') {
+                const fallbackLink = document.createElement('link');
+                fallbackLink.rel = 'stylesheet';
+                fallbackLink.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css';
+                document.head.appendChild(fallbackLink);
+            }
+            document.body.removeChild(testIcon);
+        });
+    </script>
+    
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         // Check for saved theme preference or default to 'light' mode
