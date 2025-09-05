@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sponsorship;
+use App\Models\Investor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -205,45 +206,51 @@ class SponsorshipController extends Controller
      */
     public function publicPage()
     {
-        // Get approved/active sponsorships for public display
-        $featuredSponsorships = Sponsorship::whereIn('status', ['approved', 'active', 'completed'])
-                                          ->with('sponsor')
-                                          ->latest()
-                                          ->limit(6)
-                                          ->get();
+        // Get active sponsorships for public display
+        $activeSponsors = Sponsorship::whereIn('status', ['approved', 'active', 'completed'])
+                                    ->with(['sponsor.investor'])
+                                    ->latest()
+                                    ->paginate(9);
 
         // Calculate statistics
+        $totalFunding = Sponsorship::whereIn('status', ['approved', 'active', 'completed'])
+                                  ->sum('amount');
+        
         $stats = [
-            'total_investors' => Sponsorship::distinct('sponsor_id')->count(),
-            'total_investment' => Sponsorship::whereIn('status', ['approved', 'active', 'completed'])
-                                            ->sum('amount'),
-            'active_programs' => Sponsorship::where('status', 'active')->count(),
-            'success_rate' => $this->calculateSuccessRate(),
+            'active_sponsors' => Sponsorship::whereIn('status', ['approved', 'active'])->distinct('sponsor_id')->count(),
+            'total_funding' => $this->formatCurrency($totalFunding),
+            'funded_programs' => Sponsorship::whereIn('status', ['approved', 'active', 'completed'])->count(),
+            'beneficiaries' => $this->calculateBeneficiaries(),
         ];
 
-        // Impact metrics (you can adjust these based on your actual data)
-        $impact = [
-            'books_distributed' => 10000, // This could come from another model/calculation
-            'people_trained' => 5000,     // This could come from another model/calculation
-            'regions_reached' => 50,      // This could come from another model/calculation
-            'partner_institutions' => 200, // This could come from another model/calculation
-        ];
-
-        return view('pages.sponsorship', compact('featuredSponsorships', 'stats', 'impact'));
+        return view('pages.sponsorship', compact('activeSponsors', 'stats'));
     }
 
     /**
-     * Calculate success rate percentage
+     * Format currency for display
      */
-    private function calculateSuccessRate()
+    private function formatCurrency($amount)
     {
-        $totalCompleted = Sponsorship::whereIn('status', ['completed', 'active'])->count();
-        $totalProcessed = Sponsorship::whereNotIn('status', ['pending'])->count();
-        
-        if ($totalProcessed === 0) {
-            return 98; // Default value if no data
+        if ($amount >= 1000000000) {
+            return number_format($amount / 1000000000, 1) . 'M';
+        } elseif ($amount >= 1000000) {
+            return number_format($amount / 1000000, 1) . 'Jt';
+        } elseif ($amount >= 1000) {
+            return number_format($amount / 1000, 0) . 'K';
         }
         
-        return round(($totalCompleted / $totalProcessed) * 100);
+        return number_format($amount, 0);
+    }
+
+    /**
+     * Calculate estimated beneficiaries based on funding
+     */
+    private function calculateBeneficiaries()
+    {
+        // Rough calculation: assume 1 beneficiary per 100,000 rupiah of funding
+        $totalFunding = Sponsorship::whereIn('status', ['approved', 'active', 'completed'])
+                                  ->sum('amount');
+        
+        return intval($totalFunding / 100000);
     }
 }

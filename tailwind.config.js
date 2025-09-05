@@ -2,8 +2,10 @@
 export default {
   content: [
     "./resources/**/*.blade.php",
-    "./resources/**/*.js",
+    "./resources/**/*.js", 
     "./resources/**/*.vue",
+    "./storage/framework/views/*.php",
+    "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
   ],
   darkMode: 'class', // Enable class-based dark mode
   theme: {

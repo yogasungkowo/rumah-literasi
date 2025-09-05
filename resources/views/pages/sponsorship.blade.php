@@ -1,448 +1,310 @@
-<x-layouts.app>
+<x-layouts.app title="Sponsorship - Rumah Literasi">
     <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white py-24 overflow-hidden">
-        <!-- Background Pattern -->
-        <div class="absolute inset-0 bg-black/20"></div>
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="7" cy="7" r="1"/%3E%3Ccircle cx="27" cy="7" r="1"/%3E%3Ccircle cx="47" cy="7" r="1"/%3E%3Ccircle cx="7" cy="27" r="1"/%3E%3Ccircle cx="27" cy="27" r="1"/%3E%3Ccircle cx="47" cy="27" r="1"/%3E%3Ccircle cx="7" cy="47" r="1"/%3E%3Ccircle cx="27" cy="47" r="1"/%3E%3Ccircle cx="47" cy="47" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
-        
-        <div class="relative max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <div class="max-w-4xl mx-auto">
-                <h1 class="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent leading-tight">
-                    Investasi untuk Masa Depan Literasi
+    <div class="bg-gradient-to-r from-purple-500 to-purple-700 dark:from-purple-600 dark:to-purple-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                    Program Sponsorship
                 </h1>
-                <p class="text-xl md:text-2xl mb-12 text-purple-100 leading-relaxed">
-                    Bergabunglah dengan komunitas investor yang percaya pada kekuatan literasi untuk mengubah Indonesia menjadi bangsa yang lebih cerdas dan maju
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    Bergabunglah dengan para sponsor yang mendukung gerakan literasi untuk Indonesia yang lebih cerdas
                 </p>
-                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                    <a href="{{ route('login') }}" class="group bg-white text-purple-900 hover:bg-purple-50 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center">
-                        <i class="fas fa-user-plus mr-3 group-hover:scale-110 transition-transform"></i>
-                        Bergabung Sebagai Investor
-                    </a>
-                    <a href="{{ route('sponsorships.create') }}" class="group border-2 border-white text-white hover:bg-white hover:text-purple-900 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center">
-                        <i class="fas fa-lightbulb mr-3 group-hover:scale-110 transition-transform"></i>
-                        Ajukan Proposal
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Floating Elements -->
-        <div class="absolute top-20 left-10 w-20 h-20 bg-purple-400/20 rounded-full blur-xl animate-pulse"></div>
-        <div class="absolute bottom-20 right-10 w-32 h-32 bg-pink-400/20 rounded-full blur-xl animate-pulse delay-1000"></div>
-        <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-indigo-400/20 rounded-full blur-xl animate-pulse delay-500"></div>
-    </div>
-
-    <!-- Login Notice -->
-    @guest
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-700 p-6 rounded-2xl shadow-sm">
-            <div class="flex items-start">
-                <div class="flex-shrink-0">
-                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
-                        <i class="fas fa-info-circle text-blue-600 dark:text-blue-400 text-lg"></i>
+                
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-3xl font-bold mb-2">{{ $stats['active_sponsors'] }}</div>
+                        <div class="text-sm opacity-90">Sponsor Aktif</div>
                     </div>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">Mulai Perjalanan Investasi Anda</h3>
-                    <p class="text-blue-700 dark:text-blue-300 mb-4">
-                        Untuk mengajukan proposal sponsorship dan bergabung dengan komunitas investor literasi, silakan masuk atau buat akun terlebih dahulu.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                            <i class="fas fa-sign-in-alt mr-2"></i>
-                            Masuk ke Akun
-                        </a>
-                        <a href="{{ route('register') }}" class="inline-flex items-center px-4 py-2 border border-blue-600 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors font-medium">
-                            <i class="fas fa-user-plus mr-2"></i>
-                            Daftar Akun Baru
-                        </a>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-3xl font-bold mb-2">{{ $stats['total_funding'] }}</div>
+                        <div class="text-sm opacity-90">Dana Terkumpul</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-3xl font-bold mb-2">{{ $stats['funded_programs'] }}</div>
+                        <div class="text-sm opacity-90">Program Didanai</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-3xl font-bold mb-2">{{ number_format($stats['beneficiaries']) }}</div>
+                        <div class="text-sm opacity-90">Penerima Manfaat</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endguest
 
-    <!-- Investor Statistics -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Statistik Investasi Kami</h2>
-            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Melihat dampak nyata dari kontribusi para investor dalam membangun ekosistem literasi Indonesia
+    <!-- Value Proposition Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Mengapa Menjadi Sponsor?</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300">
+                Investasi Anda akan memberikan dampak jangka panjang bagi pendidikan Indonesia
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <!-- Total Investor -->
-            <div class="group bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 text-center transform hover:-translate-y-2">
-                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-users text-white text-2xl"></i>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <!-- Corporate Social Responsibility -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300">
+                <div class="bg-purple-100 dark:bg-purple-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
                 </div>
-                <div class="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">{{ $stats['total_investors'] }}</div>
-                <div class="text-gray-700 dark:text-gray-300 font-medium">Total Investor</div>
-                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Terdaftar aktif</div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">CSR yang Bermakna</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    Wujudkan program Corporate Social Responsibility dengan dampak nyata dan terukur untuk masyarakat
+                </p>
             </div>
 
-            <!-- Total Investasi -->
-            <div class="group bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 text-center transform hover:-translate-y-2">
-                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-chart-line text-white text-2xl"></i>
+            <!-- Brand Visibility -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300">
+                <div class="bg-blue-100 dark:bg-blue-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
                 </div>
-                <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">Rp {{ number_format($stats['total_investment'] / 1000000, 1) }}M</div>
-                <div class="text-gray-700 dark:text-gray-300 font-medium">Total Investasi</div>
-                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Dana terkumpul</div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Brand Visibility</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    Tingkatkan visibilitas brand Anda melalui platform digital dan berbagai kegiatan literasi kami
+                </p>
             </div>
 
-            <!-- Program Aktif -->
-            <div class="group bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 text-center transform hover:-translate-y-2">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-project-diagram text-white text-2xl"></i>
+            <!-- Tax Benefits -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300">
+                <div class="bg-green-100 dark:bg-green-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
                 </div>
-                <div class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">{{ $stats['active_programs'] }}</div>
-                <div class="text-gray-700 dark:text-gray-300 font-medium">Program Aktif</div>
-                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Sedang berjalan</div>
-            </div>
-
-            <!-- Tingkat Sukses -->
-            <div class="group bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 text-center transform hover:-translate-y-2">
-                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <i class="fas fa-award text-white text-2xl"></i>
-                </div>
-                <div class="text-4xl font-bold text-orange-600 dark:text-orange-400 mb-2">{{ $stats['success_rate'] }}%</div>
-                <div class="text-gray-700 dark:text-gray-300 font-medium">Tingkat Sukses</div>
-                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Program berhasil</div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Manfaat Pajak</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    Dapatkan keringanan pajak sesuai ketentuan yang berlaku untuk donasi bidang pendidikan
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Featured Investors -->
-    <div id="investor-list" class="bg-gradient-to-br from-gray-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900/20 py-20 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Investor Terpercaya Kami</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Para mitra yang telah bergabung dalam misi mencerdaskan bangsa melalui investasi literasi berkelanjutan
-                </p>
-            </div>
 
-            <!-- Featured Investor Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                @forelse($featuredSponsorships->take(3) as $index => $sponsorship)
-                    @php
-                        $colorClasses = [
-                            [
-                                'gradient' => 'bg-gradient-to-br from-purple-500 to-purple-600',
-                                'text' => 'text-purple-600 dark:text-purple-400',
-                                'bg' => 'bg-purple-600',
-                                'hover' => 'hover:bg-purple-700',
-                                'light' => 'bg-purple-100 dark:bg-purple-900/30',
-                                'light_hover' => 'hover:bg-purple-200 dark:hover:bg-purple-900/50'
-                            ],
-                            [
-                                'gradient' => 'bg-gradient-to-br from-blue-500 to-blue-600',
-                                'text' => 'text-blue-600 dark:text-blue-400',
-                                'bg' => 'bg-blue-600',
-                                'hover' => 'hover:bg-blue-700',
-                                'light' => 'bg-blue-100 dark:bg-blue-900/30',
-                                'light_hover' => 'hover:bg-blue-200 dark:hover:bg-blue-900/50'
-                            ],
-                            [
-                                'gradient' => 'bg-gradient-to-br from-green-500 to-green-600',
-                                'text' => 'text-green-600 dark:text-green-400',
-                                'bg' => 'bg-green-600',
-                                'hover' => 'hover:bg-green-700',
-                                'light' => 'bg-green-100 dark:bg-green-900/30',
-                                'light_hover' => 'hover:bg-green-200 dark:hover:bg-green-900/50'
-                            ]
-                        ];
-                        $color = $colorClasses[$index % 3];
-                        
-                        $statusClasses = [
-                            'pending' => 'bg-yellow-400 text-yellow-900',
-                            'approved' => 'bg-blue-400 text-blue-900', 
-                            'active' => 'bg-green-400 text-green-900',
-                            'completed' => 'bg-green-400 text-green-900',
-                            'rejected' => 'bg-red-400 text-red-900'
-                        ];
-                        $statusClass = $statusClasses[$sponsorship->status] ?? 'bg-gray-400 text-gray-900';
-                        $initials = strtoupper(substr($sponsorship->company_name, 0, 2));
-                    @endphp
-                    
-                    <!-- Investor Card {{ $index + 1 }} -->
-                    <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2">
-                        <div class="{{ $color['gradient'] }} p-6 text-white">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                                    <span class="text-xl font-bold">{{ $initials }}</span>
+
+    <!-- Current Sponsors Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Sponsor Terkini</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300">
+                Perusahaan-perusahaan yang telah mempercayai kami sebagai partner dalam gerakan literasi
+            </p>
+        </div>
+
+        @if($activeSponsors->count() > 0)
+            <!-- Featured Sponsors -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                @foreach($activeSponsors as $sponsorship)
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            @if($sponsorship->sponsor && $sponsorship->sponsor->investor)
+                                <img src="{{ $sponsorship->sponsor->investor->image_profile_url }}" 
+                                     alt="{{ $sponsorship->company_name }}" 
+                                     class="w-12 h-12 rounded-lg object-cover mr-4">
+                            @else
+                                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-800 rounded-lg flex items-center justify-center mr-4">
+                                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                                    </svg>
                                 </div>
-                                <span class="{{ $statusClass }} px-3 py-1 rounded-full text-sm font-medium">
-                                    {{ $sponsorship->status_label }}
+                            @endif
+                            <div>
+                                <h3 class="font-bold text-gray-900 dark:text-white">{{ $sponsorship->company_name }}</h3>
+                                <span class="inline-block px-2 py-1 text-xs font-medium 
+                                    @if($sponsorship->amount >= 50000000) bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100
+                                    @elseif($sponsorship->amount >= 15000000) bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100
+                                    @else bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100 @endif rounded-full">
+                                    @if($sponsorship->amount >= 50000000) Gold
+                                    @elseif($sponsorship->amount >= 15000000) Silver
+                                    @else Bronze @endif Sponsor
                                 </span>
                             </div>
-                            <h3 class="text-xl font-bold mb-2">{{ $sponsorship->company_name }}</h3>
-                            <p class="text-white/80 text-sm">{{ $sponsorship->sponsorship_type_label }}</p>
-                        </div>
-                        <div class="p-6">
-                            <div class="mb-4">
-                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">{{ Str::limit($sponsorship->description, 50) }}</h4>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm">{{ $sponsorship->contact_person }}</p>
-                            </div>
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <p class="text-2xl font-bold {{ $color['text'] }}">
-                                        Rp {{ number_format($sponsorship->amount / 1000000, 0) }}M
-                                    </p>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Total Investasi</p>
-                                </div>
-                                {{-- <div class="text-right">
-                                    @if($sponsorship->start_date && $sponsorship->end_date)
-                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            {{ $sponsorship->start_date->diffInMonths($sponsorship->end_date) }} Bulan
-                                        </p>
-                                        <p class="text-gray-500 dark:text-gray-400 text-sm">Durasi</p>
-                                    @else
-                                        <p class="text-lg font-semibold text-gray-900 dark:text-white">Fleksibel</p>
-                                        <p class="text-gray-500 dark:text-gray-400 text-sm">Durasi</p>
-                                    @endif
-                                </div> --}}
-                            </div>
-                            <div class="flex gap-3">
-                                @auth
-                                    <a href="{{ route('sponsorships.show', $sponsorship) }}" class="flex-1 {{ $color['bg'] }} text-white py-2 px-4 rounded-lg {{ $color['hover'] }} transition-colors text-sm font-medium text-center">
-                                        <i class="fas fa-eye mr-2"></i>Detail
-                                    </a>
-                                @else
-                                    <button onclick="alert('Silakan login untuk melihat detail')" class="flex-1 {{ $color['bg'] }} text-white py-2 px-4 rounded-lg {{ $color['hover'] }} transition-colors text-sm font-medium">
-                                        <i class="fas fa-eye mr-2"></i>Detail
-                                    </button>
-                                @endauth
-                                @if($sponsorship->proposal_file)
-                                    <a href="{{ $sponsorship->proposal_url }}" target="_blank" class="{{ $color['light'] }} {{ $color['text'] }} py-2 px-4 rounded-lg {{ $color['light_hover'] }} transition-colors text-sm">
-                                        <i class="fas fa-file-alt"></i>
-                                    </a>
-                                @endif
-                            </div>
                         </div>
                     </div>
-                @empty
-                    <!-- No Data Message -->
-                    <div class="col-span-full">
-                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center">
-                            <div class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <i class="fas fa-building text-gray-400 text-3xl"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Belum Ada Investor</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-6">
-                                Jadilah investor pertama yang bergabung dalam misi literasi Indonesia
-                            </p>
-                            <a href="{{ route('sponsorships.create') }}" class="bg-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors">
-                                <i class="fas fa-plus mr-2"></i>Ajukan Proposal Pertama
-                            </a>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">Total Kontribusi</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">
+                                Rp {{ number_format($sponsorship->amount, 0, ',', '.') }}
+                            </span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">Jenis Sponsorship</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">{{ $sponsorship->sponsorship_type_label }}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">Status</span>
+                            <span class="font-semibold 
+                                @if($sponsorship->status === 'active') text-green-600 dark:text-green-400
+                                @elseif($sponsorship->status === 'approved') text-blue-600 dark:text-blue-400
+                                @else text-gray-600 dark:text-gray-400 @endif">
+                                {{ $sponsorship->status_label }}
+                            </span>
+                        </div>
+                        @if($sponsorship->start_date && $sponsorship->end_date)
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">Periode</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">
+                                {{ $sponsorship->start_date->format('M Y') }} - {{ $sponsorship->end_date->format('M Y') }}
+                            </span>
+                        </div>
+                        @endif
+                    </div>
+                    
+                    @if($sponsorship->description)
+                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                            {{ $sponsorship->description }}
+                        </p>
+                    </div>
+                    @endif
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <div class="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Sponsor sejak {{ $sponsorship->created_at->format('M Y') }}</span>
                         </div>
                     </div>
-                @endforelse
+                </div>
+                @endforeach
             </div>
 
-            <!-- View All Investors -->
-            <div class="text-center">
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
-                    <div class="flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full mx-auto mb-4">
-                        <i class="fas fa-users text-purple-600 dark:text-purple-400 text-2xl"></i>
+            @if($activeSponsors->hasPages())
+                <!-- Pagination -->
+                <div class="flex justify-center">
+                    {{ $activeSponsors->links() }}
+                </div>
+            @endif
+        @else
+            <!-- Empty State -->
+            <div class="text-center py-12">
+                <svg class="w-24 h-24 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Belum Ada Sponsor Aktif</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                    Jadilah yang pertama untuk mendukung program literasi kami
+                </p>
+            </div>
+        @endif
+    </div>
+
+    <!-- Impact Statistics -->
+    <div class="bg-purple-600 dark:bg-purple-700 text-white py-16 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Dampak Bersama Sponsor</h2>
+                <p class="text-lg text-purple-100">Pencapaian luar biasa yang telah kita raih bersama</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                        Bergabung dengan {{ $stats['total_investors'] }}{{ $stats['total_investors'] > 0 ? '+' : '' }} Investor
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">
-                        @if($stats['total_investors'] > 0)
-                            Lihat semua investor yang telah mempercayai platform kami untuk investasi literasi yang berkelanjutan
-                        @else
-                            Jadilah investor pertama yang bergabung dalam misi memajukan literasi Indonesia
-                        @endif
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        @auth
-                            <a href="{{ route('sponsorships.index') }}" class="bg-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                                <i class="fas fa-list mr-2"></i>
-                                Lihat Investasi Saya
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}" class="bg-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                                <i class="fas fa-sign-in-alt mr-2"></i>
-                                @if($stats['total_investors'] > 0)
-                                    Lihat Semua Investor
-                                @else
-                                    Mulai Investasi
-                                @endif
-                            </a>
-                        @endauth
-                        <a href="{{ route('sponsorships.create') }}" class="border-2 border-purple-600 text-purple-600 dark:text-purple-400 px-8 py-3 rounded-xl font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-300">
-                            <i class="fas fa-plus mr-2"></i>
-                            Ajukan Proposal
+                    <div class="text-4xl font-bold mb-2 text-purple-100">{{ $stats['total_funding'] }}</div>
+                    <div class="text-lg text-purple-200">Total Dana Sponsorship</div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-bold mb-2 text-purple-100">{{ $stats['funded_programs'] }}</div>
+                    <div class="text-lg text-purple-200">Program Terealisasi</div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-bold mb-2 text-purple-100">{{ number_format($stats['beneficiaries']) }}</div>
+                    <div class="text-lg text-purple-200">Penerima Manfaat</div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                    <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-bold mb-2 text-purple-100">{{ $stats['active_sponsors'] }}</div>
+                    <div class="text-lg text-purple-200">Sponsor Aktif</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="bg-gray-50 dark:bg-gray-700 py-16 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                Siap Menjadi Sponsor?
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                Bergabunglah dengan komunitas sponsor yang telah memberikan dampak positif bagi pendidikan Indonesia
+            </p>
+            
+            @auth
+                @if(auth()->user()->hasRole(['Admin', 'Sponsor']))
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg max-w-md mx-auto border dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Dashboard Sponsor</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">Kelola program sponsorship dan lihat dampak kontribusi Anda</p>
+                        <a href="{{ auth()->user()->dashboard_url }}" 
+                           class="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors duration-300">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            Akses Dashboard
                         </a>
                     </div>
+                @else
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 max-w-md mx-auto">
+                        <p class="text-blue-800 dark:text-blue-200 mb-4">
+                            Untuk bergabung sebagai sponsor, silakan hubungi tim partnership kami untuk diskusi lebih lanjut.
+                        </p>
+                        <a href="mailto:partnership@rumahliterasi.com" 
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-300">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            Hubungi Partnership Team
+                        </a>
+                    </div>
+                @endif
+            @else
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg max-w-md mx-auto border dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Daftar sebagai Sponsor</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Masuk ke akun Anda untuk memulai proses pendaftaran sponsor</p>
+                    <a href="{{ route('login') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-lg font-medium flex items-center justify-center w-full transition">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                        </svg>
+                        Masuk ke Akun
+                    </a>
                 </div>
-            </div>
+            @endauth
         </div>
     </div>
 
-    <!-- Call to Action -->
-    <div class="relative bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-800 text-white py-20 overflow-hidden">
-        <!-- Background Pattern -->
-        <div class="absolute inset-0 bg-black/20"></div>
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="7" cy="7" r="1"/%3E%3Ccircle cx="27" cy="7" r="1"/%3E%3Ccircle cx="47" cy="7" r="1"/%3E%3Ccircle cx="7" cy="27" r="1"/%3E%3Ccircle cx="27" cy="27" r="1"/%3E%3Ccircle cx="47" cy="27" r="1"/%3E%3Ccircle cx="7" cy="47" r="1"/%3E%3Ccircle cx="27" cy="47" r="1"/%3E%3Ccircle cx="47" cy="47" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
-        
-        <div class="relative max-w-6xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                    Siap Menjadi Bagian dari Perubahan?
-                </h2>
-                <p class="text-xl md:text-2xl mb-12 text-purple-100 leading-relaxed">
-                    Bergabunglah dengan komunitas eksklusif investor literasi yang telah mempercayai kami untuk membangun masa depan Indonesia yang lebih cerdas
-                </p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                    <!-- Feature 1 -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                        <div class="w-12 h-12 bg-purple-400/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-chart-line text-white text-xl"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold mb-2">ROI Transparan</h3>
-                        <p class="text-purple-200 text-sm">Pantau dampak investasi Anda secara real-time</p>
-                    </div>
-                    
-                    <!-- Feature 2 -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                        <div class="w-12 h-12 bg-purple-400/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-shield-alt text-white text-xl"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold mb-2">Investasi Aman</h3>
-                        <p class="text-purple-200 text-sm">Platform terpercaya dengan track record 98% sukses</p>
-                    </div>
-                    
-                    <!-- Feature 3 -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                        <div class="w-12 h-12 bg-purple-400/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-hands-helping text-white text-xl"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold mb-2">Dampak Nyata</h3>
-                        <p class="text-purple-200 text-sm">Berkontribusi langsung pada kemajuan literasi bangsa</p>
-                    </div>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <a href="{{ route('login') }}" class="group bg-white text-purple-900 hover:bg-purple-50 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center">
-                        <i class="fas fa-rocket mr-3 group-hover:scale-110 transition-transform"></i>
-                        Mulai Investasi Sekarang
-                    </a>
-                    <a href="{{ route('register') }}" class="group border-2 border-white text-white hover:bg-white hover:text-purple-900 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center">
-                        <i class="fas fa-user-plus mr-3 group-hover:scale-110 transition-transform"></i>
-                        Buat Akun Gratis
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Floating Elements -->
-        <div class="absolute top-10 left-10 w-20 h-20 bg-purple-400/20 rounded-full blur-xl animate-pulse"></div>
-        <div class="absolute bottom-10 right-10 w-32 h-32 bg-indigo-400/20 rounded-full blur-xl animate-pulse delay-1000"></div>
-    </div>
-
-    <!-- Impact Section -->
-    <div class="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Dampak Nyata Investasi Kami</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Setiap rupiah yang diinvestasikan menciptakan perubahan berkelanjutan dalam ekosistem literasi Indonesia
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Books Distributed -->
-                <div class="group text-center bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div class="relative">
-                        <div class="bg-gradient-to-br from-purple-500 to-purple-600 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                            <i class="fas fa-book text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-plus text-purple-600 dark:text-purple-400 text-xs"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">{{ number_format($impact['books_distributed']) }}+</h3>
-                    <p class="text-gray-900 dark:text-white font-semibold mb-1">Buku Didistribusikan</p>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Ke seluruh Indonesia</p>
-                </div>
-                
-                <!-- People Trained -->
-                <div class="group text-center bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div class="relative">
-                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                            <i class="fas fa-graduation-cap text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-arrow-up text-blue-600 dark:text-blue-400 text-xs"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">{{ number_format($impact['people_trained']) }}+</h3>
-                    <p class="text-gray-900 dark:text-white font-semibold mb-1">Peserta Terlatih</p>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Guru dan pengajar</p>
-                </div>
-                
-                <!-- Regions Reached -->
-                <div class="group text-center bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div class="relative">
-                        <div class="bg-gradient-to-br from-green-500 to-green-600 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                            <i class="fas fa-map-marker-alt text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-check text-green-600 dark:text-green-400 text-xs"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">{{ $impact['regions_reached'] }}+</h3>
-                    <p class="text-gray-900 dark:text-white font-semibold mb-1">Daerah Terjangkau</p>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Termasuk daerah terpencil</p>
-                </div>
-                
-                <!-- Partner Institutions -->
-                <div class="group text-center bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                    <div class="relative">
-                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                            <i class="fas fa-building text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
-                            <i class="fas fa-star text-orange-600 dark:text-orange-400 text-xs"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">{{ $impact['partner_institutions'] }}+</h3>
-                    <p class="text-gray-900 dark:text-white font-semibold mb-1">Lembaga Partner</p>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Sekolah dan institusi</p>
-                </div>
-            </div>
-            
-            <!-- Achievement Timeline -->
-            <div class="mt-16 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-3xl p-8">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pencapaian Terbaru</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Milestone penting yang telah kami raih bersama</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="w-4 h-4 bg-purple-500 rounded-full mx-auto mb-3"></div>
-                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Q4 2023</h4>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">Mencapai 1000 sekolah partner</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-4 h-4 bg-blue-500 rounded-full mx-auto mb-3"></div>
-                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Q1 2024</h4>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">Program literasi digital diluncurkan</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-4 h-4 bg-green-500 rounded-full mx-auto mb-3"></div>
-                        <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Q2 2024</h4>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">Total investasi mencapai Rp 2.5M</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @push('scripts')
+    <script>
+        // Additional scripts if needed in the future
+    </script>
+    @endpush
 </x-layouts.app>

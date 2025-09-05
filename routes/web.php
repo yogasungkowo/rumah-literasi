@@ -69,13 +69,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::delete('/books/{book}', [App\Http\Controllers\Admin\BookController::class, 'destroy'])->name('admin.books.destroy');
 
     // Training Management
-    Route::get('/trainings', [App\Http\Controllers\Admin\TrainingController::class, 'index'])->name('admin.trainings.index');
-    Route::get('/trainings/create', [App\Http\Controllers\Admin\TrainingController::class, 'create'])->name('admin.trainings.create');
-    Route::post('/trainings', [App\Http\Controllers\Admin\TrainingController::class, 'store'])->name('admin.trainings.store');
-    Route::get('/trainings/{training}', [App\Http\Controllers\Admin\TrainingController::class, 'show'])->name('admin.trainings.show');
-    Route::get('/trainings/{training}/edit', [App\Http\Controllers\Admin\TrainingController::class, 'edit'])->name('admin.trainings.edit');
-    Route::put('/trainings/{training}', [App\Http\Controllers\Admin\TrainingController::class, 'update'])->name('admin.trainings.update');
-    Route::delete('/trainings/{training}', [App\Http\Controllers\Admin\TrainingController::class, 'destroy'])->name('admin.trainings.destroy');
+    Route::get('/trainings', [App\Http\Controllers\TrainingController::class, 'index'])->name('admin.trainings.index');
+    Route::get('/trainings/create', [App\Http\Controllers\TrainingController::class, 'create'])->name('admin.trainings.create');
+    Route::post('/trainings', [App\Http\Controllers\TrainingController::class, 'store'])->name('admin.trainings.store');
+    Route::get('/trainings/{training}', [App\Http\Controllers\TrainingController::class, 'show'])->name('admin.trainings.show');
+    Route::get('/trainings/{training}/edit', [App\Http\Controllers\TrainingController::class, 'edit'])->name('admin.trainings.edit');
+    Route::put('/trainings/{training}', [App\Http\Controllers\TrainingController::class, 'update'])->name('admin.trainings.update');
+    Route::delete('/trainings/{training}', [App\Http\Controllers\TrainingController::class, 'destroy'])->name('admin.trainings.destroy');
+    Route::post('/trainings/bulk-action', [App\Http\Controllers\TrainingController::class, 'bulkAction'])->name('admin.trainings.bulk-action');
 
     // Donation Management
     Route::get('/donations', [App\Http\Controllers\Admin\DonationController::class, 'index'])->name('admin.donations.index');
