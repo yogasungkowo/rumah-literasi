@@ -31,15 +31,47 @@ class DonationController extends Controller
             });
         }
 
+        // Filter by date range
+        if ($request->date_from) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->date_to) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
         $donations = $query->orderBy('created_at', 'desc')->paginate(15);
+        
+        // Preserve filter parameters in pagination links
+        $donations->appends($request->query());
+
+        // Build status counts query with same filters
+        $statusQuery = BookDonation::query();
+        
+        // Apply search filter to status counts
+        if ($request->search) {
+            $statusQuery->where(function($q) use ($request) {
+                $q->where('donor_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('donor_email', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Apply date range filter to status counts
+        if ($request->date_from) {
+            $statusQuery->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->date_to) {
+            $statusQuery->whereDate('created_at', '<=', $request->date_to);
+        }
 
         $statusCounts = [
-            'all' => BookDonation::count(),
-            'pending' => BookDonation::where('status', 'pending')->count(),
-            'approved' => BookDonation::where('status', 'approved')->count(),
-            'picked_up' => BookDonation::where('status', 'picked_up')->count(),
-            'completed' => BookDonation::where('status', 'completed')->count(),
-            'rejected' => BookDonation::where('status', 'rejected')->count(),
+            'all' => (clone $statusQuery)->count(),
+            'pending' => (clone $statusQuery)->where('status', 'pending')->count(),
+            'approved' => (clone $statusQuery)->where('status', 'approved')->count(),
+            'picked_up' => (clone $statusQuery)->where('status', 'picked_up')->count(),
+            'completed' => (clone $statusQuery)->where('status', 'completed')->count(),
+            'rejected' => (clone $statusQuery)->where('status', 'rejected')->count(),
         ];
 
         return view('admin.donations.index', compact('donations', 'statusCounts'));

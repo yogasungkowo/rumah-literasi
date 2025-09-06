@@ -550,6 +550,82 @@
             </div>
         </div>
 
+        <!-- Certificate Template -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 p-6 border-b border-gray-200 dark:border-gray-600">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                    <i class="fas fa-certificate mr-2 text-emerald-600 dark:text-emerald-400"></i>
+                    Template Sertifikat
+                </h2>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Upload template sertifikat yang akan diberikan kepada peserta</p>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <!-- File Upload Area -->
+                    <div class="relative">
+                        <label for="certificate_template" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                            <span class="flex items-center">
+                                <i class="fas fa-file-pdf mr-1 text-emerald-500"></i>
+                                Pilih Template Sertifikat
+                            </span>
+                        </label>
+                        
+                        <!-- Custom File Upload -->
+                        <div class="relative group">
+                            <input type="file" name="certificate_template" id="certificate_template" 
+                                   accept=".pdf"
+                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                   onchange="handleCertificatePreview(this)">
+                            
+                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center group-hover:border-emerald-500 dark:group-hover:border-emerald-400 transition-all duration-200 bg-gray-50 dark:bg-gray-700/50 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20">
+                                <div class="flex flex-col items-center">
+                                    <i class="fas fa-file-pdf text-4xl text-gray-400 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 mb-4 transition-colors duration-200"></i>
+                                    <p class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                                        Klik untuk upload template sertifikat
+                                    </p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                        atau drag & drop file PDF di sini
+                                    </p>
+                                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                                        Format: PDF (Maksimal 3MB)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        @error('certificate_template')
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+                    
+                    <!-- Certificate Preview Container -->
+                    <div id="certificate-preview-container" class="hidden">
+                        <div class="relative inline-block bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700 rounded-xl p-4">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-file-pdf text-2xl text-emerald-600 dark:text-emerald-400"></i>
+                                <div>
+                                    <p id="certificate-name" class="text-sm font-medium text-gray-900 dark:text-white"></p>
+                                    <p id="certificate-size" class="text-xs text-gray-500 dark:text-gray-400"></p>
+                                </div>
+                            </div>
+                            <button type="button" 
+                                    id="remove-certificate"
+                                    class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg transition-all duration-200 transform hover:scale-110">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                            <i class="fas fa-check-circle text-green-500 mr-1"></i>
+                            Template sertifikat berhasil dipilih
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Action Buttons -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
             <div class="flex flex-col sm:flex-row sm:justify-end sm:space-x-4 space-y-3 sm:space-y-0">
@@ -760,6 +836,55 @@
                 this.style.height = this.scrollHeight + 'px';
             });
         });
+
+        // Certificate template preview functionality
+        function handleCertificatePreview(input) {
+            const file = input.files[0];
+            const previewContainer = document.getElementById('certificate-preview-container');
+            const certificateName = document.getElementById('certificate-name');
+            const certificateSize = document.getElementById('certificate-size');
+
+            if (file) {
+                // Validate file type
+                if (!file.type.includes('pdf')) {
+                    alert('Hanya file PDF yang diperbolehkan!');
+                    input.value = '';
+                    return;
+                }
+
+                // Validate file size (3MB = 3 * 1024 * 1024 bytes)
+                if (file.size > 3 * 1024 * 1024) {
+                    alert('Ukuran file tidak boleh lebih dari 3MB!');
+                    input.value = '';
+                    return;
+                }
+
+                // Show preview
+                certificateName.textContent = file.name;
+                certificateSize.textContent = formatFileSize(file.size);
+                previewContainer.classList.remove('hidden');
+            } else {
+                previewContainer.classList.add('hidden');
+            }
+        }
+
+        // Remove certificate functionality
+        document.getElementById('remove-certificate').addEventListener('click', function() {
+            const input = document.getElementById('certificate_template');
+            const previewContainer = document.getElementById('certificate-preview-container');
+            
+            input.value = '';
+            previewContainer.classList.add('hidden');
+        });
+
+        // Helper function to format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
     </script>
     @endpush
 </x-layouts.admin>

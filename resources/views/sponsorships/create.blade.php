@@ -1,7 +1,22 @@
 <x-layouts.app>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+    
+    <!-- Flatpickr JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+    
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div class="container mx-auto px-4 py-8">
             <div class="max-w-5xl mx-auto">
+                <!-- Back Button -->
+                <div class="mb-6">
+                    <a href="{{ route('sponsorships.index') }}" 
+                       class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors group">
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                        Kembali ke Daftar Sponsorship
+                    </a>
+                </div>
+
                 <!-- Header Section -->
                 <div class="text-center mb-8">
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
@@ -72,7 +87,7 @@
                                         <i class="fas fa-building text-blue-500 mr-2"></i>Nama Perusahaan *
                                     </label>
                                     <input type="text" name="company_name"
-                                        value="{{ old('company_name', auth()->user()->investor?->company_name) }}"
+                                        value="{{ old('company_name', auth()->user()->investor?->company_name ?? '') }}"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('company_name') border-red-400 dark:border-red-500 @enderror"
                                         placeholder="PT. Nama Perusahaan Anda" required>
                                     @error('company_name')
@@ -86,7 +101,7 @@
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <i class="fas fa-user text-blue-500 mr-2"></i>Nama Kontak Person *
                                     </label>
-                                    <input type="text" name="contact_person" value="{{ old('contact_person', auth()->user()->name) }}"
+                                    <input type="text" name="contact_person" value="{{ old('contact_person', auth()->user()->name ?? '') }}"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('contact_person') border-red-400 dark:border-red-500 @enderror"
                                         placeholder="Nama lengkap PIC" required>
                                     @error('contact_person')
@@ -100,7 +115,7 @@
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <i class="fas fa-phone text-blue-500 mr-2"></i>Nomor Telepon *
                                     </label>
-                                    <input type="text" name="contact_phone" value="{{ old('contact_phone', auth()->user()->phone) }}"
+                                    <input type="text" name="contact_phone" value="{{ old('contact_phone', auth()->user()->phone ?? '') }}"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('contact_phone') border-red-400 dark:border-red-500 @enderror"
                                         placeholder="08xxxxxxxxxx" required>
                                     @error('contact_phone')
@@ -114,7 +129,7 @@
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <i class="fas fa-envelope text-blue-500 mr-2"></i>Email *
                                     </label>
-                                    <input type="email" name="contact_email" value="{{ old('contact_email', auth()->user()->email) }}"
+                                    <input type="email" name="contact_email" value="{{ old('contact_email', auth()->user()->email ?? '') }}"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('contact_email') border-red-400 dark:border-red-500 @enderror"
                                         placeholder="email@perusahaan.com" required>
                                     @error('contact_email')
@@ -130,7 +145,7 @@
                                     </label>
                                     <textarea name="company_address" rows="3"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('company_address') border-red-400 dark:border-red-500 @enderror"
-                                        placeholder="Jl. Alamat lengkap perusahaan..." required>{{ old('company_address', auth()->user()->address) }}</textarea>
+                                        placeholder="Jl. Alamat lengkap perusahaan..." required>{{ old('company_address', auth()->user()->address ?? '') }}</textarea>
                                     @error('company_address')
                                         <p class="text-red-500 dark:text-red-400 text-xs mt-1 flex items-center">
                                             <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -226,8 +241,15 @@
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>Tanggal Mulai
                                     </label>
-                                    <input type="date" name="start_date" value="{{ old('start_date') }}"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('start_date') border-red-400 dark:border-red-500 @enderror">
+                                    <div class="relative">
+                                        <input type="text" id="start_date" name="start_date" 
+                                            value="{{ old('start_date') ? \Carbon\Carbon::parse(old('start_date'))->format('d/m/Y') : '' }}"
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('start_date') border-red-400 dark:border-red-500 @enderror pr-10"
+                                            placeholder="Pilih tanggal mulai" readonly>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                                        </div>
+                                    </div>
                                     @error('start_date')
                                         <p class="text-red-500 dark:text-red-400 text-xs mt-1 flex items-center">
                                             <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -239,8 +261,15 @@
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <i class="fas fa-calendar-check text-blue-500 mr-2"></i>Tanggal Selesai
                                     </label>
-                                    <input type="date" name="end_date" value="{{ old('end_date') }}"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('end_date') border-red-400 dark:border-red-500 @enderror">
+                                    <div class="relative">
+                                        <input type="text" id="end_date" name="end_date" 
+                                            value="{{ old('end_date') ? \Carbon\Carbon::parse(old('end_date'))->format('d/m/Y') : '' }}"
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('end_date') border-red-400 dark:border-red-500 @enderror pr-10"
+                                            placeholder="Pilih tanggal selesai" readonly>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                                        </div>
+                                    </div>
                                     @error('end_date')
                                         <p class="text-red-500 dark:text-red-400 text-xs mt-1 flex items-center">
                                             <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -481,6 +510,65 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Flatpickr for date inputs
+            flatpickr("#start_date", {
+                dateFormat: "d/m/Y",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: true,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                        longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+                    },
+                    months: {
+                        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+                        longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+                    }
+                },
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Convert display format (d/m/Y) to Laravel format (Y-m-d) for backend
+                    if (selectedDates.length > 0) {
+                        const date = selectedDates[0];
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        instance.input.value = `${year}-${month}-${day}`;
+                        instance.altInput.value = dateStr;
+                    }
+                }
+            });
+
+            flatpickr("#end_date", {
+                dateFormat: "d/m/Y",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: true,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                        longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+                    },
+                    months: {
+                        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+                        longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+                    }
+                },
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Convert display format (d/m/Y) to Laravel format (Y-m-d) for backend
+                    if (selectedDates.length > 0) {
+                        const date = selectedDates[0];
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        instance.input.value = `${year}-${month}-${day}`;
+                        instance.altInput.value = dateStr;
+                    }
+                }
+            });
+
             // Initialize benefit selections for old values
             document.querySelectorAll('.benefit-checkbox').forEach(checkbox => {
                 if (checkbox.checked) {
@@ -559,14 +647,16 @@
                 submitBtn.disabled = true;
             });
 
-            // Smooth scroll to sections on validation errors
-            const errorElements = document.querySelectorAll('.text-red-500');
-            if (errorElements.length > 0) {
-                errorElements[0].scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }
+            // Initialize existing error states if any
+            document.querySelectorAll('.text-red-500').forEach(errorElement => {
+                const parentInput = errorElement.closest('.space-y-2');
+                if (parentInput) {
+                    const input = parentInput.querySelector('input, textarea, select');
+                    if (input) {
+                        input.classList.add('border-red-400', 'dark:border-red-500');
+                    }
+                }
+            });
         });
     </script>
 </x-layouts.app>

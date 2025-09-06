@@ -196,7 +196,7 @@
 
                     <!-- Daftar Buku -->
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-gray-600">
-                        <div class="flex items-center justify-between mb-6">
+                        <div class="mb-6">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,36 +204,22 @@
                                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
                                 </div>
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Daftar Buku yang Didonasikan</h3>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Informasi Buku</h3>
                             </div>
-                            <button type="button" id="addBookBtn"
-                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                Tambah Buku
-                            </button>
                         </div>
 
                         <div id="booksContainer">
                             @foreach ($donation->book_data ?? [] as $index => $book)
                                 <div
                                     class="book-form bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl p-6 mb-6 transition-all duration-200 hover:shadow-md">
-                                    <div class="flex justify-between items-center mb-6">
+                                    <div class="mb-6">
                                         <div class="flex items-center space-x-3">
                                             <div
                                                 class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
                                                 <span class="text-white font-bold text-sm">{{ $index + 1 }}</span>
                                             </div>
-                                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Buku #{{ $index + 1 }}</h4>
+                                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Buku</h4>
                                         </div>
-                                        <button type="button"
-                                            class="remove-book text-red-500 hover:text-red-700 dark:hover:text-red-400 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-200 {{ $index === 0 ? 'hidden' : '' }}">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -534,9 +520,17 @@
                                 Tanggal Preferensi
                             </span>
                         </label>
-                        <input type="date" name="preferred_date" id="preferred_date" min="{{ date('Y-m-d') }}"
-                            value="{{ old('preferred_date', $donation->preferred_date?->format('Y-m-d')) }}"
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all">
+                        <div class="relative">
+                            <input type="text" name="preferred_date" id="preferred_date"
+                                value="{{ old('preferred_date', $donation->preferred_date?->format('d/m/Y')) }}"
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all pr-10"
+                                placeholder="Pilih tanggal" readonly>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                     <div class="space-y-2">
                         <label for="preferred_time" class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -548,13 +542,17 @@
                                 Waktu Preferensi
                             </span>
                         </label>
-                        <input type="time" name="preferred_time" id="preferred_time"
-                            value="{{ old('preferred_time', $donation->preferred_time ? substr($donation->preferred_time, 0, 5) : '') }}"
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all"
-                            pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" 
-                            title="Format waktu harus HH:MM dalam format 24 jam (contoh: 09:30, 14:00)"
-                            placeholder="HH:MM"
-                            step="60">
+                        <div class="relative">
+                            <input type="text" name="preferred_time" id="preferred_time"
+                                value="{{ old('preferred_time', $donation->preferred_time ? substr($donation->preferred_time, 0, 5) : '') }}"
+                                class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all pr-10"
+                                placeholder="Pilih waktu (HH:MM)" readonly>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -562,27 +560,38 @@
 
         <!-- Catatan Tambahan -->
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-gray-600 mt-10">
-            <div class="flex items-center space-x-3 mb-6">
-                <div class="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center mb-2">
+                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                     </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Catatan Tambahan</h3>
+                    Catatan Tambahan
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Berikan informasi tambahan yang dapat membantu proses donasi</p>
             </div>
-            <div class="space-y-2">
-                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+            
+            <div class="space-y-4">
+                <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     <span class="flex items-center">
                         <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        Informasi Tambahan
+                        Pesan atau Catatan Khusus
                     </span>
                 </label>
-                <textarea name="notes" rows="4"
-                    class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all resize-none"
-                    placeholder="Catatan khusus atau informasi tambahan yang perlu diketahui...">{{ old('notes', $donation->notes) }}</textarea>
+                <textarea id="notes" 
+                          name="notes" 
+                          rows="4"
+                          class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all resize-none"
+                          placeholder="Misalnya: buku dalam kondisi khusus, waktu terbaik untuk dihubungi, atau informasi lain yang perlu kami ketahui...">{{ old('notes', $donation->notes) }}</textarea>
+                <div class="flex items-start p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+                    <svg class="w-4 h-4 mr-2 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    <p class="text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Tips:</strong> Jelaskan kondisi spesifik buku, preferensi waktu kontak, atau hal khusus lainnya yang perlu kami ketahui untuk memproses donasi Anda dengan optimal.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -867,80 +876,9 @@
                 });
             }
 
-            // Add real-time validation for preferred_time field
-            const timeInput = document.getElementById('preferred_time');
-            if (timeInput) {
-                timeInput.addEventListener('blur', function() {
-                    let value = this.value.trim();
-                    if (value) {
-                        // HTML5 time input usually provides HH:MM format
-                        // But ensure it matches Laravel H:i format requirement
-                        const timePattern = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-                        if (timePattern.test(value)) {
-                            // Ensure proper HH:MM format with leading zeros for Laravel H:i
-                            const parts = value.split(':');
-                            const hours = parseInt(parts[0], 10).toString().padStart(2, '0');
-                            const minutes = parseInt(parts[1], 10).toString().padStart(2, '0');
-                            this.value = `${hours}:${minutes}`;
-                            console.log('Time formatted for Laravel H:i:', this.value);
-                        } else if (value) {
-                            console.warn('Invalid time format detected:', value);
-                        }
-                    }
-                });
-            }
-
             // Debug form submission
             document.querySelector('form').addEventListener('submit', function(e) {
                 console.log('Form submission started');
-                
-                // Clean and validate preferred_time format
-                const preferredTimeField = document.getElementById('preferred_time');
-                if (preferredTimeField) {
-                    let timeValue = preferredTimeField.value.trim();
-                    console.log('Original preferred time value:', timeValue);
-                    
-                    if (timeValue) {
-                        // HTML5 time input should already provide HH:MM format, but let's validate
-                        // Laravel expects H:i format which is HH:MM in 24-hour format
-                        const timePattern = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-                        
-                        if (!timePattern.test(timeValue)) {
-                            console.error('Invalid time format:', timeValue);
-                            alert('Format waktu tidak valid. Gunakan format HH:MM dalam 24 jam (contoh: 09:30, 14:00)');
-                            preferredTimeField.focus();
-                            e.preventDefault();
-                            return false;
-                        }
-                        
-                        // Ensure Laravel H:i format (always HH:MM with leading zeros)
-                        const timeParts = timeValue.split(':');
-                        if (timeParts.length === 2) {
-                            const hours = parseInt(timeParts[0], 10);
-                            const minutes = parseInt(timeParts[1], 10);
-                            
-                            // Validate ranges
-                            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
-                                console.error('Time out of range - hours:', hours, 'minutes:', minutes);
-                                alert('Waktu tidak valid. Jam harus 00-23, menit harus 00-59');
-                                preferredTimeField.focus();
-                                e.preventDefault();
-                                return false;
-                            }
-                            
-                            // Format to H:i (with leading zeros)
-                            const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-                            preferredTimeField.value = formattedTime;
-                            timeValue = formattedTime;
-                        }
-                        
-                        console.log('Validated and formatted preferred time for Laravel H:i:', timeValue);
-                    } else {
-                        // Clear the field if empty to avoid validation issues
-                        preferredTimeField.value = '';
-                        console.log('Preferred time field cleared (empty)');
-                    }
-                }
                 
                 // Validate that we have at least one book
                 const bookForms = document.querySelectorAll('.book-form');
@@ -967,6 +905,177 @@
 
                 console.log('Form validation check completed, submitting...');
             });
+
+            // Initialize Flatpickr for preferred_date
+            const preferredDateInput = document.getElementById('preferred_date');
+            
+            if (preferredDateInput) {
+                flatpickr(preferredDateInput, {
+                    dateFormat: "d/m/Y",
+                    minDate: "today",
+                    allowInput: true,
+                    placeholder: "Pilih tanggal",
+                    onReady: function(selectedDates, dateStr, instance) {
+                        instance.calendarContainer.classList.add('flatpickr-custom');
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // Convert to Y-m-d format for form submission
+                        if (selectedDates.length > 0) {
+                            const date = selectedDates[0];
+                            const formattedDate = date.getFullYear() + '-' + 
+                                String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                                String(date.getDate()).padStart(2, '0');
+                            
+                            // Create hidden input for form submission
+                            let hiddenInput = document.getElementById('preferred_date_hidden');
+                            if (!hiddenInput) {
+                                hiddenInput = document.createElement('input');
+                                hiddenInput.type = 'hidden';
+                                hiddenInput.name = 'preferred_date';
+                                hiddenInput.id = 'preferred_date_hidden';
+                                preferredDateInput.parentNode.appendChild(hiddenInput);
+                                
+                                // Remove name from visible input to avoid conflict
+                                preferredDateInput.removeAttribute('name');
+                            }
+                            hiddenInput.value = formattedDate;
+                        }
+                    }
+                });
+            }
+
+            // Initialize Flatpickr for preferred_time
+            const preferredTimeInput = document.getElementById('preferred_time');
+            
+            if (preferredTimeInput) {
+                flatpickr(preferredTimeInput, {
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i",
+                    time_24hr: true,
+                    allowInput: true,
+                    placeholder: "Pilih waktu (HH:MM)",
+                    onReady: function(selectedDates, dateStr, instance) {
+                        instance.calendarContainer.classList.add('flatpickr-custom');
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // The dateStr already comes in H:i format for time-only mode
+                        if (dateStr) {
+                            // Create hidden input for form submission
+                            let hiddenInput = document.getElementById('preferred_time_hidden');
+                            if (!hiddenInput) {
+                                hiddenInput = document.createElement('input');
+                                hiddenInput.type = 'hidden';
+                                hiddenInput.name = 'preferred_time';
+                                hiddenInput.id = 'preferred_time_hidden';
+                                preferredTimeInput.parentNode.appendChild(hiddenInput);
+                                
+                                // Remove name from visible input to avoid conflict
+                                preferredTimeInput.removeAttribute('name');
+                            }
+                            hiddenInput.value = dateStr;
+                        }
+                    }
+                });
+            }
         </script>
+
+        <style>
+            /* Custom Flatpickr styling */
+            .flatpickr-custom {
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+            }
+            
+            .flatpickr-custom .flatpickr-day:hover {
+                background: #3b82f6 !important;
+                color: white !important;
+            }
+            
+            .flatpickr-custom .flatpickr-day.selected {
+                background: #2563eb !important;
+                border-color: #2563eb !important;
+            }
+            
+            .flatpickr-custom .flatpickr-day.today {
+                border-color: #3b82f6 !important;
+                color: #3b82f6 !important;
+            }
+            
+            .flatpickr-custom .flatpickr-months .flatpickr-month {
+                background: #f8fafc;
+                border-radius: 8px 8px 0 0;
+            }
+            
+            /* Dark mode adjustments */
+            .dark .flatpickr-custom {
+                background: #374151 !important;
+                border-color: #4b5563 !important;
+                color: white !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-months .flatpickr-month {
+                background: #4b5563 !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-weekday {
+                color: #d1d5db !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-day {
+                color: #f3f4f6 !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-day.today {
+                border-color: #60a5fa !important;
+                color: #60a5fa !important;
+            }
+            
+            /* Time picker specific dark mode styling */
+            .dark .flatpickr-custom .flatpickr-time {
+                background: #374151 !important;
+                border-color: #4b5563 !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-time .flatpickr-time-separator,
+            .dark .flatpickr-custom .flatpickr-time .flatpickr-time-text {
+                color: #f3f4f6 !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-time input {
+                background: #4b5563 !important;
+                color: #f3f4f6 !important;
+                border-color: #6b7280 !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-time input:focus {
+                background: #6b7280 !important;
+                border-color: #60a5fa !important;
+                box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-time .arrowUp,
+            .dark .flatpickr-custom .flatpickr-time .arrowDown {
+                color: #d1d5db !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-time .arrowUp:hover,
+            .dark .flatpickr-custom .flatpickr-time .arrowDown:hover {
+                color: #60a5fa !important;
+                background: #4b5563 !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-am-pm {
+                background: #4b5563 !important;
+                color: #f3f4f6 !important;
+                border-color: #6b7280 !important;
+            }
+            
+            .dark .flatpickr-custom .flatpickr-am-pm:hover {
+                background: #6b7280 !important;
+                color: #60a5fa !important;
+            }
+        </style>
     @endif
 </x-layouts.integrated-dashboard>

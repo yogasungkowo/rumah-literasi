@@ -87,15 +87,21 @@ class TrainingController extends Controller
             'requirements' => 'nullable|string',
             'materials' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'certificate_template' => 'nullable|file|mimes:pdf|max:3072', // 3MB = 3072KB
             'notes' => 'nullable|string',
         ]);
 
         try {
-            $data = $request->except(['image']);
+            $data = $request->except(['image', 'certificate_template']);
 
             // Handle image upload
             if ($request->hasFile('image')) {
                 $data['image'] = $request->file('image')->store('trainings', 'public');
+            }
+
+            // Handle certificate template upload
+            if ($request->hasFile('certificate_template')) {
+                $data['certificate_template'] = $request->file('certificate_template')->store('certificates', 'public');
             }
 
             Training::create($data);
@@ -147,11 +153,12 @@ class TrainingController extends Controller
             'requirements' => 'nullable|string',
             'materials' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'certificate_template' => 'nullable|file|mimes:pdf|max:3072', // 3MB = 3072KB
             'notes' => 'nullable|string',
         ]);
 
         try {
-            $data = $request->except(['image']);
+            $data = $request->except(['image', 'certificate_template']);
 
             // Handle image upload
             if ($request->hasFile('image')) {
@@ -160,6 +167,15 @@ class TrainingController extends Controller
                     Storage::disk('public')->delete($training->image);
                 }
                 $data['image'] = $request->file('image')->store('trainings', 'public');
+            }
+
+            // Handle certificate template upload
+            if ($request->hasFile('certificate_template')) {
+                // Delete old certificate template
+                if ($training->certificate_template) {
+                    Storage::disk('public')->delete($training->certificate_template);
+                }
+                $data['certificate_template'] = $request->file('certificate_template')->store('certificates', 'public');
             }
 
             $training->update($data);
@@ -182,6 +198,11 @@ class TrainingController extends Controller
             // Delete associated image
             if ($training->image) {
                 Storage::disk('public')->delete($training->image);
+            }
+
+            // Delete associated certificate template
+            if ($training->certificate_template) {
+                Storage::disk('public')->delete($training->certificate_template);
             }
 
             $training->delete();
@@ -210,11 +231,14 @@ class TrainingController extends Controller
 
             switch ($request->action) {
                 case 'delete':
-                    // Delete images for selected trainings
+                    // Delete images and certificate templates for selected trainings
                     $trainingsToDelete = $trainings->get();
                     foreach ($trainingsToDelete as $training) {
                         if ($training->image) {
                             Storage::disk('public')->delete($training->image);
+                        }
+                        if ($training->certificate_template) {
+                            Storage::disk('public')->delete($training->certificate_template);
                         }
                     }
                     $count = $trainings->delete();

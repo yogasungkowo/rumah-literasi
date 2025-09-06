@@ -3,21 +3,32 @@
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
-            <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-                    <i class="fas fa-handshake text-white text-2xl"></i>
+            <div class="mb-8">
+                <!-- Back Button -->
+                <div class="mb-6">
+                    <a href="{{ route('dashboard.investor') }}" 
+                       class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors group">
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                        Kembali ke Dashboard Investor
+                    </a>
                 </div>
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                    Sponsorship Management
-                </h1>
-                <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
-                    Kelola dan pantau semua proposal sponsorship Anda dalam satu tempat
-                </p>
-                <a href="{{ route('sponsorships.create') }}" 
-                   class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                    <i class="fas fa-plus mr-2"></i>
-                    Buat Proposal Baru
-                </a>
+
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
+                        <i class="fas fa-handshake text-white text-2xl"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                        Sponsorship Management
+                    </h1>
+                    <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-6">
+                        Kelola dan pantau semua proposal sponsorship Anda dalam satu tempat
+                    </p>
+                    <a href="{{ route('sponsorships.create') }}" 
+                       class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        <i class="fas fa-plus mr-2"></i>
+                        Buat Proposal Baru
+                    </a>
+                </div>
             </div>
 
             <!-- Success Message -->

@@ -267,6 +267,63 @@
                 </div>
             </div>
             @endif
+
+            <!-- Certificate Template -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                        <i class="fas fa-certificate mr-2 text-emerald-600 dark:text-emerald-400"></i>
+                        Template Sertifikat
+                    </h3>
+                </div>
+                <div class="p-6">
+                    @if($training->certificate_template)
+                        <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700 rounded-xl p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-file-pdf text-2xl text-emerald-600 dark:text-emerald-400"></i>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                            {{ basename($training->certificate_template) }}
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                                            Template PDF Sertifikat
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <a href="{{ asset('storage/' . $training->certificate_template) }}" 
+                                       target="_blank"
+                                       class="inline-flex items-center px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300 text-sm font-medium rounded-lg transition-all duration-200">
+                                        <i class="fas fa-external-link-alt mr-1"></i>
+                                        Lihat
+                                    </a>
+                                    <a href="{{ asset('storage/' . $training->certificate_template) }}" 
+                                       download
+                                       class="inline-flex items-center px-3 py-1.5 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 text-sm font-medium rounded-lg transition-all duration-200">
+                                        <i class="fas fa-download mr-1"></i>
+                                        Download
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-xl p-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-info-circle text-yellow-600 dark:text-yellow-400 mr-3"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                                        Template sertifikat belum diupload
+                                    </p>
+                                    <p class="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
+                                        Peserta tidak akan mendapat sertifikat untuk pelatihan ini
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
 
         <!-- Sidebar -->

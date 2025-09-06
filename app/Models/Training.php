@@ -54,6 +54,18 @@ class Training extends Model
     }
 
     /**
+     * Get the certificate template URL
+     */
+    public function getCertificateTemplateUrlAttribute(): ?string
+    {
+        if ($this->certificate_template) {
+            return asset('storage/' . $this->certificate_template);
+        }
+        
+        return null;
+    }
+
+    /**
      * Get status label
      */
     public function getStatusLabelAttribute(): string

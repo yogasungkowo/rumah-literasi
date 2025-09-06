@@ -99,13 +99,15 @@
                 </div>
                 <div>
                     <label for="date_from" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dari Tanggal</label>
-                    <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}"
-                           class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                    <input type="text" name="date_from" id="date_from" value="{{ request('date_from') ? \Carbon\Carbon::parse(request('date_from'))->format('d/m/Y') : '' }}"
+                           placeholder="Pilih tanggal mulai" readonly
+                           class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer">
                 </div>
                 <div>
                     <label for="date_to" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sampai Tanggal</label>
-                    <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}"
-                           class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                    <input type="text" name="date_to" id="date_to" value="{{ request('date_to') ? \Carbon\Carbon::parse(request('date_to'))->format('d/m/Y') : '' }}"
+                           placeholder="Pilih tanggal akhir" readonly
+                           class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer">
                 </div>
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
                     <i class="fas fa-search mr-2"></i>Filter
@@ -372,6 +374,155 @@
         document.getElementById('rejectModal').addEventListener('click', function(e) {
             if (e.target === this) hideRejectModal();
         });
+
+        // Initialize Flatpickr for date filters
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateFromInput = document.getElementById('date_from');
+            const dateToInput = document.getElementById('date_to');
+            
+            if (dateFromInput) {
+                // Remove name attribute from visible input initially to avoid conflicts
+                dateFromInput.removeAttribute('name');
+                
+                // Create hidden input for form submission if it doesn't exist
+                let hiddenFromInput = document.getElementById('date_from_hidden');
+                if (!hiddenFromInput) {
+                    hiddenFromInput = document.createElement('input');
+                    hiddenFromInput.type = 'hidden';
+                    hiddenFromInput.name = 'date_from';
+                    hiddenFromInput.id = 'date_from_hidden';
+                    dateFromInput.parentNode.appendChild(hiddenFromInput);
+                    
+                    // Set initial value if there's a pre-selected date
+                    const currentValue = dateFromInput.value;
+                    if (currentValue) {
+                        const parts = currentValue.split('/');
+                        if (parts.length === 3) {
+                            hiddenFromInput.value = parts[2] + '-' + parts[1] + '-' + parts[0];
+                        }
+                    }
+                }
+                
+                flatpickr(dateFromInput, {
+                    dateFormat: "d/m/Y",
+                    allowInput: true,
+                    placeholder: "Pilih tanggal mulai",
+                    onReady: function(selectedDates, dateStr, instance) {
+                        instance.calendarContainer.classList.add('flatpickr-custom');
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        const hiddenInput = document.getElementById('date_from_hidden');
+                        if (selectedDates.length > 0) {
+                            const date = selectedDates[0];
+                            const formattedDate = date.getFullYear() + '-' + 
+                                String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                                String(date.getDate()).padStart(2, '0');
+                            hiddenInput.value = formattedDate;
+                        } else {
+                            hiddenInput.value = '';
+                        }
+                    }
+                });
+            }
+
+            if (dateToInput) {
+                // Remove name attribute from visible input initially to avoid conflicts
+                dateToInput.removeAttribute('name');
+                
+                // Create hidden input for form submission if it doesn't exist
+                let hiddenToInput = document.getElementById('date_to_hidden');
+                if (!hiddenToInput) {
+                    hiddenToInput = document.createElement('input');
+                    hiddenToInput.type = 'hidden';
+                    hiddenToInput.name = 'date_to';
+                    hiddenToInput.id = 'date_to_hidden';
+                    dateToInput.parentNode.appendChild(hiddenToInput);
+                    
+                    // Set initial value if there's a pre-selected date
+                    const currentValue = dateToInput.value;
+                    if (currentValue) {
+                        const parts = currentValue.split('/');
+                        if (parts.length === 3) {
+                            hiddenToInput.value = parts[2] + '-' + parts[1] + '-' + parts[0];
+                        }
+                    }
+                }
+                
+                flatpickr(dateToInput, {
+                    dateFormat: "d/m/Y",
+                    allowInput: true,
+                    placeholder: "Pilih tanggal akhir",
+                    onReady: function(selectedDates, dateStr, instance) {
+                        instance.calendarContainer.classList.add('flatpickr-custom');
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        const hiddenInput = document.getElementById('date_to_hidden');
+                        if (selectedDates.length > 0) {
+                            const date = selectedDates[0];
+                            const formattedDate = date.getFullYear() + '-' + 
+                                String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                                String(date.getDate()).padStart(2, '0');
+                            hiddenInput.value = formattedDate;
+                        } else {
+                            hiddenInput.value = '';
+                        }
+                    }
+                });
+            }
+        });
     </script>
+
+    <style>
+        /* Custom Flatpickr styling */
+        .flatpickr-custom {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+        
+        .flatpickr-custom .flatpickr-day:hover {
+            background: #3b82f6 !important;
+            color: white !important;
+        }
+        
+        .flatpickr-custom .flatpickr-day.selected {
+            background: #2563eb !important;
+            border-color: #2563eb !important;
+        }
+        
+        .flatpickr-custom .flatpickr-day.today {
+            border-color: #3b82f6 !important;
+            color: #3b82f6 !important;
+        }
+        
+        .flatpickr-custom .flatpickr-months .flatpickr-month {
+            background: #f8fafc;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        /* Dark mode adjustments */
+        .dark .flatpickr-custom {
+            background: #374151 !important;
+            border-color: #4b5563 !important;
+            color: white !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-months .flatpickr-month {
+            background: #4b5563 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-weekday {
+            color: #d1d5db !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-day {
+            color: #f3f4f6 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-day.today {
+            border-color: #60a5fa !important;
+            color: #60a5fa !important;
+        }
+    </style>
     @endpush
 </x-layouts.integrated-dashboard>

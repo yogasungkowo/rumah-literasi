@@ -1,4 +1,10 @@
 <x-layouts.app>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+    
+    <!-- Flatpickr JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+    
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div class="container mx-auto px-4 py-8">
             <div class="max-w-5xl mx-auto">
@@ -205,9 +211,15 @@
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <i class="fas fa-calendar-alt text-orange-500 mr-2"></i>Tanggal Mulai
                                     </label>
-                                    <input type="date" name="start_date"
-                                        value="{{ old('start_date', $sponsorship->start_date?->format('Y-m-d')) }}"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('start_date') border-red-400 dark:border-red-500 @enderror">
+                                    <div class="relative">
+                                        <input type="text" id="start_date" name="start_date"
+                                            value="{{ old('start_date') ? \Carbon\Carbon::parse(old('start_date'))->format('d/m/Y') : ($sponsorship->start_date ? $sponsorship->start_date->format('d/m/Y') : '') }}"
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('start_date') border-red-400 dark:border-red-500 @enderror pr-10"
+                                            placeholder="Pilih tanggal mulai" readonly>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                                        </div>
+                                    </div>
                                     @error('start_date')
                                         <p class="text-red-500 dark:text-red-400 text-xs mt-1 flex items-center">
                                             <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -219,8 +231,15 @@
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         <i class="fas fa-calendar-check text-orange-500 mr-2"></i>Tanggal Selesai
                                     </label>
-                                    <input type="date" name="end_date" value="{{ old('end_date', $sponsorship->end_date?->format('Y-m-d')) }}"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('end_date') border-red-400 dark:border-red-500 @enderror">
+                                    <div class="relative">
+                                        <input type="text" id="end_date" name="end_date"
+                                            value="{{ old('end_date') ? \Carbon\Carbon::parse(old('end_date'))->format('d/m/Y') : ($sponsorship->end_date ? $sponsorship->end_date->format('d/m/Y') : '') }}"
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 focus:ring-2 focus:ring-orange-100 dark:focus:ring-orange-900 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 @error('end_date') border-red-400 dark:border-red-500 @enderror pr-10"
+                                            placeholder="Pilih tanggal selesai" readonly>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                                        </div>
+                                    </div>
                                     @error('end_date')
                                         <p class="text-red-500 dark:text-red-400 text-xs mt-1 flex items-center">
                                             <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -462,6 +481,65 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Flatpickr for date inputs
+            flatpickr("#start_date", {
+                dateFormat: "d/m/Y",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: true,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                        longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+                    },
+                    months: {
+                        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+                        longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+                    }
+                },
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Convert display format (d/m/Y) to Laravel format (Y-m-d) for backend
+                    if (selectedDates.length > 0) {
+                        const date = selectedDates[0];
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        instance.input.value = `${year}-${month}-${day}`;
+                        instance.altInput.value = dateStr;
+                    }
+                }
+            });
+
+            flatpickr("#end_date", {
+                dateFormat: "d/m/Y",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: true,
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                        longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+                    },
+                    months: {
+                        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+                        longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+                    }
+                },
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Convert display format (d/m/Y) to Laravel format (Y-m-d) for backend
+                    if (selectedDates.length > 0) {
+                        const date = selectedDates[0];
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        instance.input.value = `${year}-${month}-${day}`;
+                        instance.altInput.value = dateStr;
+                    }
+                }
+            });
+
             // Initialize benefit selections for checked items
             document.querySelectorAll('.benefit-checkbox').forEach(checkbox => {
                 if (checkbox.checked) {

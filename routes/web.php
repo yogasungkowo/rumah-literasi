@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     // Profile routes
     Route::get('/dashboard/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
     Route::put('/dashboard/profile', [DashboardController::class, 'updateProfile'])->name('dashboard.profile.update');
+    Route::put('/dashboard/password', [DashboardController::class, 'updatePassword'])->name('dashboard.password.update');
 });
 
 // Admin routes (protected by admin role)

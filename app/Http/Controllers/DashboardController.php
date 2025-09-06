@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 use App\Models\User;
 
 class DashboardController extends Controller
@@ -176,20 +178,26 @@ class DashboardController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'organization' => 'nullable|string|max:255',
             'profession' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
-            'birth_date' => 'nullable|date',
+            'birth_date' => 'nullable|date_format:d/m/Y',
             'gender' => 'nullable|in:male,female',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data = $request->only([
-            'name', 'phone', 'address', 'organization', 
-            'profession', 'bio', 'birth_date', 'gender'
+            'name', 'email', 'phone', 'address', 'organization', 
+            'profession', 'bio', 'gender'
         ]);
+
+        // Convert birth_date from d/m/Y to Y-m-d format
+        if ($request->birth_date) {
+            $data['birth_date'] = Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d');
+        }
 
         // Handle avatar upload
         if ($request->hasFile('avatar')) {
@@ -200,8 +208,58 @@ class DashboardController extends Controller
             $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
+        // Check if email was changed before updating
+        $emailChanged = $request->email !== $user->email;
+
         $user->update($data);
 
-        return back()->with('success', 'Profile berhasil diperbarui!');
+        // Provide appropriate success message
+        $message = 'Profile berhasil diperbarui!';
+        if ($emailChanged) {
+            $message = 'Profile berhasil diperbarui! Email Anda telah diubah.';
+        }
+
+        return back()->with('success', $message);
+    }
+
+    /**
+     * Update Password
+     */
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+            'new_password_confirmation' => 'required',
+        ], [
+            'current_password.required' => 'Kata sandi saat ini wajib diisi.',
+            'new_password.required' => 'Kata sandi baru wajib diisi.',
+            'new_password.min' => 'Kata sandi baru minimal 8 karakter.',
+            'new_password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
+            'new_password_confirmation.required' => 'Konfirmasi kata sandi wajib diisi.',
+        ]);
+
+        $user = Auth::user();
+
+        // Verify current password
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors([
+                'current_password' => 'Kata sandi saat ini tidak sesuai.'
+            ])->withInput();
+        }
+
+        // Check if new password is different from current password
+        if (Hash::check($request->new_password, $user->password)) {
+            return back()->withErrors([
+                'new_password' => 'Kata sandi baru harus berbeda dari kata sandi saat ini.'
+            ])->withInput();
+        }
+
+        // Update password
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return back()->with('success', 'Kata sandi berhasil diubah! Gunakan kata sandi baru untuk login selanjutnya.');
     }
 }

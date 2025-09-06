@@ -107,6 +107,124 @@
                     </div>
                 </div>
 
+                <!-- Filter Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                            <i class="fas fa-filter mr-2 text-indigo-600"></i>
+                            Filter Pelatihan
+                        </h3>
+                        <button type="button" onclick="toggleFilterForm()" 
+                                class="lg:hidden inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <i class="fas fa-chevron-down mr-1" id="filter-icon"></i>
+                            Toggle Filter
+                        </button>
+                    </div>
+                    
+                    <form method="GET" action="{{ route('admin.trainings.index') }}" id="filter-form" class="hidden lg:block">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                            <!-- Search -->
+                            <div class="lg:col-span-2">
+                                <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <i class="fas fa-search mr-1"></i>Pencarian
+                                </label>
+                                <input type="text" 
+                                       name="search" 
+                                       id="search"
+                                       value="{{ request('search') }}"
+                                       placeholder="Cari judul, deskripsi, instruktur..."
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white">
+                            </div>
+
+                            <!-- Status Filter -->
+                            <div>
+                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <i class="fas fa-flag mr-1"></i>Status
+                                </label>
+                                <select name="status" id="status" 
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white">
+                                    <option value="">Semua Status</option>
+                                    <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
+                                    <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Dipublikasi</option>
+                                    <option value="ongoing" {{ request('status') === 'ongoing' ? 'selected' : '' }}>Berlangsung</option>
+                                    <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>Selesai</option>
+                                    <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                                </select>
+                            </div>
+
+                            <!-- Start Date From -->
+                            <div>
+                                <label for="date_from" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <i class="fas fa-calendar-alt mr-1"></i>Tanggal Mulai Dari
+                                </label>
+                                <input type="text" 
+                                       name="date_from" 
+                                       id="date_from"
+                                       value="{{ request('date_from') }}"
+                                       placeholder="Pilih tanggal..."
+                                       class="flatpickr w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+                                       readonly>
+                            </div>
+
+                            <!-- End Date To -->
+                            <div>
+                                <label for="date_to" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <i class="fas fa-calendar-alt mr-1"></i>Tanggal Berakhir Sampai
+                                </label>
+                                <input type="text" 
+                                       name="date_to" 
+                                       id="date_to"
+                                       value="{{ request('date_to') }}"
+                                       placeholder="Pilih tanggal..."
+                                       class="flatpickr w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+                                       readonly>
+                            </div>
+
+                            <!-- Sort By -->
+                            <div>
+                                <label for="sort_by" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <i class="fas fa-sort mr-1"></i>Urutkan Berdasarkan
+                                </label>
+                                <select name="sort_by" id="sort_by" 
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white">
+                                    <option value="created_at" {{ request('sort_by') === 'created_at' ? 'selected' : '' }}>Tanggal Dibuat</option>
+                                    <option value="title" {{ request('sort_by') === 'title' ? 'selected' : '' }}>Judul</option>
+                                    <option value="start_date" {{ request('sort_by') === 'start_date' ? 'selected' : '' }}>Tanggal Mulai</option>
+                                    <option value="current_participants" {{ request('sort_by') === 'current_participants' ? 'selected' : '' }}>Jumlah Peserta</option>
+                                    <option value="price" {{ request('sort_by') === 'price' ? 'selected' : '' }}>Harga</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center space-x-2 mb-3 sm:mb-0">
+                                <label for="sort_order" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <i class="fas fa-sort-amount-down mr-1"></i>Urutan:
+                                </label>
+                                <select name="sort_order" id="sort_order" 
+                                        class="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white">
+                                    <option value="desc" {{ request('sort_order') === 'desc' ? 'selected' : '' }}>Terbaru</option>
+                                    <option value="asc" {{ request('sort_order') === 'asc' ? 'selected' : '' }}>Terlama</option>
+                                </select>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2">
+                                <button type="submit" 
+                                        class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+                                    <i class="fas fa-search mr-2"></i>
+                                    Filter
+                                </button>
+                                <a href="{{ route('admin.trainings.index') }}" 
+                                   class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+                                    <i class="fas fa-times mr-2"></i>
+                                    Reset
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
                 <!-- Training Table -->
                 <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
                     <!-- Table Header -->
@@ -316,4 +434,69 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        // Initialize Flatpickr for date inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            // Date From Picker
+            flatpickr("#date_from", {
+                dateFormat: "Y-m-d",
+                allowInput: true,
+                placeholder: "Pilih tanggal mulai...",
+                locale: "id"
+            });
+
+            // Date To Picker
+            flatpickr("#date_to", {
+                dateFormat: "Y-m-d",
+                allowInput: true,
+                placeholder: "Pilih tanggal berakhir...",
+                locale: "id"
+            });
+        });
+
+        // Toggle filter form on mobile
+        function toggleFilterForm() {
+            const filterForm = document.getElementById('filter-form');
+            const filterIcon = document.getElementById('filter-icon');
+            
+            if (filterForm.classList.contains('hidden')) {
+                filterForm.classList.remove('hidden');
+                filterIcon.classList.remove('fa-chevron-down');
+                filterIcon.classList.add('fa-chevron-up');
+            } else {
+                filterForm.classList.add('hidden');
+                filterIcon.classList.remove('fa-chevron-up');
+                filterIcon.classList.add('fa-chevron-down');
+            }
+        }
+
+        // Auto submit form when filter changes
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterInputs = document.querySelectorAll('#filter-form select, #filter-form input[name="search"]');
+            
+            filterInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    // Auto submit form after a short delay for better UX
+                    setTimeout(() => {
+                        document.getElementById('filter-form').submit();
+                    }, 300);
+                });
+            });
+
+            // Handle search input with debounce
+            const searchInput = document.querySelector('input[name="search"]');
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        document.getElementById('filter-form').submit();
+                    }, 1000); // 1 second debounce
+                });
+            }
+        });
+    </script>
+    @endpush
 </x-layouts.admin>

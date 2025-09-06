@@ -187,40 +187,24 @@
                     <!-- Informasi Buku -->
                     <div class="border-t border-gray-200 dark:border-gray-600 pt-8">
                         <div class="mb-6">
-                            <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                    </svg>
-                                    Informasi Buku
-                                </h3>
-                                <button type="button" 
-                                        id="addBookBtn"
-                                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                    </svg>
-                                    Tambah Buku
-                                </button>
-                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                Informasi Buku
+                            </h3>
                         </div>
                         
                         <div id="booksContainer">
                             <!-- First Book Form -->
                             <div class="book-form bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl p-6 mb-6">
-                                <div class="flex justify-between items-center mb-6">
+                                <div class="mb-6">
                                     <h4 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
                                         <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mr-3">
                                             <span class="text-blue-600 dark:text-blue-400 font-bold text-sm">1</span>
                                         </div>
-                                        Buku #1
+                                        Informasi Buku
                                     </h4>
-                                    <button type="button" 
-                                            class="remove-book text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-200 hidden">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                        </svg>
-                                    </button>
                                 </div>
                                 
                                 <!-- Basic Information Grid -->
@@ -652,13 +636,20 @@
                                         <span class="text-red-500 ml-1">*</span>
                                     </span>
                                 </label>
-                                <input type="date" 
-                                       id="preferred_date" 
-                                       name="preferred_date" 
-                                       value="{{ old('preferred_date') }}"
-                                       min="{{ date('Y-m-d') }}"
-                                       :required="pickupMethod === 'pickup' || pickupMethod === 'delivery'"
-                                       class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all">
+                                <div class="relative">
+                                    <input type="text" 
+                                           id="preferred_date" 
+                                           name="preferred_date" 
+                                           value="{{ old('preferred_date') }}"
+                                           :required="pickupMethod === 'pickup' || pickupMethod === 'delivery'"
+                                           class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all pr-10"
+                                           placeholder="Pilih tanggal" readonly>
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div>
@@ -671,12 +662,20 @@
                                         <span class="text-red-500 ml-1">*</span>
                                     </span>
                                 </label>
-                                <input type="time" 
-                                       id="preferred_time" 
-                                       name="preferred_time" 
-                                       value="{{ old('preferred_time') }}"
-                                       :required="pickupMethod === 'pickup' || pickupMethod === 'delivery'"
-                                       class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all">
+                                <div class="relative">
+                                    <input type="text" 
+                                           id="preferred_time" 
+                                           name="preferred_time" 
+                                           value="{{ old('preferred_time') }}"
+                                           :required="pickupMethod === 'pickup' || pickupMethod === 'delivery'"
+                                           class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all pr-10"
+                                           placeholder="Pilih waktu" readonly>
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -684,35 +683,35 @@
                     <!-- Catatan Tambahan -->
                     <div class="border-t border-gray-200 dark:border-gray-600 pt-8 mt-8">
                         <div class="mb-6">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center mb-2">
-                                <svg class="w-6 h-6 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center mb-2">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                                 </svg>
                                 Catatan Tambahan
                             </h3>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm ml-9">Berikan informasi tambahan yang dapat membantu proses donasi</p>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">Berikan informasi tambahan yang dapat membantu proses donasi</p>
                         </div>
                         
-                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 border border-gray-200 dark:border-gray-600">
-                            <label for="notes" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                        <div class="space-y-4">
+                            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 <span class="flex items-center">
-                                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                                    <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                     </svg>
                                     Pesan atau Catatan Khusus
                                 </span>
                             </label>
                             <textarea id="notes" 
                                       name="notes" 
-                                      rows="5"
-                                      class="w-full px-4 py-4 bg-white dark:bg-gray-600 border-2 border-gray-200 dark:border-gray-500 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all resize-none shadow-sm"
+                                      rows="4"
+                                      class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all resize-none"
                                       placeholder="Misalnya: buku dalam kondisi khusus, waktu terbaik untuk dihubungi, atau informasi lain yang perlu kami ketahui...">{{ old('notes') }}</textarea>
-                            <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                                <p class="text-sm text-yellow-800 dark:text-yellow-200 flex items-start">
-                                    <svg class="w-4 h-4 mr-2 mt-0.5 text-yellow-600 dark:text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                    </svg>
-                                    <span><strong>Tips untuk catatan yang baik:</strong> Jelaskan kondisi spesifik buku, preferensi waktu kontak, atau hal khusus lainnya yang perlu kami ketahui untuk memproses donasi Anda dengan optimal.</span>
+                            <div class="flex items-start p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+                                <svg class="w-4 h-4 mr-2 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                </svg>
+                                <p class="text-sm text-blue-800 dark:text-blue-200">
+                                    <strong>Tips:</strong> Jelaskan kondisi spesifik buku, preferensi waktu kontak, atau hal khusus lainnya yang perlu kami ketahui untuk memproses donasi Anda dengan optimal.
                                 </p>
                             </div>
                         </div>
@@ -842,188 +841,177 @@
             }
         });
 
-        let bookIndex = 1;
-
-        // Add book form with modern styling
-        document.getElementById('addBookBtn').addEventListener('click', function() {
-            const container = document.getElementById('booksContainer');
-            const newBookForm = createBookForm(bookIndex);
-            container.appendChild(newBookForm);
-            bookIndex++;
-            updateRemoveButtons();
+        // Initialize Flatpickr for preferred_date
+        document.addEventListener('DOMContentLoaded', function() {
+            const preferredDateInput = document.getElementById('preferred_date');
             
-            // Add smooth scroll to new book form
-            newBookForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        });
-
-        function createBookForm(index) {
-            const div = document.createElement('div');
-            div.className = 'book-form bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl p-6 mb-6 transition-all duration-200 hover:shadow-md';
-            
-            const formHtml = '<div class="flex justify-between items-center mb-6">' +
-                '<div class="flex items-center space-x-3">' +
-                '<div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">' +
-                '<span class="text-white font-bold text-sm">' + (index + 1) + '</span>' +
-                '</div>' +
-                '<h4 class="text-lg font-semibold text-gray-900 dark:text-white">Buku #' + (index + 1) + '</h4>' +
-                '</div>' +
-                '<button type="button" class="remove-book text-red-500 hover:text-red-700 dark:hover:text-red-400 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-200">' +
-                '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>' +
-                '</svg>' +
-                '</button>' +
-                '</div>' +
-                '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">' +
-                '<div class="space-y-2">' +
-                '<label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">' +
-                '<span class="flex items-center">' +
-                '<svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>' +
-                '</svg>' +
-                'Judul Buku <span class="text-red-500 ml-1">*</span>' +
-                '</span>' +
-                '</label>' +
-                '<input type="text" name="books[' + index + '][title]" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all" placeholder="Masukkan judul buku...">' +
-                '</div>' +
-                '<div class="space-y-2">' +
-                '<label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">' +
-                '<span class="flex items-center">' +
-                '<svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>' +
-                '</svg>' +
-                'Penulis <span class="text-red-500 ml-1">*</span>' +
-                '</span>' +
-                '</label>' +
-                '<input type="text" name="books[' + index + '][author]" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all" placeholder="Nama penulis...">' +
-                '</div>' +
-                '<div class="space-y-2">' +
-                '<label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Kategori <span class="text-red-500 ml-1">*</span></label>' +
-                '<select name="books[' + index + '][category]" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all">' +
-                '<option value="">Pilih Kategori...</option>' +
-                '<option value="novel">Novel</option>' +
-                '<option value="pendidikan">Pendidikan</option>' +
-                '<option value="agama">Agama</option>' +
-                '<option value="anak">Anak-anak</option>' +
-                '<option value="sejarah">Sejarah</option>' +
-                '<option value="biografi">Biografi</option>' +
-                '<option value="teknologi">Teknologi</option>' +
-                '<option value="kesehatan">Kesehatan</option>' +
-                '<option value="lainnya">Lainnya</option>' +
-                '</select>' +
-                '</div>' +
-                '<div class="space-y-2">' +
-                '<label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Kondisi Buku <span class="text-red-500 ml-1">*</span></label>' +
-                '<select name="books[' + index + '][condition]" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all">' +
-                '<option value="">Pilih kondisi...</option>' +
-                '<option value="baru">Baru (Belum pernah dibaca)</option>' +
-                '<option value="sangat-baik">Sangat Baik (Hampir seperti baru)</option>' +
-                '<option value="baik">Baik (Sedikit bekas pakai)</option>' +
-                '<option value="cukup">Cukup (Ada kerusakan kecil)</option>' +
-                '</select>' +
-                '</div>' +
-                '<div class="space-y-2">' +
-                '<label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Cover Buku</label>' +
-                '<div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center hover:border-blue-400 dark:hover:border-blue-500 bg-gray-50 dark:bg-gray-700/50 transition-colors">' +
-                '<input id="cover_image_' + index + '" name="books[' + index + '][cover]" type="file" accept="image/*" class="hidden" onchange="previewBookImage(this, ' + index + ')">' +
-                '<label for="cover_image_' + index + '" class="cursor-pointer block">' +
-                '<svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>' +
-                '</svg>' +
-                '<span class="text-sm text-gray-600 dark:text-gray-400">' +
-                '<span class="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">Klik untuk upload</span> atau drag & drop' +
-                '</span>' +
-                '<p class="text-xs text-gray-500 dark:text-gray-500 mt-1">PNG, JPG hingga 5MB</p>' +
-                '</label>' +
-                '<div id="placeholderPreview_' + index + '" class="hidden">' +
-                '</div>' +
-                '<div id="imagePreview_' + index + '" class="hidden mt-4">' +
-                '<img id="preview_' + index + '" class="mx-auto h-32 w-auto rounded-lg shadow-md" alt="Preview">' +
-                '<button type="button" onclick="removeBookImage(' + index + ')" class="mt-2 text-red-500 hover:text-red-700 dark:hover:text-red-400 text-sm">Hapus foto</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="md:col-span-2 lg:col-span-3 space-y-2">' +
-                '<label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Deskripsi/Catatan</label>' +
-                '<textarea name="books[' + index + '][description]" rows="3" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all resize-none" placeholder="Deskripsi singkat atau catatan khusus tentang buku ini..."></textarea>' +
-                '</div>' +
-                '</div>';
-            
-            div.innerHTML = formHtml;
-            // Add remove functionality  
-            div.querySelector('.remove-book').addEventListener('click', function() {
-                div.remove();
-                updateRemoveButtons();
-                reindexBooks();
-            });
-
-            // Setup drag and drop for this form
-            const fileInput = div.querySelector('input[type="file"]');
-            const dropZone = fileInput.closest('div');
-            setupDragAndDrop(dropZone, fileInput);
-
-            return div;
-        }
-
-        function setupDragAndDrop(dropZone, input) {
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function(eventName) {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-            });
-
-            ['dragenter', 'dragover'].forEach(function(eventName) {
-                dropZone.addEventListener(eventName, function() {
-                    dropZone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
-                }, false);
-            });
-
-            ['dragleave', 'drop'].forEach(function(eventName) {
-                dropZone.addEventListener(eventName, function() {
-                    dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
-                }, false);
-            });
-
-            dropZone.addEventListener('drop', function(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                if (files.length > 0) {
-                    input.files = files;
-                    input.dispatchEvent(new Event('change'));
-                }
-            });
-        }
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        function updateRemoveButtons() {
-            const bookForms = document.querySelectorAll('.book-form');
-            bookForms.forEach((form, index) => {
-                const removeBtn = form.querySelector('.remove-book');
-                if (removeBtn) {
-                    removeBtn.style.display = bookForms.length > 1 ? 'block' : 'none';
-                }
-            });
-        }
-
-        function reindexBooks() {
-            const bookForms = document.querySelectorAll('.book-form');
-            bookForms.forEach((form, index) => {
-                const numberSpan = form.querySelector('.bg-gradient-to-br span');
-                const title = form.querySelector('h4');
-                if (numberSpan) numberSpan.textContent = index + 1;
-                if (title) title.textContent = 'Buku #' + (index + 1);
-                
-                const inputs = form.querySelectorAll('input, select, textarea');
-                inputs.forEach(input => {
-                    if (input.name && input.name.includes('books[')) {
-                        input.name = input.name.replace(/books\[\d+\]/, 'books[' + index + ']');
-                    }
-                    if (input.id && input.id.includes('cover_image_')) {
-                        input.id = input.id.replace(/cover_image_\d+/, 'cover_image_' + index);
+            if (preferredDateInput) {
+                flatpickr(preferredDateInput, {
+                    dateFormat: "d/m/Y",
+                    minDate: "today",
+                    allowInput: true,
+                    placeholder: "Pilih tanggal",
+                    onReady: function(selectedDates, dateStr, instance) {
+                        instance.calendarContainer.classList.add('flatpickr-custom');
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // Convert to Y-m-d format for form submission
+                        if (selectedDates.length > 0) {
+                            const date = selectedDates[0];
+                            const formattedDate = date.getFullYear() + '-' + 
+                                String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                                String(date.getDate()).padStart(2, '0');
+                            
+                            // Create hidden input for form submission
+                            let hiddenInput = document.getElementById('preferred_date_hidden');
+                            if (!hiddenInput) {
+                                hiddenInput = document.createElement('input');
+                                hiddenInput.type = 'hidden';
+                                hiddenInput.name = 'preferred_date';
+                                hiddenInput.id = 'preferred_date_hidden';
+                                preferredDateInput.parentNode.appendChild(hiddenInput);
+                                
+                                // Remove name from visible input to avoid conflict
+                                preferredDateInput.removeAttribute('name');
+                            }
+                            hiddenInput.value = formattedDate;
+                        }
                     }
                 });
-            });
-        }
+            }
+
+            // Initialize Flatpickr for preferred_time
+            const preferredTimeInput = document.getElementById('preferred_time');
+            
+            if (preferredTimeInput) {
+                flatpickr(preferredTimeInput, {
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i",
+                    time_24hr: true,
+                    allowInput: true,
+                    placeholder: "Pilih waktu (HH:MM)",
+                    onReady: function(selectedDates, dateStr, instance) {
+                        instance.calendarContainer.classList.add('flatpickr-custom');
+                    },
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // The dateStr already comes in H:i format for time-only mode
+                        if (dateStr) {
+                            // Create hidden input for form submission
+                            let hiddenInput = document.getElementById('preferred_time_hidden');
+                            if (!hiddenInput) {
+                                hiddenInput = document.createElement('input');
+                                hiddenInput.type = 'hidden';
+                                hiddenInput.name = 'preferred_time';
+                                hiddenInput.id = 'preferred_time_hidden';
+                                preferredTimeInput.parentNode.appendChild(hiddenInput);
+                                
+                                // Remove name from visible input to avoid conflict
+                                preferredTimeInput.removeAttribute('name');
+                            }
+                            hiddenInput.value = dateStr;
+                        }
+                    }
+                });
+            }
+        });
     </script>
+
+    <style>
+        /* Custom Flatpickr styling */
+        .flatpickr-custom {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+        
+        .flatpickr-custom .flatpickr-day:hover {
+            background: #3b82f6 !important;
+            color: white !important;
+        }
+        
+        .flatpickr-custom .flatpickr-day.selected {
+            background: #2563eb !important;
+            border-color: #2563eb !important;
+        }
+        
+        .flatpickr-custom .flatpickr-day.today {
+            border-color: #3b82f6 !important;
+            color: #3b82f6 !important;
+        }
+        
+        .flatpickr-custom .flatpickr-months .flatpickr-month {
+            background: #f8fafc;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        /* Dark mode adjustments */
+        .dark .flatpickr-custom {
+            background: #374151 !important;
+            border-color: #4b5563 !important;
+            color: white !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-months .flatpickr-month {
+            background: #4b5563 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-weekday {
+            color: #d1d5db !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-day {
+            color: #f3f4f6 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-day.today {
+            border-color: #60a5fa !important;
+            color: #60a5fa !important;
+        }
+        
+        /* Time picker specific dark mode styling */
+        .dark .flatpickr-custom .flatpickr-time {
+            background: #374151 !important;
+            border-color: #4b5563 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-time .flatpickr-time-separator,
+        .dark .flatpickr-custom .flatpickr-time .flatpickr-time-text {
+            color: #f3f4f6 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-time input {
+            background: #4b5563 !important;
+            color: #f3f4f6 !important;
+            border-color: #6b7280 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-time input:focus {
+            background: #6b7280 !important;
+            border-color: #60a5fa !important;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-time .arrowUp,
+        .dark .flatpickr-custom .flatpickr-time .arrowDown {
+            color: #d1d5db !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-time .arrowUp:hover,
+        .dark .flatpickr-custom .flatpickr-time .arrowDown:hover {
+            color: #60a5fa !important;
+            background: #4b5563 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-am-pm {
+            background: #4b5563 !important;
+            color: #f3f4f6 !important;
+            border-color: #6b7280 !important;
+        }
+        
+        .dark .flatpickr-custom .flatpickr-am-pm:hover {
+            background: #6b7280 !important;
+            color: #60a5fa !important;
+        }
+    </style>
 </x-layouts.integrated-dashboard>
