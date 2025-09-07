@@ -1,0 +1,53 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies & build
+        run: |
+          npm ci
+          npm run build
+
+      # Kirim folder build ke server
+      - name: Upload public/build via rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete
+          path: public/build/
+          remote_path: ${{ secrets.CPANEL_PATH }}/public/build/
+          remote_host: ${{ secrets.CPANEL_HOST }}
+          remote_user: ${{ secrets.CPANEL_USER }}
+          remote_key: ${{ secrets.CPANEL_SSH_KEY }}
+          remote_port: ${{ secrets.CPANEL_PORT }}
+
+      # Jalankan command Laravel di server
+      - name: Run SSH commands
+        uses: appleboy/ssh-action@v1.2.1
+        with:
+          host: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USER }}
+          key: ${{ secrets.CPANEL_SSH_KEY }}
+          port: ${{ secrets.CPANEL_PORT }}
+          script: |
+            cd ${{ secrets.CPANEL_PATH }}
+            git pull origin main
+            composer install --optimize-autoloader --no-dev
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
