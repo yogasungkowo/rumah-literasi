@@ -18,12 +18,25 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install dependencies
+      - name: Install dependencies & build
         run: |
           npm ci
           npm run build
 
-      - name: Deploy via SSH
+      # Kirim folder build ke server
+      - name: Upload public/build via rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete
+          path: public/build/
+          remote_path: ${{ secrets.CPANEL_PATH }}/public/build/
+          remote_host: ${{ secrets.CPANEL_HOST }}
+          remote_user: ${{ secrets.CPANEL_USER }}
+          remote_key: ${{ secrets.CPANEL_SSH_KEY }}
+          remote_port: ${{ secrets.CPANEL_PORT }}
+
+      # Jalankan command Laravel di server
+      - name: Run SSH commands
         uses: appleboy/ssh-action@v1.2.1
         with:
           host: ${{ secrets.CPANEL_HOST }}
