@@ -5,6 +5,14 @@
         <p class="text-emerald-100">Temukan pelatihan yang tersedia dan daftarkan diri Anda sebagai relawan untuk membangun Indonesia yang lebih berbudaya baca.</p>
     </div>
 
+    <!-- Contact Us Button -->
+    <div class="mb-8">
+        <a href="{{ route('contact') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
+            <i class="fas fa-phone mr-2"></i>
+            Hubungi Kami
+        </a>
+    </div>
+
     <!-- Statistics -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">

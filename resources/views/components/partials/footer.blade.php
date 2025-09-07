@@ -37,6 +37,7 @@
                     <li><a href="/donasi" class="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-green-400 transition-colors">Donasi Buku</a></li>
                     <li><a href="/pelatihan" class="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-green-400 transition-colors">Ikuti Pelatihan</a></li>
                     <li><a href="/sponsorship" class="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-green-400 transition-colors">Sponsorship</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-green-400 transition-colors">Hubungi Kami</a></li>
                 </ul>
             </div>
             
@@ -47,6 +48,9 @@
                     <p>Telepon: (021) 123-4567</p>
                     <p>Alamat: Jl. Literasi No. 123, Jakarta</p>
                 </div>
+                <a href="{{ route('contact') }}" class="inline-block mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors font-medium text-sm">
+                    Hubungi Kami
+                </a>
             </div>
         </div>
         

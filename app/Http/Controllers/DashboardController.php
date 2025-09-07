@@ -32,7 +32,6 @@ class DashboardController extends Controller
             'total_volunteers' => User::whereHas('roles', function($q) { $q->where('name', 'Relawan'); })->count(),
             'total_students' => User::whereHas('roles', function($q) { $q->where('name', 'Peserta Pelatihan'); })->count(),
             'total_investors' => User::whereHas('roles', function($q) { $q->where('name', 'Investor'); })->count(),
-            'total_public' => User::whereHas('roles', function($q) { $q->where('name', 'Publik'); })->count(),
         ];
 
         // Get recent donations and sponsorships
@@ -55,23 +54,6 @@ class DashboardController extends Controller
         $recentUsers = User::latest()->take(5)->get();
 
         return view('dashboard.admin', compact('user', 'stats', 'recentUsers', 'recent_donations', 'recent_sponsorships', 'recent_books'));
-    }
-
-    /**
-     * Public Dashboard
-     */
-    public function publik()
-    {
-        $user = Auth::user();
-        
-        $stats = [
-            'reading_progress' => 75,
-            'books_read' => 12,
-            'events_attended' => 5,
-            'certificates' => 2,
-        ];
-
-        return view('dashboard.publik', compact('user', 'stats'));
     }
 
     /**

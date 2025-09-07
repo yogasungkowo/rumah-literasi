@@ -44,6 +44,14 @@
             </div>
         </div>
 
+        <!-- Contact Us Button -->
+        <div class="mb-6">
+            <a href="{{ route('contact') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
+                <i class="fas fa-phone mr-2"></i>
+                Hubungi Kami
+            </a>
+        </div>
+
         <!-- Profile Form -->
         <div id="profile-form" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
