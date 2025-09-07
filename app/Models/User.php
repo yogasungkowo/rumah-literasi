@@ -60,6 +60,21 @@ class User extends Authenticatable
     }
 
     /**
+     * Boot the model and set up event listeners
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Sync organization with investor company_name when organization is updated
+        static::updated(function ($user) {
+            if ($user->isDirty('organization') && $user->hasRole('Investor') && $user->investor) {
+                $user->investor->update(['company_name' => $user->organization]);
+            }
+        });
+    }
+
+    /**
      * Get the user's avatar URL
      */
     public function getAvatarUrlAttribute(): string
@@ -120,5 +135,41 @@ class User extends Authenticatable
     public function sponsorships()
     {
         return $this->hasMany(Sponsorship::class, 'sponsor_id');
+    }
+
+    /**
+     * Get trainings where user is volunteering
+     */
+    public function volunteeringTrainings()
+    {
+        return $this->belongsToMany(Training::class, 'training_volunteers')
+                    ->withPivot(['status', 'motivation', 'skills', 'experience', 'registered_at', 'confirmed_at'])
+                    ->withTimestamps();
+    }
+
+    /**
+     * Get volunteer registrations
+     */
+    public function volunteerRegistrations()
+    {
+        return $this->hasMany(TrainingVolunteer::class);
+    }
+
+    /**
+     * Get training participant registrations
+     */
+    public function trainingParticipants()
+    {
+        return $this->hasMany(TrainingParticipant::class);
+    }
+
+    /**
+     * Get trainings where user is participating
+     */
+    public function participatingTrainings()
+    {
+        return $this->belongsToMany(Training::class, 'training_participants')
+                    ->withPivot(['status', 'motivation', 'expectations', 'experience_level', 'additional_info', 'attendance', 'certificate_issued_at', 'approved_at', 'rejected_at', 'cancelled_at'])
+                    ->withTimestamps();
     }
 }

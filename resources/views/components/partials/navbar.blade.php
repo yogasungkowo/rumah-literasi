@@ -11,10 +11,10 @@
             
             <!-- Desktop Navigation Menu -->
             <div class="hidden lg:flex items-center space-x-6">
-                <a href="/" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
-                <a href="/donasi" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Donasi Buku</a>
-                <a href="/pelatihan" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Ikuti Pelatihan</a>
-                <a href="/sponsorship" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Sponsorship</a>
+                <a href="/" class="{{ request()->is('/') || request()->is('') || request()->routeIs('home') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Beranda</a>
+                <a href="/donasi" class="{{ request()->is('donasi*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Donasi Buku</a>
+                <a href="/pelatihan" class="{{ request()->is('pelatihan*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Ikuti Pelatihan</a>
+                <a href="/sponsorship" class="{{ request()->is('sponsorship*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Sponsorship</a>
             </div>
 
             <!-- Desktop Right Side (Dark Mode Toggle + Auth Section) -->
@@ -59,7 +59,7 @@
                             </div>
                             
                             <!-- Dashboard Link -->
-                            <a href="{{ auth()->user()->dashboard_url }}" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            <a href="{{ auth()->user()->dashboard_url }}" class="{{ (request()->is('dashboard*') && !request()->is('dashboard/profile*')) || request()->is('admin*') ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }} flex items-center px-4 py-2 text-sm transition-colors">
                                 <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
@@ -68,7 +68,7 @@
                             </a>
                             
                             <!-- Profile Link -->
-                            <a href="/dashboard/profile" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            <a href="/dashboard/profile" class="{{ request()->is('dashboard/profile*') ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }} flex items-center px-4 py-2 text-sm transition-colors">
                                 <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
@@ -125,10 +125,46 @@
         <div class="px-4 pt-4 pb-6 space-y-3">
             <!-- Mobile Navigation Links -->
             <div class="space-y-2">
-                <a href="/" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors">Beranda</a>
-                <a href="/donasi" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors">Donasi Buku</a>
-                <a href="/pelatihan" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors">Ikuti Pelatihan</a>
-                <a href="/sponsorship" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition-colors">Sponsorship</a>
+                <a href="/" class="{{ request()->is('/') || request()->is('') || request()->routeIs('home') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-3 py-2 text-base font-medium transition-all duration-200">
+                    <span class="flex items-center">
+                        @if(request()->is('/') || request()->is('') || request()->routeIs('home'))
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        @endif
+                        Beranda
+                    </span>
+                </a>
+                <a href="/donasi" class="{{ request()->is('donasi*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-3 py-2 text-base font-medium transition-all duration-200">
+                    <span class="flex items-center">
+                        @if(request()->is('donasi*'))
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        @endif
+                        Donasi Buku
+                    </span>
+                </a>
+                <a href="/pelatihan" class="{{ request()->is('pelatihan*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-3 py-2 text-base font-medium transition-all duration-200">
+                    <span class="flex items-center">
+                        @if(request()->is('pelatihan*'))
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        @endif
+                        Ikuti Pelatihan
+                    </span>
+                </a>
+                <a href="/sponsorship" class="{{ request()->is('sponsorship*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-3 py-2 text-base font-medium transition-all duration-200">
+                    <span class="flex items-center">
+                        @if(request()->is('sponsorship*'))
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        @endif
+                        Sponsorship
+                    </span>
+                </a>
             </div>
             
             <!-- Mobile Authentication Section -->
@@ -154,18 +190,28 @@
                     
                     <!-- Mobile Dashboard & Profile Links -->
                     <div class="space-y-2">
-                        <a href="{{ auth()->user()->dashboard_url }}" class="flex items-center px-3 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
+                        <a href="{{ auth()->user()->dashboard_url }}" class="{{ (request()->is('dashboard*') && !request()->is('dashboard/profile*')) || request()->is('admin*') ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} flex items-center px-3 py-2 text-base font-medium transition-all duration-200">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
                             </svg>
                             Dashboard
+                            @if((request()->is('dashboard*') && !request()->is('dashboard/profile*')) || request()->is('admin*'))
+                                <svg class="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            @endif
                         </a>
-                        <a href="/dashboard/profile" class="flex items-center px-3 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
+                        <a href="/dashboard/profile" class="{{ request()->is('dashboard/profile*') ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} flex items-center px-3 py-2 text-base font-medium transition-all duration-200">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7-7h14a7 7 0 00-7-7z"></path>
                             </svg>
                             Profile
+                            @if(request()->is('dashboard/profile*'))
+                                <svg class="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            @endif
                         </a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

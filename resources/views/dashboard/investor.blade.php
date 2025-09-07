@@ -55,7 +55,7 @@
                     </div>
                     <div>
                         <h1 class="text-3xl font-bold mb-2">Selamat Datang, {{ $user->name }}!</h1>
-                        <p class="text-white/80 text-lg mb-2">{{ $user->investor?->company_name ?? 'Kelola profil perusahaan Anda' }}</p>
+                        <p class="text-white/80 text-lg mb-2">{{ $user->investor?->company_name ?? $user->organization ?? 'Kelola profil perusahaan Anda' }}</p>
                         <div class="flex items-center space-x-3">
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-white/20 backdrop-blur-sm">
                                 <i class="fas fa-handshake mr-2"></i>
@@ -93,7 +93,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Nama Perusahaan</label>
                         <input type="text" name="company_name" 
-                               value="{{ old('company_name', $user->investor?->company_name) }}"
+                               value="{{ old('company_name', $user->investor?->company_name ?? $user->organization) }}"
                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white transition-all"
                                placeholder="Masukkan nama perusahaan"
                                required>

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonasiController;
 use App\Http\Controllers\SponsorshipController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('pages.index');
@@ -12,11 +13,11 @@ Route::get('/', function () {
 
 Route::get('/donasi', [DonasiController::class, 'index']);
 
-Route::get('/pelatihan', function () {
-    return view('pages.pelatihan');
-});
+Route::get('/pelatihan', [App\Http\Controllers\PelatihanController::class, 'index'])->name('pelatihan');
 
 Route::get('/sponsorship', [SponsorshipController::class, 'publicPage'])->name('sponsorship.public');
+
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -70,14 +71,22 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::delete('/books/{book}', [App\Http\Controllers\Admin\BookController::class, 'destroy'])->name('admin.books.destroy');
 
     // Training Management
-    Route::get('/trainings', [App\Http\Controllers\TrainingController::class, 'index'])->name('admin.trainings.index');
-    Route::get('/trainings/create', [App\Http\Controllers\TrainingController::class, 'create'])->name('admin.trainings.create');
-    Route::post('/trainings', [App\Http\Controllers\TrainingController::class, 'store'])->name('admin.trainings.store');
-    Route::get('/trainings/{training}', [App\Http\Controllers\TrainingController::class, 'show'])->name('admin.trainings.show');
-    Route::get('/trainings/{training}/edit', [App\Http\Controllers\TrainingController::class, 'edit'])->name('admin.trainings.edit');
-    Route::put('/trainings/{training}', [App\Http\Controllers\TrainingController::class, 'update'])->name('admin.trainings.update');
-    Route::delete('/trainings/{training}', [App\Http\Controllers\TrainingController::class, 'destroy'])->name('admin.trainings.destroy');
-    Route::post('/trainings/bulk-action', [App\Http\Controllers\TrainingController::class, 'bulkAction'])->name('admin.trainings.bulk-action');
+    Route::get('/trainings', [App\Http\Controllers\Admin\TrainingController::class, 'index'])->name('admin.trainings.index');
+    Route::get('/trainings/create', [App\Http\Controllers\Admin\TrainingController::class, 'create'])->name('admin.trainings.create');
+    Route::post('/trainings', [App\Http\Controllers\Admin\TrainingController::class, 'store'])->name('admin.trainings.store');
+    Route::get('/trainings/{training}', [App\Http\Controllers\Admin\TrainingController::class, 'show'])->name('admin.trainings.show');
+    Route::get('/trainings/{training}/edit', [App\Http\Controllers\Admin\TrainingController::class, 'edit'])->name('admin.trainings.edit');
+    Route::put('/trainings/{training}', [App\Http\Controllers\Admin\TrainingController::class, 'update'])->name('admin.trainings.update');
+    Route::delete('/trainings/{training}', [App\Http\Controllers\Admin\TrainingController::class, 'destroy'])->name('admin.trainings.destroy');
+    Route::post('/trainings/bulk-action', [App\Http\Controllers\Admin\TrainingController::class, 'bulkAction'])->name('admin.trainings.bulk-action');
+    
+    // Training Volunteer Management
+    Route::patch('/trainings/{training}/volunteers/{user}/approve', [App\Http\Controllers\Admin\TrainingController::class, 'approveVolunteer'])->name('admin.trainings.volunteers.approve');
+    Route::patch('/trainings/{training}/volunteers/{user}/reject', [App\Http\Controllers\Admin\TrainingController::class, 'rejectVolunteer'])->name('admin.trainings.volunteers.reject');
+
+    // Training Participant Management
+    Route::patch('/trainings/{training}/participants/{user}/approve', [App\Http\Controllers\Admin\TrainingController::class, 'approveParticipant'])->name('admin.trainings.participants.approve');
+    Route::patch('/trainings/{training}/participants/{user}/reject', [App\Http\Controllers\Admin\TrainingController::class, 'rejectParticipant'])->name('admin.trainings.participants.reject');
 
     // Donation Management
     Route::get('/donations', [App\Http\Controllers\Admin\DonationController::class, 'index'])->name('admin.donations.index');
@@ -133,4 +142,39 @@ Route::middleware(['auth', 'role:Investor'])->group(function () {
     Route::get('/sponsorships/{sponsorship}/edit', [SponsorshipController::class, 'edit'])->name('sponsorships.edit');
     Route::put('/sponsorships/{sponsorship}', [SponsorshipController::class, 'update'])->name('sponsorships.update');
     Route::put('/investor/profile', [SponsorshipController::class, 'updateProfile'])->name('investor.profile.update');
+});
+
+// Volunteer routes (protected by relawan role)
+Route::middleware(['auth', 'role:Relawan'])->group(function () {
+    // Training Volunteer Management for Relawan
+    Route::get('/volunteer/trainings', [App\Http\Controllers\TrainingVolunteerController::class, 'index'])->name('volunteer.trainings.index');
+    Route::get('/volunteer/trainings/{training}', [App\Http\Controllers\TrainingVolunteerController::class, 'show'])->name('volunteer.trainings.show');
+    Route::get('/volunteer/trainings/{training}/register', [App\Http\Controllers\TrainingVolunteerController::class, 'register'])->name('volunteer.trainings.register');
+    Route::post('/volunteer/trainings/{training}/register', [App\Http\Controllers\TrainingVolunteerController::class, 'store'])->name('volunteer.trainings.store');
+    Route::patch('/volunteer/trainings/{training}/cancel', [App\Http\Controllers\TrainingVolunteerController::class, 'cancel'])->name('volunteer.trainings.cancel');
+    Route::get('/volunteer/trainings/my-registrations', [App\Http\Controllers\TrainingVolunteerController::class, 'myRegistrations'])->name('volunteer.trainings.my-registrations');
+    Route::get('/volunteer/registrations', [App\Http\Controllers\TrainingVolunteerController::class, 'myRegistrations'])->name('volunteer.registrations.index');
+});
+
+// Participant Training Routes (Peserta Pelatihan role)
+Route::middleware(['auth', 'role:Peserta Pelatihan'])->prefix('participant')->name('participant.')->group(function () {
+    Route::get('/trainings', [App\Http\Controllers\TrainingParticipantController::class, 'index'])->name('trainings.index');
+    Route::get('/trainings/{training}', [App\Http\Controllers\TrainingParticipantController::class, 'show'])->name('trainings.show');
+    // Form pendaftaran lengkap (GET)
+    Route::get('/trainings/{training}/register/form', [App\Http\Controllers\TrainingParticipantController::class, 'create'])->name('trainings.register.form');
+    // Submit form pendaftaran lengkap (POST)
+    Route::post('/trainings/{training}/register/form', [App\Http\Controllers\TrainingParticipantController::class, 'store'])->name('trainings.store');
+    // Quick register (POST) - modal
+    Route::post('/trainings/{training}/register', [App\Http\Controllers\TrainingParticipantController::class, 'register'])->name('trainings.register');
+    Route::get('/registrations', [App\Http\Controllers\TrainingParticipantController::class, 'myRegistrations'])->name('registrations.index');
+    Route::get('/registrations/{registration}', [App\Http\Controllers\TrainingParticipantController::class, 'showRegistration'])->name('registrations.show');
+    Route::put('/registrations/{registration}/cancel', [App\Http\Controllers\TrainingParticipantController::class, 'cancel'])->name('registrations.cancel');
+});
+
+// Profile management (for all authenticated users)
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
+    Route::put('/profile/update', [DashboardController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/email', [DashboardController::class, 'updateEmail'])->name('profile.email.update');
+    Route::put('/profile/password', [DashboardController::class, 'updatePassword'])->name('profile.password.update');
 });

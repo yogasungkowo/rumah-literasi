@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Training;
 
 class DashboardController extends Controller
 {
@@ -106,18 +107,33 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         
-        if (!$user->hasRole('Relawan')) {
-            abort(403, 'Unauthorized');
-        }
+        // Get available trainings that user can register for
+        // Show published trainings that are not completed or cancelled
+        $availableTrainings = Training::where('status', 'published')
+            ->where('end_date', '>=', now()->toDateString()) // Still accepting registrations until end date
+            ->whereNotIn('id', function($query) use ($user) {
+                $query->select('training_id')
+                      ->from('training_volunteers')
+                      ->where('user_id', $user->id);
+            })
+            ->orderBy('start_date', 'asc')
+            ->get();
 
+        // Get user's training registrations
+        $myRegistrations = $user->volunteerRegistrations()
+            ->with('training')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Statistics
         $stats = [
-            'hours_contributed' => 120,
-            'events_organized' => 8,
-            'people_helped' => 200,
-            'active_projects' => 3,
+            'total_registrations' => $myRegistrations->count(),
+            'pending_registrations' => $myRegistrations->where('status', 'registered')->count(),
+            'confirmed_registrations' => $myRegistrations->where('status', 'confirmed')->count(),
+            'available_trainings' => $availableTrainings->count(),
         ];
 
-        return view('dashboard.relawan', compact('user', 'stats'));
+        return view('dashboard.relawan', compact('availableTrainings', 'myRegistrations', 'stats'));
     }
 
     /**
@@ -131,14 +147,22 @@ class DashboardController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        $stats = [
-            'courses_completed' => 5,
-            'courses_in_progress' => 2,
-            'certificates_earned' => 3,
-            'study_hours' => 45,
-        ];
+        // Get user's training registrations
+        $myRegistrations = \App\Models\TrainingParticipant::where('user_id', $user->id)
+            ->with('training')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        return view('dashboard.peserta', compact('user', 'stats'));
+        // Get available trainings (published and not full)
+        $availableTrainings = \App\Models\Training::where('status', 'published')
+            ->whereDate('start_date', '>=', now())
+            ->with(['participants' => function($query) {
+                $query->where('status', '!=', 'cancelled');
+            }])
+            ->orderBy('start_date', 'asc')
+            ->get();
+
+        return view('dashboard.peserta', compact('user', 'myRegistrations', 'availableTrainings'));
     }
 
     /**

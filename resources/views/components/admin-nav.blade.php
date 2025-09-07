@@ -17,6 +17,7 @@
 
                 <!-- Primary Navigation Menu -->
                 <div class="hidden sm:flex sm:items-center sm:ml-6 sm:space-x-8">
+                    @hasrole('Admin')
                     <a href="{{ route('admin.dashboard') }}" 
                        class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors {{ request()->routeIs('admin.dashboard') ? 'border-b-2 border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300' }}">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,7 +26,56 @@
                         </svg>
                         Dashboard
                     </a>
+                    @endhasrole
 
+                    @hasrole('Peserta Pelatihan')
+                    <a href="{{ route('dashboard.peserta') }}" 
+                       class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors {{ request()->routeIs('dashboard.peserta') ? 'border-b-2 border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300' }}">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v3H8V5z"/>
+                        </svg>
+                        Dashboard
+                    </a>
+
+                    <!-- Training Participant Menu -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" 
+                                class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors {{ request()->routeIs('participant.*') ? 'border-b-2 border-indigo-500 dark:border-indigo-400 text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300' }}">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                            Pelatihan
+                            <svg class="ml-1 h-4 w-4 transition-transform" :class="{ 'rotate-180': open }" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <div x-show="open" 
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-95"
+                             @click.away="open = false" 
+                             class="absolute z-50 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 dark:ring-gray-600">
+                            <a href="{{ route('participant.trainings.index') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                </svg>
+                                Daftar Pelatihan
+                            </a>
+                            <a href="{{ route('participant.registrations.index') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                Pendaftaran Saya
+                            </a>
+                        </div>
+                    </div>
+                    @endhasrole
+
+                    @hasrole('Admin')
                     <!-- Books Management -->
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" 
@@ -124,6 +174,7 @@
                         </svg>
                         Users
                     </a>
+                    @endhasrole
                 </div>
             </div>
 
@@ -235,6 +286,7 @@
          x-transition:leave-end="opacity-0 scale-95"
          class="sm:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         <div class="pt-2 pb-3 space-y-1">
+            @hasrole('Admin')
             <a href="{{ route('admin.dashboard') }}" 
                class="flex items-center pl-3 pr-4 py-2 text-base font-medium transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-50 dark:bg-indigo-900/20 border-r-4 border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                 <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,6 +295,34 @@
                 </svg>
                 Dashboard
             </a>
+            @endhasrole
+
+            @hasrole('Peserta Pelatihan')
+            <a href="{{ route('dashboard.peserta') }}" 
+               class="flex items-center pl-3 pr-4 py-2 text-base font-medium transition-colors {{ request()->routeIs('dashboard') ? 'bg-indigo-50 dark:bg-indigo-900/20 border-r-4 border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v3H8V5z"/>
+                </svg>
+                Dashboard
+            </a>
+            <a href="{{ route('participant.trainings.index') }}" 
+               class="flex items-center pl-3 pr-4 py-2 text-base font-medium transition-colors {{ request()->routeIs('participant.trainings.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 border-r-4 border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                Daftar Pelatihan
+            </a>
+            <a href="{{ route('participant.registrations.index') }}" 
+               class="flex items-center pl-3 pr-4 py-2 text-base font-medium transition-colors {{ request()->routeIs('participant.registrations.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 border-r-4 border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Pendaftaran Saya
+            </a>
+            @endhasrole
+
+            @hasrole('Admin')
             <a href="{{ route('admin.books.index') }}" 
                class="flex items-center pl-3 pr-4 py-2 text-base font-medium transition-colors {{ request()->routeIs('admin.books.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 border-r-4 border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                 <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -278,6 +358,7 @@
                 </svg>
                 Users
             </a>
+            @endhasrole
         </div>
         
         <!-- Mobile Profile Section -->

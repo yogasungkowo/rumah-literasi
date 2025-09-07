@@ -98,7 +98,7 @@
                     </div>
                     
                     <div>
-                        <label for="trainer" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="instructor_name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             <span class="flex items-center">
                                 <svg class="w-4 h-4 mr-1 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -107,12 +107,12 @@
                                 <span class="text-red-500 ml-1">*</span>
                             </span>
                         </label>
-                        <input type="text" name="trainer" id="trainer"
-                               value="{{ old('trainer') }}"
-                               class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 transition-all duration-200 @error('trainer') border-red-500 ring-red-500 @enderror"
+                        <input type="text" name="instructor_name" id="instructor_name_basic"
+                               value="{{ old('instructor_name') }}"
+                               class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500 transition-all duration-200 @error('instructor_name') border-red-500 ring-red-500 @enderror"
                                placeholder="Nama lengkap pelatih"
                                required>
-                        @error('trainer')
+                        @error('instructor_name')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -405,6 +405,121 @@
                                 {{ $message }}
                             </p>
                         @enderror
+                    </div>
+                </div>
+                
+                <!-- Detailed Daily Schedule -->
+                <div class="mt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            <span class="flex items-center">
+                                <i class="fas fa-calendar-week mr-1 text-green-500"></i>
+                                Jadwal Detail Harian (Opsional)
+                            </span>
+                        </label>
+                        <button type="button" id="add-schedule-day" 
+                                class="inline-flex items-center px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+                            <i class="fas fa-plus mr-1"></i>
+                            Tambah Hari
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">
+                        Atur jadwal detail untuk setiap hari pelatihan dengan aktivitas dan waktu yang spesifik
+                    </p>
+                    
+                    <div id="schedule-container" class="space-y-4">
+                        <!-- Schedule days will be added here dynamically -->
+                    </div>
+                    
+                    <!-- Template for new schedule day (hidden) -->
+                    <div id="schedule-day-template" class="hidden">
+                        <div class="schedule-day border border-gray-300 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-medium text-gray-900 dark:text-white">Hari <span class="day-number">1</span></h4>
+                                <button type="button" class="remove-schedule-day text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Tanggal
+                                    </label>
+                                    <input type="text" name="schedule[day_1][date]" 
+                                           class="schedule-date w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-600 dark:text-white"
+                                           placeholder="Pilih tanggal..."
+                                           readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Tema Hari
+                                    </label>
+                                    <input type="text" name="schedule[day_1][theme]" 
+                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-600 dark:text-white"
+                                           placeholder="Contoh: Pengenalan Literasi Digital">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Sesi Pelatihan
+                                    </label>
+                                    <button type="button" class="add-session text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 text-sm">
+                                        <i class="fas fa-plus mr-1"></i>Tambah Sesi
+                                    </button>
+                                </div>
+                                <div class="sessions-container space-y-3">
+                                    <!-- Sessions will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Template for session (hidden) -->
+                    <div id="session-template" class="hidden">
+                        <div class="session-item bg-white dark:bg-gray-600 p-3 rounded border border-gray-200 dark:border-gray-500">
+                            <div class="flex items-center justify-between mb-2">
+                                <h5 class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Sesi <span class="session-number">1</span>
+                                </h5>
+                                <button type="button" class="remove-session text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                        Waktu
+                                    </label>
+                                    <input type="text" name="schedule[day_1][sessions][0][time]" 
+                                           class="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                                           placeholder="08:00-09:30">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                        Topik
+                                    </label>
+                                    <input type="text" name="schedule[day_1][sessions][0][topic]" 
+                                           class="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                                           placeholder="Judul topik/materi">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                        Deskripsi
+                                    </label>
+                                    <textarea name="schedule[day_1][sessions][0][description]" 
+                                              class="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                                              placeholder="Deskripsi singkat"
+                                              rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -702,6 +817,21 @@
             placeholder: "Pilih waktu selesai..."
         });
 
+        // Initialize Flatpickr for all existing schedule date inputs on page load
+        document.querySelectorAll('.schedule-date').forEach(function(dateInput) {
+            if (!dateInput._flatpickr) {
+                flatpickr(dateInput, {
+                    dateFormat: "Y-m-d",
+                    locale: "id",
+                    allowInput: true,
+                    minDate: document.getElementById('start_date').value || "today",
+                    maxDate: document.getElementById('end_date').value || null,
+                    placeholder: "Pilih tanggal...",
+                    clickOpens: true
+                });
+            }
+        });
+
         // Enhanced image preview functionality
         function handleImagePreview(input) {
             const file = input.files[0];
@@ -817,7 +947,7 @@
             }
             
             // Validate required fields
-            const requiredFields = ['title', 'description', 'trainer', 'location', 'status', 'start_date', 'end_date', 'start_time', 'end_time', 'max_participants', 'price', 'instructor_name'];
+            const requiredFields = ['title', 'description', 'instructor_name', 'location', 'status', 'start_date', 'end_date', 'start_time', 'end_time', 'max_participants', 'price', 'instructor_name'];
             for (let field of requiredFields) {
                 const element = document.getElementById(field);
                 if (element && !element.value.trim()) {
@@ -884,6 +1014,186 @@
             const sizes = ['Bytes', 'KB', 'MB', 'GB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Schedule Management (Updated for Seeder Format)
+        let scheduleDayCount = 0;
+        let sessionCounters = {};
+
+        // Add schedule day
+        document.getElementById('add-schedule-day').addEventListener('click', function() {
+            const template = document.getElementById('schedule-day-template');
+            const container = document.getElementById('schedule-container');
+            const clone = template.cloneNode(true);
+            
+            clone.id = '';
+            clone.classList.remove('hidden');
+            
+            // Update day number
+            scheduleDayCount++;
+            const dayKey = `day_${scheduleDayCount}`;
+            clone.querySelector('.day-number').textContent = scheduleDayCount;
+            
+            // Update input names
+            const inputs = clone.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                const name = input.getAttribute('name');
+                if (name) {
+                    input.setAttribute('name', name.replace('day_1', dayKey));
+                }
+            });
+            
+            // Initialize session counter for this day
+            sessionCounters[dayKey] = 0;
+            
+            container.appendChild(clone);
+            
+            // Add event listeners
+            addScheduleDayEventListeners(clone, dayKey);
+        });
+
+        function addScheduleDayEventListeners(dayElement, dayKey) {
+            // Remove day button
+            const removeBtn = dayElement.querySelector('.remove-schedule-day');
+            removeBtn.addEventListener('click', function() {
+                dayElement.remove();
+                delete sessionCounters[dayKey];
+            });
+            
+            // Add session button
+            const addSessionBtn = dayElement.querySelector('.add-session');
+            addSessionBtn.addEventListener('click', function() {
+                addSession(dayElement, dayKey);
+            });
+            
+            // Initialize Flatpickr for schedule date
+            const dateInput = dayElement.querySelector('.schedule-date');
+            if (dateInput && !dateInput._flatpickr) {
+                flatpickr(dateInput, {
+                    dateFormat: "Y-m-d",
+                    locale: "id",
+                    allowInput: true,
+                    minDate: document.getElementById('start_date').value || "today",
+                    maxDate: document.getElementById('end_date').value || null,
+                    placeholder: "Pilih tanggal...",
+                    clickOpens: true
+                });
+            }
+        }
+
+        function addSession(dayElement, dayKey) {
+            const template = document.getElementById('session-template');
+            const container = dayElement.querySelector('.sessions-container');
+            const clone = template.cloneNode(true);
+            
+            clone.id = '';
+            clone.classList.remove('hidden');
+            
+            // Update session counter
+            const sessionIndex = sessionCounters[dayKey] || 0;
+            sessionCounters[dayKey] = sessionIndex + 1;
+            
+            // Update session number display
+            clone.querySelector('.session-number').textContent = sessionIndex + 1;
+            
+            // Update input names
+            const inputs = clone.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                const name = input.getAttribute('name');
+                if (name) {
+                    input.setAttribute('name', name.replace('day_1', dayKey).replace('[0]', `[${sessionIndex}]`));
+                }
+            });
+            
+            container.appendChild(clone);
+            
+            // Add remove session event listener
+            const removeBtn = clone.querySelector('.remove-session');
+            removeBtn.addEventListener('click', function() {
+                clone.remove();
+                // Re-number remaining sessions
+                renumberSessions(dayElement);
+            });
+        }
+
+        function renumberSessions(dayElement) {
+            const sessions = dayElement.querySelectorAll('.session-item');
+            sessions.forEach((session, index) => {
+                session.querySelector('.session-number').textContent = index + 1;
+            });
+        }
+
+        // Auto-generate schedule based on start and end dates
+        document.getElementById('end_date').addEventListener('change', function() {
+            const startDate = document.getElementById('start_date').value;
+            const endDate = this.value;
+            
+            if (startDate && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                
+                // Ask user if they want to auto-generate schedule
+                if (diffDays > 1 && diffDays <= 7) {
+                    if (confirm(`Pelatihan berlangsung ${diffDays} hari. Apakah ingin membuat jadwal otomatis untuk setiap hari?`)) {
+                        generateAutoSchedule(start, diffDays);
+                    }
+                }
+            }
+        });
+
+        function generateAutoSchedule(startDate, days) {
+            // Clear existing schedule
+            document.getElementById('schedule-container').innerHTML = '';
+            scheduleDayCount = 0;
+            sessionCounters = {};
+            
+            for (let i = 0; i < days; i++) {
+                // Add day
+                document.getElementById('add-schedule-day').click();
+                
+                // Set date
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                const dateStr = currentDate.toISOString().split('T')[0];
+                
+                const lastDayElement = document.getElementById('schedule-container').lastElementChild;
+                const dateInput = lastDayElement.querySelector('.schedule-date');
+                
+                // Set date value using Flatpickr if available, otherwise set directly
+                if (dateInput._flatpickr) {
+                    dateInput._flatpickr.setDate(dateStr);
+                } else {
+                    dateInput.value = dateStr;
+                }
+                
+                // Add default sessions
+                const dayKey = `day_${scheduleDayCount}`;
+                setTimeout(() => {
+                    addSession(lastDayElement, dayKey);
+                    addSession(lastDayElement, dayKey);
+                    addSession(lastDayElement, dayKey);
+                    
+                    // Set default session data
+                    const sessions = lastDayElement.querySelectorAll('.session-item');
+                    if (sessions[0]) {
+                        sessions[0].querySelector('input[placeholder="08:00-09:30"]').value = '08:00-09:30';
+                        sessions[0].querySelector('input[placeholder="Judul topik/materi"]').value = 'Pembukaan & Orientasi';
+                        sessions[0].querySelector('textarea').value = 'Registrasi peserta dan penjelasan overview pelatihan';
+                    }
+                    if (sessions[1]) {
+                        sessions[1].querySelector('input[placeholder="08:00-09:30"]').value = '10:00-11:30';
+                        sessions[1].querySelector('input[placeholder="Judul topik/materi"]').value = 'Sesi Materi Utama';
+                        sessions[1].querySelector('textarea').value = 'Penyampaian materi inti sesuai topik pelatihan';
+                    }
+                    if (sessions[2]) {
+                        sessions[2].querySelector('input[placeholder="08:00-09:30"]').value = '13:00-15:00';
+                        sessions[2].querySelector('input[placeholder="Judul topik/materi"]').value = 'Praktik & Diskusi';
+                        sessions[2].querySelector('textarea').value = 'Praktik langsung dan diskusi hasil pembelajaran';
+                    }
+                }, 100);
+            }
         }
     </script>
     @endpush

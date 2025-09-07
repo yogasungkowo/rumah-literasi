@@ -56,7 +56,7 @@
                             <svg class="w-4 h-4 mr-2 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                             </svg>
-                            <span class="text-white/90 font-medium">{{ $training->current_participants ?? 0 }}/{{ $training->max_participants }} Peserta</span>
+                            <span class="text-white/90 font-medium">{{ $training->participants()->count() }}/{{ $training->max_participants }} Peserta</span>
                         </div>
                         @if($training->price > 0)
                         <div class="flex items-center bg-white/10 rounded-lg px-3 py-2 backdrop-blur-sm">
@@ -232,6 +232,136 @@
                 </div>
             </div>
 
+            <!-- Detailed Daily Schedule -->
+            @if($training->schedule && is_array($training->schedule) && count($training->schedule) > 0)
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                        <i class="fas fa-calendar-week mr-2 text-indigo-600 dark:text-indigo-400"></i>
+                        Jadwal Detail Harian
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-6">
+                        @php
+                            // Check if it's old format (day_1, day_2) or new format (0, 1, 2)
+                            $isOldFormat = array_key_exists('day_1', $training->schedule);
+                        @endphp
+                        
+                        @if($isOldFormat)
+                            {{-- Old format support --}}
+                            @foreach($training->schedule as $dayKey => $dayData)
+                                @php
+                                    $dayNumber = (int) filter_var($dayKey, FILTER_SANITIZE_NUMBER_INT);
+                                @endphp
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                            Hari {{ $dayNumber }}
+                                            @if(isset($dayData['date']) && $dayData['date'])
+                                                <span class="text-sm font-normal text-gray-600 dark:text-gray-400 ml-2">
+                                                    ({{ \Carbon\Carbon::parse($dayData['date'])->format('d M Y') }})
+                                                </span>
+                                            @endif
+                                        </h4>
+                                    </div>
+                                    
+                                    @if(isset($dayData['sessions']) && is_array($dayData['sessions']) && count($dayData['sessions']) > 0)
+                                        <div class="space-y-3">
+                                            <h5 class="font-medium text-gray-900 dark:text-white">Sesi Pelatihan:</h5>
+                                            @foreach($dayData['sessions'] as $session)
+                                                <div class="flex items-start space-x-4 p-3 bg-white dark:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-500">
+                                                    <div class="flex-shrink-0">
+                                                        @if(isset($session['time']) && $session['time'])
+                                                            <div class="flex items-center justify-center px-3 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded-md text-sm font-medium">
+                                                                {{ $session['time'] }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
+                                                        @if(isset($session['topic']) && $session['topic'])
+                                                            <h6 class="text-sm font-semibold text-gray-900 dark:text-white">
+                                                                {{ $session['topic'] }}
+                                                            </h6>
+                                                        @endif
+                                                        @if(isset($session['description']) && $session['description'])
+                                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                                                                {{ $session['description'] }}
+                                                            </p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @else
+                            {{-- New format support --}}
+                            @foreach($training->schedule as $dayIndex => $dayData)
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                            Hari {{ (int)$dayIndex + 1 }}
+                                            @if(isset($dayData['date']) && $dayData['date'])
+                                                <span class="text-sm font-normal text-gray-600 dark:text-gray-400 ml-2">
+                                                    ({{ \Carbon\Carbon::parse($dayData['date'])->format('d M Y') }})
+                                                </span>
+                                            @endif
+                                        </h4>
+                                        @if(isset($dayData['theme']) && $dayData['theme'])
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200">
+                                                {{ $dayData['theme'] }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                    
+                                    @if(isset($dayData['activities']) && is_array($dayData['activities']) && count($dayData['activities']) > 0)
+                                        <div class="space-y-3">
+                                            <h5 class="font-medium text-gray-900 dark:text-white">Aktivitas:</h5>
+                                            @foreach($dayData['activities'] as $activity)
+                                                <div class="flex items-start space-x-4 p-3 bg-white dark:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-500">
+                                                    <div class="flex-shrink-0">
+                                                        @if(isset($activity['time']) && $activity['time'])
+                                                            <div class="flex items-center justify-center w-16 h-8 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded-md text-sm font-medium">
+                                                                {{ $activity['time'] }}
+                                                            </div>
+                                                        @else
+                                                            <div class="flex items-center justify-center w-16 h-8 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-md text-sm">
+                                                                <i class="fas fa-clock"></i>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
+                                                        @if(isset($activity['title']) && $activity['title'])
+                                                            <h6 class="text-sm font-semibold text-gray-900 dark:text-white">
+                                                                {{ $activity['title'] }}
+                                                            </h6>
+                                                        @endif
+                                                        @if(isset($activity['description']) && $activity['description'])
+                                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                                                                {{ $activity['description'] }}
+                                                            </p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="text-center py-4">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                Belum ada aktivitas yang ditambahkan untuk hari ini
+                                            </p>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <!-- Requirements & Materials -->
             @if($training->requirements || $training->materials)
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
@@ -334,26 +464,36 @@
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Peserta</h3>
                 </div>
                 <div class="p-6 space-y-4">
+                    @php
+                        $totalParticipants = $training->participants()->count();
+                        $approvedParticipants = $training->participants()->where('status', 'approved')->count();
+                        $participantPercentage = $training->max_participants > 0 ? ($totalParticipants / $training->max_participants) * 100 : 0;
+                    @endphp
                     <div class="text-center">
                         <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                            {{ $training->current_participants }}
+                            {{ $totalParticipants }}
                         </div>
                         <div class="text-sm text-gray-600 dark:text-gray-400">dari {{ $training->max_participants }} peserta</div>
+                        @if($approvedParticipants < $totalParticipants)
+                            <div class="text-xs text-orange-600 dark:text-orange-400 mt-1">
+                                ({{ $approvedParticipants }} disetujui)
+                            </div>
+                        @endif
                     </div>
                     
                     <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
                         <div class="bg-blue-600 h-3 rounded-full transition-all duration-300" 
-                             style="width: {{ $training->max_participants > 0 ? ($training->current_participants / $training->max_participants) * 100 : 0 }}%"></div>
+                             style="width: {{ $participantPercentage }}%"></div>
                     </div>
                     
                     <div class="text-center">
-                        @if($training->is_full)
+                        @if($totalParticipants >= $training->max_participants)
                             <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100">
                                 Penuh
                             </span>
                         @else
                             <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
-                                {{ $training->available_slots }} slot tersisa
+                                {{ $training->max_participants - $totalParticipants }} slot tersisa
                             </span>
                         @endif
                     </div>
@@ -384,7 +524,7 @@
                     <div class="flex justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Total Pendapatan:</span>
                         <span class="font-medium text-green-600 dark:text-green-400">
-                            Rp {{ number_format($training->price * $training->current_participants, 0, ',', '.') }}
+                            Rp {{ number_format($training->price * $training->participants()->where('status', 'approved')->count(), 0, ',', '.') }}
                         </span>
                     </div>
                     @endif
@@ -437,6 +577,351 @@
                         </svg>
                         Kembali ke Daftar
                     </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Participant Registration Management -->
+        <div class="col-span-1 lg:col-span-3 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Pendaftar Peserta</h3>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                                Total: <span class="font-semibold text-gray-900 dark:text-white">{{ $participantRegistrations->count() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    @if($participantRegistrations->count() > 0)
+                        <!-- Status Summary -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-yellow-100 dark:bg-yellow-800 rounded-lg">
+                                        <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-yellow-800 dark:text-yellow-200">Menunggu</p>
+                                        <p class="text-lg font-bold text-yellow-900 dark:text-yellow-100">{{ $participantsByStatus->get('registered', collect())->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-4">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-green-100 dark:bg-green-800 rounded-lg">
+                                        <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-green-800 dark:text-green-200">Disetujui</p>
+                                        <p class="text-lg font-bold text-green-900 dark:text-green-100">{{ $participantsByStatus->get('approved', collect())->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-red-100 dark:bg-red-800 rounded-lg">
+                                        <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-red-800 dark:text-red-200">Ditolak</p>
+                                        <p class="text-lg font-bold text-red-900 dark:text-red-100">{{ $participantsByStatus->get('rejected', collect())->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 dark:bg-gray-900/20 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">Dibatalkan</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ $participantsByStatus->get('cancelled', collect())->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Participants List -->
+                        <div class="space-y-4">
+                            @foreach($participantRegistrations as $registration)
+                                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex items-start space-x-4">
+                                            <div class="flex-shrink-0">
+                                                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                                                    {{ strtoupper(substr($registration->user->name, 0, 1)) }}
+                                                </div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center space-x-3 mb-2">
+                                                    <h4 class="font-semibold text-gray-900 dark:text-white">{{ $registration->user->name }}</h4>
+                                                    @if($registration->status === 'registered')
+                                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100">
+                                                            Menunggu Persetujuan
+                                                        </span>
+                                                    @elseif($registration->status === 'approved')
+                                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
+                                                            Disetujui
+                                                        </span>
+                                                    @elseif($registration->status === 'rejected')
+                                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100">
+                                                            Ditolak
+                                                        </span>
+                                                    @elseif($registration->status === 'cancelled')
+                                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100">
+                                                            Dibatalkan
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                                    <p><span class="font-medium">Email:</span> {{ $registration->user->email }}</p>
+                                                    <p><span class="font-medium">Motivasi:</span> {{ Str::limit($registration->motivation, 100) }}</p>
+                                                    <p><span class="font-medium">Harapan:</span> {{ Str::limit($registration->expectations, 100) }}</p>
+                                                    <p><span class="font-medium">Tingkat Pengalaman:</span> 
+                                                        @if($registration->experience_level === 'beginner')
+                                                            Pemula
+                                                        @elseif($registration->experience_level === 'intermediate')
+                                                            Menengah
+                                                        @elseif($registration->experience_level === 'advanced')
+                                                            Lanjutan
+                                                        @else
+                                                            {{ $registration->experience_level }}
+                                                        @endif
+                                                    </p>
+                                                    <p><span class="font-medium">Tanggal Daftar:</span> {{ $registration->created_at->format('d M Y H:i') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex flex-col space-y-2">
+                                            @if($registration->status === 'registered')
+                                                <div class="flex space-x-2">
+                                                    <form action="{{ route('admin.trainings.participants.approve', [$training, $registration->user]) }}" method="POST" class="inline">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" 
+                                                                class="inline-flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-md transition-colors duration-200"
+                                                                onclick="return confirm('Setujui pendaftaran peserta ini?')">
+                                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                            Setujui
+                                                        </button>
+                                                    </form>
+                                                    <form action="{{ route('admin.trainings.participants.reject', [$training, $registration->user]) }}" method="POST" class="inline">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" 
+                                                                class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-colors duration-200"
+                                                                onclick="return confirm('Tolak pendaftaran peserta ini?')">
+                                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                            </svg>
+                                                            Tolak
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @else
+                                                @if($registration->approved_at)
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                                        Disetujui: {{ $registration->approved_at->format('d M Y H:i') }}
+                                                    </p>
+                                                @elseif($registration->rejected_at)
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                                        Ditolak: {{ $registration->rejected_at->format('d M Y H:i') }}
+                                                    </p>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-12">
+                            <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM9 9a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Belum ada peserta terdaftar</h3>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Belum ada peserta yang mendaftar untuk pelatihan ini.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Volunteer Registration Management -->
+        <div class="col-span-1 lg:col-span-3">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Pendaftar Relawan</h3>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                                Total: <span class="font-semibold text-gray-900 dark:text-white">{{ $volunteerRegistrations->count() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    @if($volunteerRegistrations->count() > 0)
+                        <!-- Status Summary -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-yellow-100 dark:bg-yellow-800 rounded-lg">
+                                        <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-yellow-800 dark:text-yellow-200">Menunggu Persetujuan</p>
+                                        <p class="text-lg font-bold text-yellow-900 dark:text-yellow-100">{{ ($volunteersByStatus['registered'] ?? collect())->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-4">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-green-100 dark:bg-green-800 rounded-lg">
+                                        <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-green-800 dark:text-green-200">Dikonfirmasi</p>
+                                        <p class="text-lg font-bold text-green-900 dark:text-green-100">{{ ($volunteersByStatus['confirmed'] ?? collect())->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
+                                <div class="flex items-center">
+                                    <div class="p-2 bg-red-100 dark:bg-red-800 rounded-lg">
+                                        <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-red-800 dark:text-red-200">Ditolak</p>
+                                        <p class="text-lg font-bold text-red-900 dark:text-red-100">{{ ($volunteersByStatus['cancelled'] ?? collect())->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Volunteer List -->
+                        <div class="space-y-4">
+                            @foreach($volunteerRegistrations as $registration)
+                                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="flex-shrink-0">
+                                                <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
+                                                    <span class="text-white font-semibold text-sm">
+                                                        {{ strtoupper(substr($registration->user->name, 0, 2)) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-sm font-medium text-gray-900 dark:text-white">
+                                                    {{ $registration->user->name }}
+                                                </h4>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                    {{ $registration->user->email }}
+                                                </p>
+                                                <p class="text-xs text-gray-400 dark:text-gray-500">
+                                                    Mendaftar: {{ $registration->created_at->format('d M Y H:i') }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center space-x-3">
+                                            <!-- Status Badge -->
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                @if($registration->status === 'registered')
+                                                    bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300
+                                                @elseif($registration->status === 'confirmed')
+                                                    bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300
+                                                @elseif($registration->status === 'cancelled')
+                                                    bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300
+                                                @endif
+                                            ">
+                                                @if($registration->status === 'registered')
+                                                    Menunggu
+                                                @elseif($registration->status === 'confirmed')
+                                                    Dikonfirmasi
+                                                @elseif($registration->status === 'cancelled')
+                                                    Ditolak
+                                                @endif
+                                            </span>
+                                            
+                                            <!-- Action Buttons -->
+                                            @if($registration->status === 'registered')
+                                                <div class="flex space-x-2">
+                                                    <form method="POST" action="{{ route('admin.trainings.volunteers.approve', [$training, $registration->user]) }}" class="inline">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" 
+                                                                class="inline-flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-md transition-colors duration-200"
+                                                                onclick="return confirm('Konfirmasi relawan ini?')">
+                                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                            Setujui
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <form method="POST" action="{{ route('admin.trainings.volunteers.reject', [$training, $registration->user]) }}" class="inline">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" 
+                                                                class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-colors duration-200"
+                                                                onclick="return confirm('Tolak pendaftaran relawan ini?')">
+                                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                            </svg>
+                                                            Tolak
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @else
+                                                @if($registration->confirmed_at)
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                                        {{ $registration->status === 'confirmed' ? 'Dikonfirmasi' : 'Ditolak' }}: {{ $registration->confirmed_at->format('d M Y H:i') }}
+                                                    </p>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-12">
+                            <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM9 9a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Belum ada relawan terdaftar</h3>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Belum ada relawan yang mendaftar untuk pelatihan ini.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

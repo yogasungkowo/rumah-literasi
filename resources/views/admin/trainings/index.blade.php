@@ -259,6 +259,9 @@
                                             <i class="fas fa-users mr-2"></i>Peserta
                                         </th>
                                         <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            <i class="fas fa-hand-paper mr-2"></i>Relawan
+                                        </th>
+                                        <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             <i class="fas fa-flag mr-2"></i>Status
                                         </th>
                                         <th scope="col" class="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -332,21 +335,67 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center">
                                                     <div class="flex-1">
+                                                        @php
+                                                            $totalParticipants = $training->participants()->count();
+                                                            $approvedParticipants = $training->participants()->where('status', 'approved')->count();
+                                                            $pendingParticipants = $training->participants()->where('status', 'pending')->count();
+                                                            $participantPercentage = $training->max_participants > 0 ? round(($totalParticipants / $training->max_participants) * 100) : 0;
+                                                        @endphp
                                                         <div class="flex items-center justify-between text-sm">
                                                             <span class="font-medium text-gray-900 dark:text-white">
-                                                                {{ $training->current_participants ?? 0 }}/{{ $training->max_participants }}
+                                                                {{ $totalParticipants }}/{{ $training->max_participants }}
                                                             </span>
                                                             <span class="text-xs text-gray-500 dark:text-gray-400">
-                                                                {{ round((($training->current_participants ?? 0) / $training->max_participants) * 100) }}%
+                                                                {{ $participantPercentage }}%
                                                             </span>
                                                         </div>
+                                                        @if($pendingParticipants > 0)
+                                                            <div class="flex items-center justify-between text-xs mt-1">
+                                                                <span class="text-green-600 dark:text-green-400">
+                                                                    {{ $approvedParticipants }} disetujui
+                                                                </span>
+                                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200">
+                                                                    {{ $pendingParticipants }} pending
+                                                                </span>
+                                                            </div>
+                                                        @endif
                                                         <div class="mt-1 w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                                                             <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full transition-all duration-500" 
-                                                                 style="width: {{ round((($training->current_participants ?? 0) / $training->max_participants) * 100) }}%"></div>
+                                                                 style="width: {{ $participantPercentage }}%"></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
+                                            
+                                            <!-- Kolom Relawan -->
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-1">
+                                                        @php
+                                                            $totalVolunteers = $training->volunteerRegistrations()->count();
+                                                            $confirmedVolunteers = $training->volunteerRegistrations()->where('status', 'confirmed')->count();
+                                                            $pendingVolunteers = $training->volunteerRegistrations()->where('status', 'registered')->count();
+                                                        @endphp
+                                                        <div class="flex items-center justify-between text-sm">
+                                                            <span class="font-medium text-gray-900 dark:text-white">
+                                                                {{ $confirmedVolunteers }}/{{ $totalVolunteers }}
+                                                            </span>
+                                                            @if($pendingVolunteers > 0)
+                                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200">
+                                                                    {{ $pendingVolunteers }} pending
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        @if($totalVolunteers > 0)
+                                                            <div class="mt-1 w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                                                <div class="bg-gradient-to-r from-emerald-500 to-green-600 h-2 rounded-full transition-all duration-500" 
+                                                                     style="width: {{ $totalVolunteers > 0 ? round(($confirmedVolunteers / $totalVolunteers) * 100) : 0 }}%"></div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            
                                             <td class="px-6 py-4">
                                                 @if($training->status === 'published')
                                                     <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-700">
@@ -382,6 +431,14 @@
                                                        title="Lihat Detail">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
+                                                    
+                                                    <!-- Button untuk mengelola relawan -->
+                                                    <a href="{{ route('admin.trainings.show', $training) }}#volunteers" 
+                                                       class="inline-flex items-center px-3 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 rounded-lg transition-all duration-200"
+                                                       title="Kelola Relawan">
+                                                        <i class="fas fa-users"></i>
+                                                    </a>
+                                                    
                                                     <a href="{{ route('admin.trainings.edit', $training) }}" 
                                                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/50 rounded-lg transition-all duration-200"
                                                        title="Edit">
@@ -404,6 +461,171 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+
+                        <!-- Mobile Cards -->
+                        <div class="lg:hidden space-y-4">
+                            @foreach($trainings as $training)
+                                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                                    <!-- Header -->
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="flex-1 mr-4">
+                                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                                                {{ $training->title }}
+                                            </h3>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                                                <i class="fas fa-map-marker-alt mr-1"></i>{{ $training->location }}
+                                            </p>
+                                            @if($training->price > 0)
+                                                <p class="text-sm font-medium text-green-600 dark:text-green-400">
+                                                    <i class="fas fa-money-bill mr-1"></i>Rp {{ number_format($training->price, 0, ',', '.') }}
+                                                </p>
+                                            @else
+                                                <p class="text-sm font-medium text-blue-600 dark:text-blue-400">
+                                                    <i class="fas fa-gift mr-1"></i>Gratis
+                                                </p>
+                                            @endif
+                                        </div>
+                                        
+                                        <!-- Status Badge -->
+                                        <div class="flex-shrink-0">
+                                            @if($training->status === 'published')
+                                                <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                                                    <i class="fas fa-eye mr-1"></i>Dipublikasi
+                                                </span>
+                                            @elseif($training->status === 'draft')
+                                                <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
+                                                    <i class="fas fa-edit mr-1"></i>Draft
+                                                </span>
+                                            @elseif($training->status === 'ongoing')
+                                                <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                                                    <i class="fas fa-play mr-1"></i>Berlangsung
+                                                </span>
+                                            @elseif($training->status === 'completed')
+                                                <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
+                                                    <i class="fas fa-check mr-1"></i>Selesai
+                                                </span>
+                                            @elseif($training->status === 'cancelled')
+                                                <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200">
+                                                    <i class="fas fa-times mr-1"></i>Dibatalkan
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- Info Grid -->
+                                    <div class="grid grid-cols-2 gap-4 mb-4">
+                                        <!-- Instruktur -->
+                                        <div>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Instruktur</p>
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mr-2">
+                                                    <span class="text-xs font-medium text-white">
+                                                        {{ substr($training->instructor_name, 0, 1) }}
+                                                    </span>
+                                                </div>
+                                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                                    {{ $training->instructor_name }}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Jadwal -->
+                                        <div>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Jadwal</p>
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                                {{ $training->start_date->format('d M Y') }}
+                                            </p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                                {{ $training->start_time->format('H:i') }} - {{ $training->end_time->format('H:i') }}
+                                            </p>
+                                        </div>
+
+                                        <!-- Peserta -->
+                                        <div>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Peserta</p>
+                                            @php
+                                                $totalParticipants = $training->participants()->count();
+                                                $approvedParticipants = $training->participants()->where('status', 'approved')->count();
+                                                $pendingParticipants = $training->participants()->where('status', 'pending')->count();
+                                                $participantPercentage = $training->max_participants > 0 ? round(($totalParticipants / $training->max_participants) * 100) : 0;
+                                            @endphp
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-900 dark:text-white mr-2">
+                                                    {{ $totalParticipants }}/{{ $training->max_participants }}
+                                                </span>
+                                                <div class="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full" 
+                                                         style="width: {{ $participantPercentage }}%"></div>
+                                                </div>
+                                            </div>
+                                            @if($pendingParticipants > 0)
+                                                <div class="flex items-center justify-between text-xs mt-1">
+                                                    <span class="text-green-600 dark:text-green-400">
+                                                        {{ $approvedParticipants }} disetujui
+                                                    </span>
+                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200">
+                                                        {{ $pendingParticipants }} pending
+                                                    </span>
+                                                </div>
+                                            @endif
+                                        </div>
+
+                                        <!-- Relawan -->
+                                        <div>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Relawan</p>
+                                            @php
+                                                $totalVolunteers = $training->volunteerRegistrations()->count();
+                                                $confirmedVolunteers = $training->volunteerRegistrations()->where('status', 'confirmed')->count();
+                                                $pendingVolunteers = $training->volunteerRegistrations()->where('status', 'registered')->count();
+                                            @endphp
+                                            <div class="flex items-center">
+                                                <span class="text-sm font-medium text-gray-900 dark:text-white mr-2">
+                                                    {{ $confirmedVolunteers }}/{{ $totalVolunteers }}
+                                                </span>
+                                                @if($pendingVolunteers > 0)
+                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200">
+                                                        {{ $pendingVolunteers }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="flex items-center justify-end space-x-2 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                        <a href="{{ route('admin.trainings.show', $training) }}" 
+                                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/50 rounded-lg transition-all duration-200">
+                                            <i class="fas fa-eye mr-1"></i>
+                                            Lihat
+                                        </a>
+                                        
+                                        <a href="{{ route('admin.trainings.show', $training) }}#volunteers" 
+                                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 rounded-lg transition-all duration-200">
+                                            <i class="fas fa-users mr-1"></i>
+                                            Relawan
+                                        </a>
+                                        
+                                        <a href="{{ route('admin.trainings.edit', $training) }}" 
+                                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/50 rounded-lg transition-all duration-200">
+                                            <i class="fas fa-edit mr-1"></i>
+                                            Edit
+                                        </a>
+                                        
+                                        <form method="POST" action="{{ route('admin.trainings.destroy', $training) }}" 
+                                              class="inline" 
+                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus pelatihan ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-lg transition-all duration-200">
+                                                <i class="fas fa-trash mr-1"></i>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
 
                         <!-- Pagination -->

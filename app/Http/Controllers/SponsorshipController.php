@@ -198,6 +198,9 @@ class SponsorshipController extends Controller
             $user->investor()->create($data);
         }
 
+        // Sync company_name with user organization field
+        $user->update(['organization' => $request->company_name]);
+
         return back()->with('success', 'Profil investor berhasil diperbarui!');
     }
 
