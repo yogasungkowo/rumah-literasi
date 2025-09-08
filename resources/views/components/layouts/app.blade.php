@@ -5,8 +5,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ $title ?? 'Rumah Literasi - Literasi Ranggi' }}</title>
+        <title>{{ $title ?? 'Rumah Literasi Ranggi' }}</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <link rel="icon" href="{{ asset('image/favicon/android-chrome-512x512.png') }}" type="image/png">
+        <link rel="apple-touch-icon" href="{{ asset('image/favicon/apple-touch-icon.png') }}">
 
         <!-- FontAwesome Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -106,6 +109,20 @@
             [data-theme="dark"] ::-webkit-scrollbar-track {
                 background: #374151;
             }
+            
+            /* Float animation */
+            @keyframes float {
+                0%, 100% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+            
+            .animate-float {
+                animation: float 3s ease-in-out infinite;
+            }
         </style>
         
         <script>
@@ -122,7 +139,7 @@
         @stack('styles')
     </head>
 
-    <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 pt-16">
+    <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 pt-28">
         <x-partials.navbar />
 
         {{ $slot }}

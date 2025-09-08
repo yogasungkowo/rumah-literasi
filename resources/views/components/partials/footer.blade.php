@@ -2,10 +2,25 @@
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1 md:col-span-2">
-                <h3 class="text-lg font-bold mb-4 text-green-400">Rumah Literasi - Literasi Ranggi</h3>
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="relative">
+                        <img src="{{ asset('image/Logo_Rumah_Literasi_Ranggi.png') }}" alt="Rumah Literasi" class="h-16 w-16 object-contain rounded-lg bg-white/10 p-1">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-green-400">Rumah Literasi Ranggi</h3>
+                    </div>
+                </div>
                 <p class="text-gray-300 dark:text-gray-400 mb-4">
                     Mencerdaskan bangsa melalui literasi dan pendidikan yang berkualitas untuk semua kalangan.
                 </p>
+                
+                <!-- Social Media Links -->
+                <div class="mb-4">
+                    <x-social-media-links class="flex space-x-4" />
+                </div>
+                
+                @if(!\App\Models\SocialMedia::active()->exists())
+                <!-- Fallback social media jika tidak ada yang aktif -->
                 <div class="flex space-x-4">
                     <a href="#" class="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-green-400 transition-colors">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -28,6 +43,7 @@
                         </svg>
                     </a>
                 </div>
+                @endif
             </div>
             
             <div>
@@ -55,7 +71,7 @@
         </div>
         
         <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-            <p class="text-gray-300">&copy; 2025 Rumah Literasi - Literasi Ranggi. All rights reserved.</p>
+            <p class="text-gray-300">&copy; 2025 Rumah Literasi Ranggi. All rights reserved.</p>
         </div>
     </div>
 </footer>

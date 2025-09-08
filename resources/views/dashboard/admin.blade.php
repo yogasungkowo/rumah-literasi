@@ -116,26 +116,26 @@
 
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center mb-4">
-                <div class="p-3 bg-red-100 dark:bg-red-900/30 rounded-full mr-4">
-                    <i class="fas fa-chart-bar text-2xl text-red-600 dark:text-red-400"></i>
+                <div class="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-full mr-4">
+                    <i class="fas fa-images text-2xl text-indigo-600 dark:text-indigo-400"></i>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Laporan Donasi</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Kelola Galeri</h3>
             </div>
-            <p class="text-gray-600 dark:text-gray-300 mb-4">Lihat statistik dan laporan donasi buku.</p>
-            <a href="/admin/reports/donations" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors inline-block text-center">
-                Lihat Laporan
+            <p class="text-gray-600 dark:text-gray-300 mb-4">Upload dan kelola foto kegiatan untuk galeri website.</p>
+            <a href="{{ route('admin.galleries.index') }}" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition-colors inline-block text-center">
+                Kelola Galeri
             </a>
         </div>
 
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center mb-4">
-                <div class="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-full mr-4">
-                    <i class="fas fa-users-cog text-2xl text-indigo-600 dark:text-indigo-400"></i>
+                <div class="p-3 bg-red-100 dark:bg-red-900/30 rounded-full mr-4">
+                    <i class="fas fa-users-cog text-2xl text-red-600 dark:text-red-400"></i>
                 </div>
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Kelola Users</h3>
             </div>
             <p class="text-gray-600 dark:text-gray-300 mb-4">Kelola pengguna dan role mereka.</p>
-            <a href="/admin/users" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition-colors inline-block text-center">
+            <a href="/admin/users" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors inline-block text-center">
                 Kelola Users
             </a>
         </div>

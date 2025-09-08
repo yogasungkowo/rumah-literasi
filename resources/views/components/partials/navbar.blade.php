@@ -1,11 +1,21 @@
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-white/20 dark:border-gray-700/30 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+        <div class="flex justify-between items-center h-28 py-4">
             <!-- Logo Section -->
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <h1 class="text-xl font-bold text-green-600 dark:text-green-400">Rumah Literasi</h1>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">Literasi Ranggi</p>
+                    <a href="/" class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="{{ asset('image/Logo_Rumah_Literasi_Ranggi.png') }}" alt="Rumah Literasi" class="h-24 w-24 object-contain rounded-lg bg-white/10 dark:bg-white/5 p-1">
+                        </div>
+                        <div class="hidden sm:block">
+                            <h1 class="text-xl font-bold text-green-600 dark:text-green-400 leading-tight">Rumah Literasi Ranggi</h1>
+                        </div>
+                        <!-- Mobile text - hanya tampil di mobile -->
+                        <div class="block sm:hidden">
+                            <h1 class="text-lg font-bold text-green-600 dark:text-green-400">Rumah Literasi Ranggi</h1>
+                        </div>
+                    </a>
                 </div>
             </div>
             

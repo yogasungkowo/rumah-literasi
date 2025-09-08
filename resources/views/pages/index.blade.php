@@ -1,30 +1,54 @@
 <x-layouts.app>
     <!-- Hero Section -->
-    <div class="relative overflow-hidden bg-gradient-to-br from-green-500 via-blue-500 to-purple-600 dark:from-green-600 dark:via-blue-600 dark:to-purple-700 text-white">
-        <!-- Background Pattern -->
-        <div class="absolute inset-0 bg-black/10">
-            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 dark:from-emerald-600 dark:via-teal-600 dark:to-cyan-700">
+        <!-- Animated Background -->
+        <div class="absolute inset-0">
+            <!-- Grid Pattern -->
+            <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M0 0h40v40H0z" fill="none"/%3E%3Cpath d="M0 0h20v20H0zM20 20h20v20H20z"/%3E%3C/g%3E%3C/svg%3E');"></div>
+            
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10"></div>
         </div>
         
-        <!-- Floating Elements -->
-        <div class="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
-        <div class="absolute top-40 right-20 w-32 h-32 bg-white/5 rounded-full blur-xl animate-pulse delay-1000"></div>
-        <div class="absolute bottom-20 left-1/3 w-16 h-16 bg-white/10 rounded-full blur-xl animate-pulse delay-500"></div>
+        <!-- Animated Floating Orbs -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <!-- Orb 1 - Green -->
+            <div class="absolute top-1/4 left-1/6 w-32 h-32 md:w-48 md:h-48 bg-gradient-to-br from-emerald-400 to-green-500 dark:from-emerald-500 dark:to-green-600 rounded-full blur-xl opacity-30 animate-float-slow"></div>
+            
+            <!-- Orb 2 - Blue -->
+            <div class="absolute top-2/3 right-1/5 w-24 h-24 md:w-36 md:h-36 bg-gradient-to-br from-blue-400 to-cyan-500 dark:from-blue-500 dark:to-cyan-600 rounded-full blur-lg opacity-40 animate-float-delayed"></div>
+            
+            <!-- Orb 3 - Purple -->
+            <div class="absolute bottom-1/3 left-2/3 w-40 h-40 md:w-56 md:h-56 bg-gradient-to-br from-purple-400 to-pink-500 dark:from-purple-500 dark:to-pink-600 rounded-full blur-2xl opacity-25 animate-float"></div>
+        </div>
         
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
-            <div class="text-center">
-                <!-- Logo/Icon -->
-                <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-8 animate-bounce">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
+        <!-- Floating Geometric Shapes -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-white/5 rounded-full animate-float"></div>
+            <div class="absolute top-1/3 right-1/4 w-24 h-24 bg-white/10 rounded-full animate-float-delayed"></div>
+            <div class="absolute bottom-1/4 left-1/3 w-40 h-40 bg-white/5 rounded-full animate-float-slow"></div>
+            <div class="absolute top-1/2 right-1/3 w-16 h-16 bg-white/15 rounded-full animate-bounce"></div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="space-y-8">
+                <!-- Main Title -->
+                <div class="space-y-4">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent animate-fade-in-up animation-delay-200 leading-tight">
+                        Rumah Literasi Ranggi
+                    </h1>
+                    <div class="flex items-center justify-center space-x-3 animate-fade-in-up animation-delay-300">
+                        <div class="h-1 w-12 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full"></div>
+                        <p class="text-2xl md:text-3xl lg:text-4xl font-bold text-yellow-300 tracking-wide">
+                            Mencerdaskan Bangsa Melalui Literasi
+                        </p>
+                        <div class="h-1 w-12 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full"></div>
+                    </div>
                 </div>
                 
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent animate-fade-in-up">
-                    Rumah Literasi
-                </h1>
-                <p class="text-2xl md:text-3xl mb-4 font-medium opacity-90 animate-fade-in-up animation-delay-200">Literasi Ranggi</p>
-                <p class="text-lg md:text-xl mb-12 max-w-4xl mx-auto leading-relaxed opacity-80 animate-fade-in-up animation-delay-400">
+                <!-- Description -->
+                <p class="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed animate-fade-in-up animation-delay-400 font-light">
                     Bersama membangun budaya literasi yang berkelanjutan untuk mencerdaskan bangsa melalui inovasi dan kolaborasi
                 </p>
                 
@@ -190,6 +214,18 @@
             <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z" fill="%2300000" fill-opacity="0.03" fill-rule="evenodd"/%3E%3C/svg%3E');"></div>
         </div>
         
+        <!-- Animated Floating Orbs for About Section -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <!-- Orb 1 - Soft Orange -->
+            <div class="absolute top-1/5 right-1/6 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-orange-300 to-red-400 dark:from-orange-400 dark:to-red-500 rounded-full blur-xl opacity-20 animate-float"></div>
+            
+            <!-- Orb 2 - Soft Yellow -->
+            <div class="absolute bottom-1/4 left-1/8 w-28 h-28 md:w-40 md:h-40 bg-gradient-to-br from-yellow-300 to-amber-400 dark:from-yellow-400 dark:to-amber-500 rounded-full blur-2xl opacity-15 animate-float-slow"></div>
+            
+            <!-- Orb 3 - Soft Teal -->
+            <div class="absolute top-2/3 right-1/3 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-teal-300 to-cyan-400 dark:from-teal-400 dark:to-cyan-500 rounded-full blur-lg opacity-25 animate-float-delayed"></div>
+        </div>
+        
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div class="order-2 lg:order-1">
@@ -257,54 +293,94 @@
                 
                 <div class="order-1 lg:order-2 relative">
                     <!-- Main stats card -->
-                    <div class="bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 rounded-3xl p-10 text-white shadow-2xl transform rotate-3 hover:rotate-0 transition-all duration-500 relative overflow-hidden">
-                        <!-- Background pattern -->
-                        <div class="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
-                        <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+                    <div class="group relative bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-3xl p-8 text-white shadow-xl hover:shadow-2xl transition-all duration-700 hover:scale-105 overflow-hidden">
+                        <!-- Animated Background Elements -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent"></div>
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full animate-pulse"></div>
+                        <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full animate-bounce delay-1000"></div>
+                        <div class="absolute top-1/2 right-1/4 w-6 h-6 bg-white/20 rounded-full animate-ping"></div>
                         
-                        <div class="relative text-center">
-                            <div class="flex items-center justify-center mb-4">
-                                <div class="text-6xl font-bold mr-2">5,247</div>
-                                <div class="text-3xl font-semibold opacity-80">+</div>
-                            </div>
-                            <div class="text-xl mb-3 font-semibold">Buku Telah Terdonasi</div>
-                            <div class="flex items-center justify-center space-x-4 text-sm opacity-90">
-                                <div class="flex items-center">
-                                    <div class="w-2 h-2 bg-green-300 rounded-full mr-2 animate-pulse"></div>
-                                    <span>Live Update</span>
+                        <!-- Floating Books Icon -->
+                        <div class="absolute top-4 right-4 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+                            <svg class="w-16 h-16 animate-float" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="relative z-10 text-center">
+                            <!-- Main Counter -->
+                            <div class="mb-6">
+                                <div class="flex items-center justify-center mb-2">
+                                    <span class="text-6xl md:text-7xl font-black bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent animate-pulse">
+                                        5,247
+                                    </span>
+                                    <div class="ml-2 flex flex-col">
+                                        <span class="text-2xl font-bold text-cyan-100">+</span>
+                                        <div class="w-8 h-1 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full"></div>
+                                    </div>
                                 </div>
-                                <div class="w-px h-4 bg-white/40"></div>
-                                <div>+25 hari ini</div>
+                                
+                                <!-- Title with Icon -->
+                                <div class="flex items-center justify-center space-x-2 mb-4">
+                                    <svg class="w-6 h-6 text-yellow-300" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    </svg>
+                                    <h3 class="text-xl md:text-2xl font-bold">Buku Telah Terdonasi</h3>
+                                </div>
+                            </div>
+                            
+                            <!-- Stats Row -->
+                            <div class="flex items-center justify-center space-x-6 text-sm font-medium bg-white/10 backdrop-blur-sm rounded-2xl py-3 px-6">
+                                <div class="flex items-center space-x-2">
+                                    <div class="relative">
+                                        <div class="w-3 h-3 bg-green-400 rounded-full animate-ping absolute"></div>
+                                        <div class="w-3 h-3 bg-green-300 rounded-full"></div>
+                                    </div>
+                                    <span class="text-green-100">Live Update</span>
+                                </div>
+                                <div class="w-px h-5 bg-white/30"></div>
+                                <div class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4 text-yellow-300" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+                                    </svg>
+                                    <span class="text-yellow-100">+25 hari ini</span>
+                                </div>
+                                <div class="w-px h-5 bg-white/30"></div>
+                                <div class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4 text-cyan-300" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                                    </svg>
+                                    <span class="text-cyan-100">↗ 15%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Floating cards -->
-                    <div class="absolute -bottom-6 -right-6 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-2xl max-w-xs">
-                        <div class="flex items-center space-x-4">
-                            <div class="bg-gradient-to-br from-green-400 to-green-600 p-4 rounded-xl">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {{-- <!-- Floating cards - positioned far from main card -->
+                    <div class="absolute -bottom-16 -right-16 lg:-bottom-12 lg:-right-12 bg-white dark:bg-gray-800 rounded-2xl p-4 lg:p-6 shadow-2xl max-w-xs transform hover:scale-105 transition-transform duration-300 hidden md:block">
+                        <div class="flex items-center space-x-3 lg:space-x-4">
+                            <div class="bg-gradient-to-br from-green-400 to-green-600 p-3 lg:p-4 rounded-xl">
+                                <svg class="w-6 h-6 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                                 </svg>
                             </div>
                             <div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">Literasi untuk Semua</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-300">Program Berkelanjutan</div>
+                                <div class="text-lg lg:text-xl font-bold text-gray-900 dark:text-white">Literasi untuk Semua</div>
+                                <div class="text-xs lg:text-sm text-gray-600 dark:text-gray-300">Program Berkelanjutan</div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     
-                    <div class="absolute -top-6 -left-6 bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-2xl">
-                        <div class="flex items-center space-x-3">
-                            <div class="bg-gradient-to-br from-blue-400 to-blue-600 p-3 rounded-lg">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="absolute -top-16 -left-16 lg:-top-12 lg:-left-12 bg-white dark:bg-gray-800 rounded-2xl p-3 lg:p-4 shadow-2xl transform hover:scale-105 transition-transform duration-300 hidden md:block">
+                        <div class="flex items-center space-x-2 lg:space-x-3">
+                            <div class="bg-gradient-to-br from-blue-400 to-blue-600 p-2 lg:p-3 rounded-lg">
+                                <svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <div>
                                 <div class="text-lg font-bold text-gray-900 dark:text-white">500+</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-300">Peserta Terlatih</div>
+                                <div class="text-xs lg:text-sm text-gray-600 dark:text-gray-300">Peserta Terlatih</div>
                             </div>
                         </div>
                     </div>
@@ -537,4 +613,160 @@
             </div>
         </div>
     </div>
+
+    <!-- Gallery Section -->
+    <div class="bg-white dark:bg-gray-900 py-20 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"><span class="bg-gradient-to-r from-green-500 to-blue-600 bg-clip-text text-transparent">Galeri</span>
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Dokumentasi kegiatan literasi, pelatihan, dan lain lain yang telah kami laksanakan.
+                </p>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @forelse($galleries as $gallery)
+                    <div class="group relative overflow-hidden rounded-3xl shadow-2xl transform transition-all duration-500 hover:scale-105">
+                        <div class="aspect-w-4 aspect-h-3 bg-gradient-to-br from-gray-400 to-gray-600">
+                            <img src="{{ $gallery->image_url }}" 
+                                 alt="{{ $gallery->title }}" 
+                                 class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="text-xl font-bold mb-2">{{ $gallery->title }}</h3>
+                                @if($gallery->description)
+                                    <p class="text-sm opacity-90">{{ Str::limit($gallery->description, 80) }}</p>
+                                @endif
+                                @if($gallery->category)
+                                    <div class="mt-2">
+                                        <span class="inline-block bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium">
+                                            {{ $gallery->category }}
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Fallback when no images are uploaded -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="max-w-md mx-auto">
+                            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Galeri Kosong</h3>
+                            <p class="text-gray-600 dark:text-gray-300">
+                                Belum ada foto yang diupload. Admin dapat menambahkan foto melalui dashboard admin.
+                            </p>
+                        </div>
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Gallery CTA -->
+            <div class="text-center mt-16">
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-12 relative overflow-hidden">
+                    <!-- Background pattern -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-green-500/5 to-blue-500/5"></div>
+                    
+                    <div class="relative">
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Ingin Melihat Lebih Banyak?</h3>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                            Ikuti media sosial kami untuk mendapatkan update terbaru tentang kegiatan literasi dan program-program menarik lainnya
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="#" class="inline-flex items-center justify-center bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                                </svg>
+                                Follow Instagram
+                            </a>
+                            <a href="{{ route('contact') }}" class="inline-flex items-center justify-center bg-white text-green-600 px-8 py-4 rounded-2xl font-semibold border-2 border-green-200 hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                                Hubungi Kami
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </x-layouts.app>
+
+<style>
+    /* Floating Orbs Animations */
+    @keyframes float {
+        0% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        33% {
+            transform: translateY(-20px) rotate(120deg);
+        }
+        66% {
+            transform: translateY(-10px) rotate(240deg);
+        }
+        100% {
+            transform: translateY(0px) rotate(360deg);
+        }
+    }
+
+    @keyframes float-slow {
+        0% {
+            transform: translateY(0px) translateX(0px) rotate(0deg);
+        }
+        25% {
+            transform: translateY(-30px) translateX(10px) rotate(90deg);
+        }
+        50% {
+            transform: translateY(-15px) translateX(-10px) rotate(180deg);
+        }
+        75% {
+            transform: translateY(-25px) translateX(5px) rotate(270deg);
+        }
+        100% {
+            transform: translateY(0px) translateX(0px) rotate(360deg);
+        }
+    }
+
+    @keyframes float-delayed {
+        0% {
+            transform: translateY(0px) scale(1) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-25px) scale(1.05) rotate(180deg);
+        }
+        100% {
+            transform: translateY(0px) scale(1) rotate(360deg);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-float-slow {
+        animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .animate-float-delayed {
+        animation: float-delayed 7s ease-in-out infinite 2s;
+    }
+
+    /* Responsive blur effects */
+    @media (max-width: 768px) {
+        .blur-2xl {
+            filter: blur(30px);
+        }
+        .blur-xl {
+            filter: blur(20px);
+        }
+        .blur-lg {
+            filter: blur(15px);
+        }
+    }
+</style>

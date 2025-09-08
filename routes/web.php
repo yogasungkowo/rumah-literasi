@@ -15,10 +15,18 @@ use App\Http\Controllers\Admin\TrainingController as AdminTrainingController;
 use App\Http\Controllers\Admin\DonationController as AdminDonationController;
 use App\Http\Controllers\Admin\SponsorshipController as AdminSponsorshipController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\SocialMediaController;
 
 // Public routes
 Route::get('/', function () {
-    return view('pages.index');
+    $galleries = \App\Models\Gallery::active()
+        ->orderBy('sort_order')
+        ->orderBy('created_at', 'desc')
+        ->limit(6)
+        ->get();
+    
+    return view('pages.index', compact('galleries'));
 })->name('welcome');
 
 Route::get('/donasi', [DonasiController::class, 'index']);
@@ -105,6 +113,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     // User Management
     Route::resource('users', AdminUserController::class);
     Route::put('/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.role');
+
+    // Gallery Management
+    Route::resource('galleries', GalleryController::class);
+    Route::patch('/galleries/{gallery}/toggle-status', [GalleryController::class, 'toggleStatus'])->name('galleries.toggle-status');
+
+    // Social Media Management
+    Route::resource('social-media', SocialMediaController::class);
+    Route::patch('/social-media/{social_medium}/toggle-status', [SocialMediaController::class, 'toggleStatus'])->name('social-media.toggle-status');
 });
 
 // Donatur routes (protected by donatur role)
