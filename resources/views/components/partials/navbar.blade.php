@@ -1,19 +1,19 @@
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-white/20 dark:border-gray-700/30 transition-all duration-300">
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-white/20 dark:border-gray-700/30 transition-all duration-300" x-data="{ mobileOpen: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-28 py-4">
+        <div class="flex justify-between items-center h-20 sm:h-28 py-2 sm:py-4">
             <!-- Logo Section -->
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <a href="/" class="flex items-center space-x-3">
+                    <a href="/" class="flex items-center space-x-2 sm:space-x-3">
                         <div class="relative">
-                            <img src="{{ asset('image/Logo_Rumah_Literasi_Ranggi.png') }}" alt="Rumah Literasi" class="h-24 w-24 object-contain rounded-lg bg-white/10 dark:bg-white/5 p-1">
+                            <img src="{{ asset('image/Logo_Rumah_Literasi_Ranggi.png') }}" alt="Rumah Literasi" class="h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 object-contain rounded-lg bg-white/10 dark:bg-white/5 p-1">
                         </div>
                         <div class="hidden sm:block">
-                            <h1 class="text-xl font-bold text-green-600 dark:text-green-400 leading-tight">Rumah Literasi Ranggi</h1>
+                            <h1 class="text-lg sm:text-xl font-bold text-green-600 dark:text-green-400 leading-tight">Rumah Literasi Ranggi</h1>
                         </div>
                         <!-- Mobile text - hanya tampil di mobile -->
                         <div class="block sm:hidden">
-                            <h1 class="text-lg font-bold text-green-600 dark:text-green-400">Rumah Literasi Ranggi</h1>
+                            <h1 class="text-sm font-bold text-green-600 dark:text-green-400 leading-tight">Rumah Literasi<br>Ranggi</h1>
                         </div>
                     </a>
                 </div>
@@ -121,9 +121,12 @@
                 </button>
                 
                 <!-- Mobile Menu Button -->
-                <button class="mobile-menu-button p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300">
-                    <svg class="w-6 h-6 text-gray-500 dark:text-gray-300" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                <button @click="mobileOpen = !mobileOpen" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300">
+                    <svg x-show="!mobileOpen" class="w-6 h-6 text-gray-500 dark:text-gray-300" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                         <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg x-show="mobileOpen" class="w-6 h-6 text-gray-500 dark:text-gray-300" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
@@ -131,44 +134,52 @@
     </div>
     
     <!-- Mobile Menu -->
-    <div class="mobile-menu hidden lg:hidden bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-white/20 dark:border-gray-700/30">
-        <div class="px-4 pt-4 pb-6 space-y-3">
+    <div x-show="mobileOpen" 
+         x-transition:enter="transition ease-out duration-200" 
+         x-transition:enter-start="opacity-0 transform -translate-y-2" 
+         x-transition:enter-end="opacity-100 transform translate-y-0" 
+         x-transition:leave="transition ease-in duration-150" 
+         x-transition:leave-start="opacity-100 transform translate-y-0" 
+         x-transition:leave-end="opacity-0 transform -translate-y-2"
+         @click.away="mobileOpen = false"
+         class="lg:hidden bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-white/20 dark:border-gray-700/30">
+        <div class="px-4 pt-4 pb-6 space-y-1">
             <!-- Mobile Navigation Links -->
-            <div class="space-y-2">
-                <a href="/" class="{{ request()->is('/') || request()->is('') || request()->routeIs('home') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-3 py-2 text-base font-medium transition-all duration-200">
+            <div class="space-y-1">
+                <a href="/" @click="mobileOpen = false" class="{{ request()->is('/') || request()->is('') || request()->routeIs('home') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-4 py-3 text-base font-medium transition-all duration-200 rounded-r-lg">
                     <span class="flex items-center">
                         @if(request()->is('/') || request()->is('') || request()->routeIs('home'))
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                         @endif
                         Beranda
                     </span>
                 </a>
-                <a href="/donasi" class="{{ request()->is('donasi*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-3 py-2 text-base font-medium transition-all duration-200">
+                <a href="/donasi" @click="mobileOpen = false" class="{{ request()->is('donasi*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-4 py-3 text-base font-medium transition-all duration-200 rounded-r-lg">
                     <span class="flex items-center">
                         @if(request()->is('donasi*'))
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                         @endif
                         Donasi Buku
                     </span>
                 </a>
-                <a href="/pelatihan" class="{{ request()->is('pelatihan*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-3 py-2 text-base font-medium transition-all duration-200">
+                <a href="/pelatihan" @click="mobileOpen = false" class="{{ request()->is('pelatihan*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-4 py-3 text-base font-medium transition-all duration-200 rounded-r-lg">
                     <span class="flex items-center">
                         @if(request()->is('pelatihan*'))
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                         @endif
                         Ikuti Pelatihan
                     </span>
                 </a>
-                <a href="/sponsorship" class="{{ request()->is('sponsorship*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-3 py-2 text-base font-medium transition-all duration-200">
+                <a href="/sponsorship" @click="mobileOpen = false" class="{{ request()->is('sponsorship*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-4 py-3 text-base font-medium transition-all duration-200 rounded-r-lg">
                     <span class="flex items-center">
                         @if(request()->is('sponsorship*'))
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                         @endif
@@ -196,11 +207,10 @@
                                 <p class="text-xs text-green-600 dark:text-green-400">{{ auth()->user()->role_name }}</p>
                             </div>
                         </div>
-                    </div>
                     
                     <!-- Mobile Dashboard & Profile Links -->
-                    <div class="space-y-2">
-                        <a href="{{ auth()->user()->dashboard_url }}" class="{{ (request()->is('dashboard*') && !request()->is('dashboard/profile*')) || request()->is('admin*') ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} flex items-center px-3 py-2 text-base font-medium transition-all duration-200">
+                    <div class="space-y-1 mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <a href="{{ auth()->user()->dashboard_url }}" @click="mobileOpen = false" class="{{ (request()->is('dashboard*') && !request()->is('dashboard/profile*')) || request()->is('admin*') ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} flex items-center px-4 py-3 text-base font-medium transition-all duration-200 rounded-r-lg">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
@@ -212,7 +222,7 @@
                                 </svg>
                             @endif
                         </a>
-                        <a href="/dashboard/profile" class="{{ request()->is('dashboard/profile*') ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} flex items-center px-3 py-2 text-base font-medium transition-all duration-200">
+                        <a href="/dashboard/profile" @click="mobileOpen = false" class="{{ request()->is('dashboard/profile*') ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} flex items-center px-4 py-3 text-base font-medium transition-all duration-200 rounded-r-lg">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7-7h14a7 7 0 00-7-7z"></path>
                             </svg>
@@ -225,7 +235,7 @@
                         </a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="flex items-center w-full px-3 py-2 text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md text-base font-medium transition-colors">
+                            <button type="submit" class="flex items-center w-full px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-base font-medium transition-colors border-l-4 border-transparent hover:border-red-300">
                                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                                 </svg>
@@ -235,9 +245,14 @@
                     </div>
                 @else
                     <!-- Mobile Login Button for Guests -->
-                    <a href="/login" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-sm font-medium w-full flex items-center justify-center transition-all duration-300">
-                        Masuk
-                    </a>
+                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <a href="/login" @click="mobileOpen = false" class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-base font-medium w-full flex items-center justify-center transition-all duration-300">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                            </svg>
+                            Masuk
+                        </a>
+                    </div>
                 @endauth
             </div>
         </div>
