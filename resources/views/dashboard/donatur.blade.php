@@ -6,8 +6,14 @@
                 <h2 class="text-2xl font-bold mb-2">Selamat Datang, {{ $user->name }}!</h2>
                 <p class="text-green-100">Kelola dan pantau status donasi buku Anda di sini.</p>
             </div>
-            <div class="mt-4 md:mt-0">
-                <a href="{{ route('donations.create') }}" class="bg-white text-green-600 hover:bg-green-50 px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center">
+            <div class="mt-4 md:mt-0 flex space-x-3">
+                <a href="{{ route('donations.history') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Riwayat Lengkap
+                </a>
+                <a href="{{ route('donations.create') }}" class="bg-white text-green-600 hover:bg-green-50 border-2 border-green-500 px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                     </svg>
@@ -85,8 +91,8 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal Donasi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Detail Buku</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jumlah</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Metode Pickup</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Keterangan</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
@@ -97,22 +103,100 @@
                                     {{ $donation->created_at->format('d M Y') }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm">
-                                        <div class="font-medium text-gray-900 dark:text-white">
-                                            {{ $donation->book_title }}
-                                        </div>
-                                        <div class="text-gray-500 dark:text-gray-400">
-                                            {{ $donation->book_author }} • {{ $donation->book_category }}
-                                        </div>
-                                        @if($donation->book_description)
-                                            <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                                                {{ Str::limit($donation->book_description, 60) }}
+                                    <div class="flex items-start space-x-3">
+                                        @if($donation->book_data && count($donation->book_data) > 0)
+                                            @php
+                                                $books = $donation->book_data;
+                                                $firstBook = $books[0];
+                                            @endphp
+                                            <!-- Thumbnail cover buku -->
+                                            @if(isset($firstBook['cover']) && $firstBook['cover'])
+                                                <div class="flex-shrink-0">
+                                                    <img src="{{ asset('storage/' . $firstBook['cover']) }}" 
+                                                         alt="Cover {{ $firstBook['title'] ?? 'Buku' }}" 
+                                                         class="w-12 h-16 object-cover rounded-lg shadow-sm">
+                                                </div>
+                                            @else
+                                                <div class="flex-shrink-0 w-12 h-16 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                                    </svg>
+                                                </div>
+                                            @endif
+                                            
+                                            <div class="flex-1 text-sm">
+                                                <div class="font-medium text-gray-900 dark:text-white">
+                                                    {{ $firstBook['title'] ?? 'Tanpa Judul' }}
+                                                </div>
+                                                <div class="text-gray-500 dark:text-gray-400">
+                                                    {{ $firstBook['author'] ?? 'Tanpa Penulis' }} • {{ $firstBook['category'] ?? 'Tanpa Kategori' }}
+                                                </div>
+                                                @if(count($books) > 1)
+                                                    <div class="text-xs text-blue-600 dark:text-blue-400 mt-1 font-medium">
+                                                        +{{ count($books) - 1 }} buku lainnya
+                                                    </div>
+                                                @endif
+                                                @if(isset($firstBook['condition']) && $firstBook['condition'])
+                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 mt-1">
+                                                        {{ ucfirst(str_replace('-', ' ', $firstBook['condition'])) }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <!-- Fallback untuk data lama -->
+                                            <div class="flex-shrink-0 w-12 h-16 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+                                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1 text-sm">
+                                                <div class="font-medium text-gray-900 dark:text-white">
+                                                    {{ $donation->book_title ?? 'Detail tidak tersedia' }}
+                                                </div>
+                                                @if($donation->book_author || $donation->book_category)
+                                                    <div class="text-gray-500 dark:text-gray-400">
+                                                        {{ $donation->book_author ?? '' }}{{ $donation->book_author && $donation->book_category ? ' • ' : '' }}{{ $donation->book_category ?? '' }}
+                                                    </div>
+                                                @endif
+                                                @if($donation->book_description)
+                                                    <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                                                        {{ Str::limit($donation->book_description, 60) }}
+                                                    </div>
+                                                @endif
                                             </div>
                                         @endif
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
-                                    <span class="font-medium">{{ $donation->total_books }}</span> buku
+                                    @php
+                                        $bookCount = 0;
+                                        if ($donation->book_data && is_array($donation->book_data)) {
+                                            $bookCount = count($donation->book_data);
+                                        } elseif ($donation->total_books) {
+                                            $bookCount = $donation->total_books;
+                                        }
+                                    @endphp
+                                    <span class="font-medium">{{ $bookCount }}</span> buku
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
+                                    <div class="flex flex-col">
+                                        <span class="font-medium">
+                                            {{ $donation->pickup_method === 'pickup' ? 'Dijemput' : 'Diantar' }}
+                                        </span>
+                                        @if($donation->preferred_date)
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">
+                                                {{ \Carbon\Carbon::parse($donation->preferred_date)->format('d M Y') }}
+                                                @if($donation->preferred_time)
+                                                    • {{ $donation->preferred_time }}
+                                                @endif
+                                            </span>
+                                        @endif
+                                        @if($donation->pickup_address && strlen($donation->pickup_address) > 0)
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 mt-1" title="{{ $donation->pickup_address }}">
+                                                {{ Str::limit($donation->pickup_address, 30) }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($donation->status === 'pending')
@@ -152,38 +236,29 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
-                                    @if($donation->notes)
-                                        <div class="max-w-xs">
-                                            <p>{{ Str::limit($donation->notes, 50) }}</p>
-                                        </div>
-                                    @else
-                                        <span class="text-gray-400 dark:text-gray-500 italic">-</span>
-                                    @endif
-                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    <div class="flex space-x-2">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <div class="flex flex-col space-y-2">
                                         <!-- Tombol Lihat Detail Buku -->
                                         <button 
                                             onclick="showBookDetails({{ $donation->id }})"
-                                            class="inline-flex items-center px-3 py-1.5 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-lg transition-colors duration-200"
-                                            title="Lihat detail buku yang didonasikan"
+                                            class="inline-flex items-center justify-center px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 transform hover:scale-105 shadow-sm"
+                                            title="Lihat detail semua buku yang didonasikan"
                                         >
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                                             </svg>
-                                            Lihat Buku
+                                            Detail Buku
                                         </button>
                                         
                                         @if($donation->status === 'pending')
                                             <!-- Tombol Edit (hanya untuk status pending) -->
                                             <a 
                                                 href="{{ route('donations.edit', $donation->id) }}"
-                                                class="inline-flex items-center px-3 py-1.5 bg-yellow-100 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:hover:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 text-xs font-medium rounded-lg transition-colors duration-200"
+                                                class="inline-flex items-center justify-center px-3 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-medium rounded-lg transition-all duration-200 transform hover:scale-105 shadow-sm"
                                                 title="Edit donasi (hanya untuk status pending)"
                                             >
-                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                 </svg>
                                                 Edit
@@ -316,7 +391,8 @@
                             <div class="flex items-start space-x-4">
                                 ${book.cover ? `
                                     <div class="flex-shrink-0">
-                                        <img src="/storage/${book.cover}" alt="Cover ${book.title}" 
+                                        <img src="${book.cover.startsWith('http') ? book.cover : '/storage/' + book.cover}" 
+                                             alt="Cover ${book.title}" 
                                              class="w-20 h-28 object-cover rounded-lg shadow-md">
                                     </div>
                                 ` : `

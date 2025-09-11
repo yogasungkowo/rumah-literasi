@@ -1,6 +1,6 @@
 <x-layouts.integrated-dashboard title="Riwayat Donasi Saya">
     @php
-        use Illuminate\Support\Facades\Storage;
+        // Storage facade sudah otomatis tersedia di Laravel
     @endphp
     <div class="max-w-7xl mx-auto space-y-6">
         <!-- Header -->
