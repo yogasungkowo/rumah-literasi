@@ -32,6 +32,7 @@ class User extends Authenticatable
         'gender',
         'status',
         'last_login_at',
+        'email_verified_at',
     ];
 
     /**

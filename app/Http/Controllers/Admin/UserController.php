@@ -55,7 +55,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+    // Exclude 'Publik' role from selection
+    $roles = Role::where('name', '!=', 'Publik')->get();
         return view('admin.users.create', compact('roles'));
     }
 
@@ -72,8 +73,7 @@ class UserController extends Controller
             'address' => 'nullable|string',
             'password' => 'required|string|min:8|confirmed',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'roles' => 'nullable|array',
-            'roles.*' => 'exists:roles,id',
+            'role' => 'required|exists:roles,id',
         ]);
 
         $userData = [
@@ -83,6 +83,7 @@ class UserController extends Controller
             'birth_date' => $request->birth_date,
             'address' => $request->address,
             'password' => bcrypt($request->password),
+            'email_verified_at' => now(), // Auto-verify users created by admin
         ];
 
         // Handle avatar upload
@@ -90,17 +91,12 @@ class UserController extends Controller
             $userData['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        // Set email verification
-        if ($request->verify_email) {
-            $userData['email_verified_at'] = now();
-        }
-
         $user = User::create($userData);
 
-        // Assign roles
-        if ($request->roles) {
-            $roles = Role::whereIn('id', $request->roles)->pluck('name')->toArray();
-            $user->syncRoles($roles);
+        // Assign single role
+        $roleName = Role::where('id', $request->role)->value('name');
+        if ($roleName) {
+            $user->syncRoles([$roleName]);
         }
 
         return redirect()->route('admin.users.index')
@@ -122,7 +118,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $user->load('roles');
-        $roles = Role::all();
+    // Exclude 'Publik' role from selection
+    $roles = Role::where('name', '!=', 'Publik')->get();
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
@@ -141,6 +138,8 @@ class UserController extends Controller
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'roles' => 'nullable|array',
             'roles.*' => 'exists:roles,id',
+            'role' => 'nullable|exists:roles,id',
+            'verify_email' => 'nullable|boolean',
         ]);
 
         $userData = [
@@ -166,16 +165,26 @@ class UserController extends Controller
         }
 
         // Handle email verification
-        if ($request->verify_email && !$user->email_verified_at) {
+        if ($request->has('verify_email') && $request->verify_email == '1' && !$user->email_verified_at) {
             $userData['email_verified_at'] = now();
         }
 
         $user->update($userData);
 
-        // Update roles
-        if ($request->has('roles')) {
-            $roles = Role::whereIn('id', $request->roles)->pluck('name')->toArray();
-            $user->syncRoles($roles);
+        // Refresh model to ensure updated data
+        $user->refresh();
+
+        // Update role (support both legacy roles[] and new single role)
+        if ($request->filled('role')) {
+            $roleName = Role::where('id', $request->role)->value('name');
+            if ($roleName) {
+                $user->syncRoles([$roleName]);
+            }
+        } elseif ($request->has('roles')) {
+            $roles = Role::whereIn('id', (array) $request->roles)->pluck('name')->toArray();
+            if (!empty($roles)) {
+                $user->syncRoles($roles);
+            }
         }
 
         return redirect()->route('admin.users.show', $user)
