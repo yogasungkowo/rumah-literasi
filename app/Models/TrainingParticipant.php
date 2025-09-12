@@ -26,6 +26,8 @@ class TrainingParticipant extends Model
     ];
 
     protected $casts = [
+        'training_id' => 'integer',
+        'user_id' => 'integer',
         'attendance' => 'array',
         'certificate_score' => 'decimal:2',
         'certificate_issued' => 'boolean',

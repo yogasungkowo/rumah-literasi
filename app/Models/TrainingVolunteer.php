@@ -21,6 +21,8 @@ class TrainingVolunteer extends Model
     ];
 
     protected $casts = [
+        'training_id' => 'integer',
+        'user_id' => 'integer',
         'registered_at' => 'datetime',
         'confirmed_at' => 'datetime',
     ];
