@@ -32,6 +32,9 @@ class BookDonation extends Model
     ];
 
     protected $casts = [
+        'donor_id' => 'integer',
+        'verified_by' => 'integer',
+        'total_books' => 'integer',
         'book_data' => 'array',
         'preferred_date' => 'date',
         'verified_at' => 'datetime',
