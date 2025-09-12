@@ -7,17 +7,18 @@ use Illuminate\Support\Facades\Artisan;
 
 class FixProduction403 extends Command
 {
-    protected $signature = 'fix:production-403 {--dry-run}';
+    protected $signature = 'fix:production-403 {--dry-run} {--test-only}';
     protected $description = 'Complete fix for 403 unauthorized issues in production';
 
     public function handle()
     {
+        $isDryRun = $this->option('dry-run');
+        $testOnly = $this->option('test-only');
+        
         $this->info('=== COMPLETE PRODUCTION 403 FIX ===');
         
-        $isDryRun = $this->option('dry-run');
-        
-        if ($isDryRun) {
-            $this->warn('DRY RUN MODE - Only diagnosis will be performed');
+        if ($isDryRun || $testOnly) {
+            $this->warn('TEST MODE - No changes will be made');
         }
         
         // Step 1: Diagnose data consistency
