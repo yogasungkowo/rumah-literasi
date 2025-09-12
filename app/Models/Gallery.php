@@ -22,6 +22,8 @@ class Gallery extends Model
     ];
 
     protected $casts = [
+        'uploaded_by' => 'integer',
+        'sort_order' => 'integer',
         'is_active' => 'boolean',
     ];
 

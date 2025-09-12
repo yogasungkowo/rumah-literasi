@@ -29,6 +29,10 @@ class Book extends Model
     ];
 
     protected $casts = [
+        'donation_id' => 'integer',
+        'donated_by' => 'integer',
+        'publication_year' => 'integer',
+        'pages' => 'integer',
         'donated_at' => 'datetime',
     ];
 
