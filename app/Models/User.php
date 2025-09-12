@@ -130,6 +130,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get user's book donations
+     */
+    public function bookDonations()
+    {
+        return $this->hasMany(BookDonation::class, 'donor_id');
+    }
+
+    /**
      * Get user's sponsorships
      */
     public function sponsorships()
