@@ -11,6 +11,9 @@
         <link rel="icon" href="{{ asset('image/favicon/android-chrome-512x512.png') }}" type="image/png">
         <link rel="apple-touch-icon" href="{{ asset('image/favicon/apple-touch-icon.png') }}">
 
+        <!-- SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <!-- FontAwesome Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
             integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous"
