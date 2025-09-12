@@ -34,6 +34,8 @@ class Sponsorship extends Model
     ];
 
     protected $casts = [
+        'sponsor_id' => 'integer',
+        'verified_by' => 'integer',
         'benefits_requested' => 'array',
         'start_date' => 'date',
         'end_date' => 'date',
