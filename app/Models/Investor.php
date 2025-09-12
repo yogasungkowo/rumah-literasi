@@ -9,6 +9,10 @@ class Investor extends Model
 {
     protected $fillable = ['user_id', 'company_name', 'image_profile'];
 
+    protected $casts = [
+        'user_id' => 'integer',
+    ];
+
     /**
      * Boot the model and set up event listeners
      */
