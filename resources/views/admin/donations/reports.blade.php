@@ -7,33 +7,38 @@
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Donation Reports</h1>
                     <p class="text-gray-600 dark:text-gray-300">Comprehensive analytics and insights for book donations</p>
                 </div>
-                
+
                 <!-- Date Range Filter -->
                 <div class="mt-6 lg:mt-0">
-                    <form method="GET" class="flex flex-col sm:flex-row gap-4">
+                    <form method="GET" class="flex flex-col sm:flex-row gap-4" id="dateFilterForm">
                         <div>
                             <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">From</label>
-                            <input type="date" 
-                                   id="start_date" 
-                                   name="start_date" 
-                                   value="{{ request('start_date', $startDate->format('Y-m-d')) }}"
-                                   class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
+                            <input type="date" id="start_date" name="start_date" value="{{ request('start_date', $startDate->format('Y-m-d')) }}"
+                                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 flatpickr-input"
+                                placeholder="Select start date">
                         </div>
                         <div>
                             <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To</label>
-                            <input type="date" 
-                                   id="end_date" 
-                                   name="end_date" 
-                                   value="{{ request('end_date', $endDate->format('Y-m-d')) }}"
-                                   class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
+                            <input type="date" id="end_date" name="end_date" value="{{ request('end_date', $endDate->format('Y-m-d')) }}"
+                                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 flatpickr-input"
+                                placeholder="Select end date">
                         </div>
-                        <div class="flex items-end">
-                            <button type="submit" 
-                                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center">
+                        <div class="flex items-end gap-2">
+                            <button type="submit"
+                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors flex items-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
                                 </svg>
                                 Filter
+                            </button>
+                            <button type="button" id="resetFilter"
+                                class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Reset
                             </button>
                         </div>
                     </form>
@@ -48,7 +53,8 @@
                 <div class="flex items-center">
                     <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                         <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </div>
                     <div class="ml-4">
@@ -63,7 +69,7 @@
                 <div class="flex items-center">
                     <div class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
                         <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div class="ml-4">
@@ -78,7 +84,7 @@
                 <div class="flex items-center">
                     <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
                         <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
                     <div class="ml-4">
@@ -93,7 +99,7 @@
                 <div class="flex items-center">
                     <div class="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                         <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div class="ml-4">
@@ -108,7 +114,7 @@
                 <div class="flex items-center">
                     <div class="p-3 bg-red-100 dark:bg-red-900/30 rounded-lg">
                         <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </div>
                     <div class="ml-4">
@@ -123,7 +129,8 @@
                 <div class="flex items-center">
                     <div class="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
                         <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
                     <div class="ml-4">
@@ -156,14 +163,18 @@
                                     <div class="text-xs text-gray-500 dark:text-gray-400">{{ $month->books }} books</div>
                                 </div>
                                 <div class="w-16 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                                    <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $monthlyData->max('total') > 0 ? ($month->total / $monthlyData->max('total')) * 100 : 0 }}%"></div>
+                                    <div class="bg-blue-600 h-2 rounded-full"
+                                        style="width: {{ $monthlyData->max('total') > 0 ? ($month->total / $monthlyData->max('total')) * 100 : 0 }}%">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     @empty
                         <div class="text-center py-8">
-                            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                             <p class="text-gray-500 dark:text-gray-400">No monthly data available</p>
                         </div>
@@ -178,7 +189,8 @@
                     @forelse($topDonors as $index => $donor)
                         <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white font-semibold mr-4">
                                     #{{ $index + 1 }}
                                 </div>
                                 <div>
@@ -195,8 +207,10 @@
                         </div>
                     @empty
                         <div class="text-center py-8">
-                            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             <p class="text-gray-500 dark:text-gray-400">No donor data available</p>
                         </div>
@@ -206,47 +220,129 @@
         </div>
 
         <!-- Category Distribution -->
-        @if($categoryStats->isNotEmpty())
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Donated Books by Category</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                @foreach($categoryStats as $category)
-                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $category->category }}</span>
-                            <span class="text-lg font-bold text-gray-900 dark:text-white">{{ $category->count }}</span>
+        @if ($categoryStats->isNotEmpty())
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Donated Books by Category</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    @foreach ($categoryStats as $category)
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $category->category }}</span>
+                                <span class="text-lg font-bold text-gray-900 dark:text-white">{{ $category->count }}</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full"
+                                    style="width: {{ $categoryStats->max('count') > 0 ? ($category->count / $categoryStats->max('count')) * 100 : 0 }}%">
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                {{ $categoryStats->sum('count') > 0 ? round(($category->count / $categoryStats->sum('count')) * 100, 1) : 0 }}% of
+                                total
+                            </div>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                            <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $categoryStats->max('count') > 0 ? ($category->count / $categoryStats->max('count')) * 100 : 0 }}%"></div>
-                        </div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            {{ $categoryStats->sum('count') > 0 ? round(($category->count / $categoryStats->sum('count')) * 100, 1) : 0 }}% of total
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
-        </div>
         @endif
 
         <!-- Export Actions -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Export Reports</h3>
             <div class="flex flex-wrap gap-4">
-                <a href="{{ route('admin.donations.index') }}?export=csv&start_date={{ request('start_date', $startDate->format('Y-m-d')) }}&end_date={{ request('end_date', $endDate->format('Y-m-d')) }}" 
-                   class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
+                <a href="{{ route('admin.donations.reports') }}?export=csv&start_date={{ request('start_date', $startDate->format('Y-m-d')) }}&end_date={{ request('end_date', $endDate->format('Y-m-d')) }}"
+                    class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     Export CSV
                 </a>
-                <a href="{{ route('admin.donations.index') }}?export=pdf&start_date={{ request('start_date', $startDate->format('Y-m-d')) }}&end_date={{ request('end_date', $endDate->format('Y-m-d')) }}" 
-                   class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
+                <a href="{{ route('admin.donations.reports') }}?export=pdf&start_date={{ request('start_date', $startDate->format('Y-m-d')) }}&end_date={{ request('end_date', $endDate->format('Y-m-d')) }}"
+                    class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                     Export PDF
                 </a>
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Flatpickr for start date
+                const startDatePicker = flatpickr("#start_date", {
+                    dateFormat: "Y-m-d",
+                    maxDate: "today",
+                    allowInput: true,
+                    theme: "light",
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // Update end date picker's min date
+                        if (selectedDates.length > 0) {
+                            endDatePicker.set('minDate', selectedDates[0]);
+                        }
+                    }
+                });
+
+                // Initialize Flatpickr for end date
+                const endDatePicker = flatpickr("#end_date", {
+                    dateFormat: "Y-m-d",
+                    maxDate: "today",
+                    allowInput: true,
+                    theme: "light",
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // Update start date picker's max date
+                        if (selectedDates.length > 0) {
+                            startDatePicker.set('maxDate', selectedDates[0]);
+                        }
+                    }
+                });
+
+                // Set initial constraints
+                const startDateValue = document.getElementById('start_date').value;
+                const endDateValue = document.getElementById('end_date').value;
+
+                if (startDateValue) {
+                    endDatePicker.set('minDate', startDateValue);
+                }
+                if (endDateValue) {
+                    startDatePicker.set('maxDate', endDateValue);
+                }
+
+                // Reset filter functionality
+                document.getElementById('resetFilter').addEventListener('click', function() {
+                    // Clear the date inputs
+                    startDatePicker.clear();
+                    endDatePicker.clear();
+
+                    // Reset constraints
+                    startDatePicker.set('maxDate', 'today');
+                    endDatePicker.set('minDate', null);
+
+                    // Redirect to reports page without date parameters
+                    window.location.href = '{{ route('admin.donations.reports') }}';
+                });
+
+                // Auto-submit form when dates change (optional)
+                let autoSubmitTimeout;
+
+                function scheduleAutoSubmit() {
+                    clearTimeout(autoSubmitTimeout);
+                    autoSubmitTimeout = setTimeout(function() {
+                        const startDate = document.getElementById('start_date').value;
+                        const endDate = document.getElementById('end_date').value;
+
+                        if (startDate && endDate) {
+                            document.getElementById('dateFilterForm').submit();
+                        }
+                    }, 1000); // Submit after 1 second of no changes
+                }
+
+                // Optional: Enable auto-submit when both dates are selected
+                document.getElementById('start_date').addEventListener('change', scheduleAutoSubmit);
+                document.getElementById('end_date').addEventListener('change', scheduleAutoSubmit);
+            });
+        </script>
+    @endpush
 </x-layouts.admin>

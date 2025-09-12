@@ -446,12 +446,13 @@
                                                     </a>
                                                     <form method="POST" action="{{ route('admin.trainings.destroy', $training) }}" 
                                                           class="inline" 
-                                                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus pelatihan ini?')">
+                                                          id="delete-training-form-{{ $training->id }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" 
+                                                        <button type="button" 
                                                                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-lg transition-all duration-200"
-                                                                title="Hapus">
+                                                                title="Hapus"
+                                                                onclick="confirmDeleteTraining({{ $training->id }}, '{{ $training->title }}')">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
@@ -614,11 +615,12 @@
                                         
                                         <form method="POST" action="{{ route('admin.trainings.destroy', $training) }}" 
                                               class="inline" 
-                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus pelatihan ini?')">
+                                              id="delete-training-card-form-{{ $training->id }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" 
-                                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-lg transition-all duration-200">
+                                            <button type="button" 
+                                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-lg transition-all duration-200"
+                                                    onclick="confirmDeleteTrainingCard({{ $training->id }}, '{{ $training->title }}')">
                                                 <i class="fas fa-trash mr-1"></i>
                                                 Hapus
                                             </button>
@@ -719,6 +721,42 @@
                 });
             }
         });
+
+        function confirmDeleteTraining(trainingId, trainingTitle) {
+            Swal.fire({
+                title: 'Hapus Pelatihan?',
+                text: `Apakah Anda yakin ingin menghapus pelatihan "${trainingTitle}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`delete-training-form-${trainingId}`).submit();
+                }
+            });
+        }
+
+        function confirmDeleteTrainingCard(trainingId, trainingTitle) {
+            Swal.fire({
+                title: 'Hapus Pelatihan?',
+                text: `Apakah Anda yakin ingin menghapus pelatihan "${trainingTitle}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`delete-training-card-form-${trainingId}`).submit();
+                }
+            });
+        }
     </script>
     @endpush
 </x-layouts.admin>

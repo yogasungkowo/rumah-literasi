@@ -10,24 +10,44 @@ class DonasiController extends Controller
 {
     public function index()
     {
-        // Ambil buku-buku yang sudah didonasi dengan status terverifikasi
+        // Ambil buku-buku yang sudah didonasi dan buku yang tersedia
         $verifiedBooks = Book::with(['donor', 'donation'])
-            ->where('status', 'donated')
-            ->whereNotNull('donated_by')
+            ->where(function($query) {
+                $query->where(function($q) {
+                    // Buku dari donasi (status donated dan ada donated_by)
+                    $q->where('status', 'donated')
+                      ->whereNotNull('donated_by');
+                })
+                ->orWhere(function($q) {
+                    // Buku available (bisa dari manual admin atau dari donasi)
+                    $q->where('status', 'available');
+                });
+            })
             ->latest('donated_at')
             ->paginate(12);
 
-        // Statistik donasi - hitung dari semua buku yang sudah didonasi
-        $totalDonatedBooks = Book::where('status', 'donated')
-            ->whereNotNull('donated_by');
+        // Statistik donasi - hitung dari semua buku yang relevan
+        $totalBooksQuery = Book::where(function($query) {
+            $query->where(function($q) {
+                $q->where('status', 'donated')
+                  ->whereNotNull('donated_by');
+            })
+            ->orWhere('status', 'available');
+        });
 
         $stats = [
-            'total_books' => $totalDonatedBooks->count(),
-            'total_donors' => Book::where('status', 'donated')
-                ->whereNotNull('donated_by')
-                ->distinct('donated_by')
-                ->count(),
-            'categories' => $totalDonatedBooks->whereNotNull('category')
+            'total_books' => $totalBooksQuery->count(),
+            'total_donors' => Book::where(function($query) {
+                $query->where(function($q) {
+                    $q->where('status', 'donated')
+                      ->whereNotNull('donated_by');
+                })
+                ->orWhere('status', 'available');
+            })
+            ->whereNotNull('donated_by')
+            ->distinct('donated_by')
+            ->count(),
+            'categories' => $totalBooksQuery->whereNotNull('category')
                 ->distinct('category')
                 ->count(),
         ];

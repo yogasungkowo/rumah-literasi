@@ -195,11 +195,12 @@
 
                     <!-- Delete Button -->
                     <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST" class="inline" 
-                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus foto ini? Tindakan ini tidak dapat dibatalkan.')">
+                          id="delete-gallery-form">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" 
-                                class="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105">
+                        <button type="button" 
+                                class="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105"
+                                onclick="confirmDeleteGallery('{{ $gallery->title }}')">
                             <i class="fas fa-trash mr-2"></i>
                             Hapus Foto
                         </button>
@@ -208,4 +209,24 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmDeleteGallery(galleryTitle) {
+            Swal.fire({
+                title: 'Hapus Foto?',
+                text: `Apakah Anda yakin ingin menghapus foto "${galleryTitle}"? Tindakan ini tidak dapat dibatalkan.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-gallery-form').submit();
+                }
+            });
+        }
+    </script>
 </x-layouts.integrated-dashboard>

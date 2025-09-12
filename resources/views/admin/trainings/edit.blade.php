@@ -1294,9 +1294,21 @@
                 
                 // Ask user if they want to auto-generate schedule
                 if (diffDays > 1 && diffDays <= 7) {
-                    if (confirm(`Pelatihan berlangsung ${diffDays} hari. Apakah ingin membuat jadwal otomatis untuk setiap hari?`)) {
-                        generateAutoSchedule(start, diffDays);
-                    }
+                    Swal.fire({
+                        title: 'Buat Jadwal Otomatis?',
+                        text: `Pelatihan berlangsung ${diffDays} hari. Apakah ingin membuat jadwal otomatis untuk setiap hari?`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3b82f6',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, Buat Otomatis!',
+                        cancelButtonText: 'Tidak',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            generateAutoSchedule(start, diffDays);
+                        }
+                    });
                 }
             }
         });

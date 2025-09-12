@@ -22,6 +22,7 @@ class BookDonation extends Model
         'notes',
         'pickup_method',
         'pickup_address',
+        'delivery_address',
         'preferred_date',
         'preferred_time',
         'status',

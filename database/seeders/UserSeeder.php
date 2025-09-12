@@ -106,34 +106,16 @@ class UserSeeder extends Seeder
         ]);
         $peserta->assignRole('Peserta Pelatihan');
 
-        // User tanpa role khusus (publik)
-        $publik = User::create([
-            'name' => 'Rini Hartati',
-            'email' => 'publik@example.com',
-            'password' => Hash::make('password123'),
-            'phone' => '081234567895',
-            'address' => 'Jl. Umum No. 20, Makassar',
-            'organization' => null,
-            'profession' => 'Ibu Rumah Tangga',
-            'bio' => 'Masyarakat umum yang tertarik dengan literasi',
-            'birth_date' => '1987-07-30',
-            'gender' => 'female',
-            'status' => 'aktif',
-            'email_verified_at' => now(),
-        ]);
-        // Tidak perlu assign role karena default adalah publik
-
         $this->command->info('Users dengan berbagai role telah berhasil dibuat!');
         $this->command->info('Email dan password untuk semua user: password123');
         $this->command->table(
             ['Role', 'Name', 'Email'],
             [
-                ['Admin', 'Administrator', 'admin@rumahliterasi.com'],
-                ['Investor', 'Budi Santoso', 'investor@example.com'],
-                ['Donatur Buku', 'Siti Nurhaliza', 'donatur@example.com'],
-                ['Relawan', 'Ahmad Wijaya', 'relawan@example.com'],
-                ['Peserta Pelatihan', 'Dewi Sartika', 'peserta@example.com'],
-                ['Publik', 'Rini Hartati', 'publik@example.com'],
+                ['Admin', 'Administrator', 'admin@rumahliterasiranggi.id'],
+                ['Investor', 'Budi Santoso', 'investor@rumahliterasiranggi.id'],
+                ['Donatur Buku', 'Siti Nurhaliza', 'donatur@rumahliterasiranggi.id'],
+                ['Relawan', 'Ahmad Wijaya', 'relawan@rumahliterasiranggi.id'],
+                ['Peserta Pelatihan', 'Dewi Sartika', 'peserta@rumahliterasiranggi.id'],
             ]
         );
     }

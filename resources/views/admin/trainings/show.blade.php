@@ -87,11 +87,12 @@
                     </a>
                     
                     <form method="POST" action="{{ route('admin.trainings.destroy', $training) }}" 
-                          class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pelatihan ini?')">
+                          class="inline" id="delete-training-show-form">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" 
-                                class="w-full inline-flex items-center justify-center px-6 py-3 bg-red-500/20 hover:bg-red-500/30 text-white font-medium rounded-lg transition-all duration-200 backdrop-blur-sm border border-red-400/50">
+                        <button type="button" 
+                                class="w-full inline-flex items-center justify-center px-6 py-3 bg-red-500/20 hover:bg-red-500/30 text-white font-medium rounded-lg transition-all duration-200 backdrop-blur-sm border border-red-400/50"
+                                onclick="confirmDeleteTrainingShow('{{ $training->title }}')">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
@@ -711,24 +712,24 @@
                                         <div class="flex flex-col space-y-2">
                                             @if($registration->status === 'registered')
                                                 <div class="flex space-x-2">
-                                                    <form action="{{ route('admin.trainings.participants.approve', [$training, $registration->user]) }}" method="POST" class="inline">
+                                                    <form action="{{ route('admin.trainings.participants.approve', [$training, $registration->user]) }}" method="POST" class="inline" id="approve-participant-form-{{ $registration->user->id }}">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="submit" 
+                                                        <button type="button" 
                                                                 class="inline-flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-md transition-colors duration-200"
-                                                                onclick="return confirm('Setujui pendaftaran peserta ini?')">
+                                                                onclick="confirmApproveParticipant({{ $registration->user->id }}, '{{ $registration->user->name }}')">
                                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                                             </svg>
                                                             Setujui
                                                         </button>
                                                     </form>
-                                                    <form action="{{ route('admin.trainings.participants.reject', [$training, $registration->user]) }}" method="POST" class="inline">
+                                                    <form action="{{ route('admin.trainings.participants.reject', [$training, $registration->user]) }}" method="POST" class="inline" id="reject-participant-form-{{ $registration->user->id }}">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="submit" 
+                                                        <button type="button" 
                                                                 class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-colors duration-200"
-                                                                onclick="return confirm('Tolak pendaftaran peserta ini?')">
+                                                                onclick="confirmRejectParticipant({{ $registration->user->id }}, '{{ $registration->user->name }}')">
                                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                                             </svg>
@@ -875,12 +876,12 @@
                                             <!-- Action Buttons -->
                                             @if($registration->status === 'registered')
                                                 <div class="flex space-x-2">
-                                                    <form method="POST" action="{{ route('admin.trainings.volunteers.approve', [$training, $registration->user]) }}" class="inline">
+                                                    <form method="POST" action="{{ route('admin.trainings.volunteers.approve', [$training, $registration->user]) }}" class="inline" id="approve-volunteer-form-{{ $registration->user->id }}">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="submit" 
+                                                        <button type="button" 
                                                                 class="inline-flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-md transition-colors duration-200"
-                                                                onclick="return confirm('Konfirmasi relawan ini?')">
+                                                                onclick="confirmApproveVolunteer({{ $registration->user->id }}, '{{ $registration->user->name }}')">
                                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                                             </svg>
@@ -888,12 +889,12 @@
                                                         </button>
                                                     </form>
                                                     
-                                                    <form method="POST" action="{{ route('admin.trainings.volunteers.reject', [$training, $registration->user]) }}" class="inline">
+                                                    <form method="POST" action="{{ route('admin.trainings.volunteers.reject', [$training, $registration->user]) }}" class="inline" id="reject-volunteer-form-{{ $registration->user->id }}">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="submit" 
+                                                        <button type="button" 
                                                                 class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-colors duration-200"
-                                                                onclick="return confirm('Tolak pendaftaran relawan ini?')">
+                                                                onclick="confirmRejectVolunteer({{ $registration->user->id }}, '{{ $registration->user->name }}')">
                                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                                             </svg>
@@ -926,4 +927,96 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmApproveParticipant(userId, userName) {
+            Swal.fire({
+                title: 'Setujui Peserta?',
+                text: `Apakah Anda yakin ingin menyetujui pendaftaran peserta "${userName}"?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#16a34a',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Setujui!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`approve-participant-form-${userId}`).submit();
+                }
+            });
+        }
+
+        function confirmRejectParticipant(userId, userName) {
+            Swal.fire({
+                title: 'Tolak Peserta?',
+                text: `Apakah Anda yakin ingin menolak pendaftaran peserta "${userName}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Tolak!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`reject-participant-form-${userId}`).submit();
+                }
+            });
+        }
+
+        function confirmApproveVolunteer(userId, userName) {
+            Swal.fire({
+                title: 'Setujui Relawan?',
+                text: `Apakah Anda yakin ingin menyetujui pendaftaran relawan "${userName}"?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#16a34a',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Setujui!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`approve-volunteer-form-${userId}`).submit();
+                }
+            });
+        }
+
+        function confirmRejectVolunteer(userId, userName) {
+            Swal.fire({
+                title: 'Tolak Relawan?',
+                text: `Apakah Anda yakin ingin menolak pendaftaran relawan "${userName}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Tolak!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then ((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`reject-volunteer-form-${userId}`).submit();
+                }
+            });
+        }
+
+        function confirmDeleteTrainingShow(trainingTitle) {
+            Swal.fire({
+                title: 'Hapus Pelatihan?',
+                text: `Apakah Anda yakin ingin menghapus pelatihan "${trainingTitle}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-training-show-form').submit();
+                }
+            });
+        }
+    </script>
 </x-layouts.admin>

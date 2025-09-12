@@ -99,11 +99,12 @@
                                         </button>
                                     </form>
                                     <form action="{{ route('admin.social-media.destroy', $social) }}" method="POST" class="inline" 
-                                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus social media ini?')">
+                                          id="delete-social-form-{{ $social->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" 
-                                                class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">
+                                        <button type="button" 
+                                                class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors"
+                                                onclick="confirmDeleteSocial({{ $social->id }}, '{{ $social->name }}')">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                             </svg>
@@ -129,4 +130,24 @@
             </table>
         </div>
     </div>
+
+    <script>
+        function confirmDeleteSocial(socialId, socialName) {
+            Swal.fire({
+                title: 'Hapus Social Media?',
+                text: `Apakah Anda yakin ingin menghapus social media "${socialName}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`delete-social-form-${socialId}`).submit();
+                }
+            });
+        }
+    </script>
 </x-layouts.admin>

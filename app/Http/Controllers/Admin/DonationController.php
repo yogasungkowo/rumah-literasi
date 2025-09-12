@@ -8,6 +8,9 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DonationController extends Controller
 {
@@ -73,6 +76,11 @@ class DonationController extends Controller
             'completed' => (clone $statusQuery)->where('status', 'completed')->count(),
             'rejected' => (clone $statusQuery)->where('status', 'rejected')->count(),
         ];
+
+        // Handle export requests
+        if ($request->has('export') && in_array($request->export, ['csv', 'pdf'])) {
+            return $this->exportDonations($request, $donations->get());
+        }
 
         return view('admin.donations.index', compact('donations', 'statusCounts'));
     }
@@ -215,6 +223,16 @@ class DonationController extends Controller
         $queryStartDate = $startDate->copy()->startOfDay();
         $queryEndDate = $endDate->copy()->endOfDay();
 
+        // Handle export requests
+        if ($request->has('export') && in_array($request->export, ['csv', 'pdf'])) {
+            $donations = BookDonation::with('donor')
+                ->whereBetween('created_at', [$queryStartDate, $queryEndDate])
+                ->orderBy('created_at', 'desc')
+                ->get();
+            
+            return $this->exportDonations($request, $donations);
+        }
+
         $stats = [
             'total_donations' => BookDonation::whereBetween('created_at', [$queryStartDate, $queryEndDate])->count(),
             'pending_donations' => BookDonation::whereBetween('created_at', [$queryStartDate, $queryEndDate])->where('status', 'pending')->count(),
@@ -249,5 +267,100 @@ class DonationController extends Controller
                              ->get();
 
         return view('admin.donations.reports', compact('stats', 'monthlyData', 'topDonors', 'categoryStats', 'startDate', 'endDate'));
+    }
+
+    /**
+     * Export donations data
+     */
+    private function exportDonations(Request $request, $donations)
+    {
+        $exportType = $request->export;
+        $startDate = $request->start_date ?? 'all';
+        $endDate = $request->end_date ?? 'all';
+        
+        if ($exportType === 'csv') {
+            return $this->exportCsv($donations, $startDate, $endDate);
+        } elseif ($exportType === 'pdf') {
+            return $this->exportPdf($donations, $startDate, $endDate);
+        }
+        
+        return redirect()->back()->with('error', 'Invalid export type');
+    }
+
+    /**
+     * Export donations to CSV
+     */
+    private function exportCsv($donations, $startDate, $endDate)
+    {
+        $filename = 'donations_report_' . now()->format('Y-m-d_H-i-s') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($donations) {
+            $file = fopen('php://output', 'w');
+            
+            // Add CSV headers
+            fputcsv($file, [
+                'ID',
+                'Donor Name',
+                'Donor Email', 
+                'Donor Phone',
+                'Total Books',
+                'Status',
+                'Created Date',
+                'Pickup Date',
+                'Admin Notes'
+            ]);
+
+            // Add data rows
+            foreach ($donations as $donation) {
+                fputcsv($file, [
+                    $donation->id,
+                    $donation->donor_name,
+                    $donation->donor_email,
+                    $donation->donor_phone,
+                    $donation->total_books,
+                    ucfirst($donation->status),
+                    $donation->created_at->format('Y-m-d H:i:s'),
+                    $donation->pickup_date ? Carbon::parse($donation->pickup_date)->format('Y-m-d') : '',
+                    $donation->admin_notes ?? ''
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Export donations to PDF
+     */
+    private function exportPdf($donations, $startDate, $endDate)
+    {
+        try {
+            // Generate PDF using DomPDF
+            $filename = 'donations_report_' . now()->format('Y-m-d_H-i-s') . '.pdf';
+            
+            // Load the view and generate PDF
+            $pdf = Pdf::loadView('admin.donations.export-pdf', compact('donations', 'startDate', 'endDate'))
+                      ->setPaper('a4', 'portrait')
+                      ->setOptions([
+                          'isHtml5ParserEnabled' => true,
+                          'isPhpEnabled' => true,
+                          'defaultFont' => 'Arial',
+                          'dpi' => 150,
+                          'isRemoteEnabled' => true,
+                      ]);
+
+            return $pdf->download($filename);
+            
+        } catch (\Exception $e) {
+            // Fallback: return error response
+            return redirect()->back()->with('error', 'Gagal menggenerate PDF: ' . $e->getMessage());
+        }
     }
 }

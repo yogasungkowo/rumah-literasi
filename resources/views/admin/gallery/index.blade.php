@@ -82,13 +82,13 @@
                                     <i class="fas fa-{{ $gallery->is_active ? 'eye-slash' : 'eye' }}"></i>
                                 </button>
                             </form>
-                            <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST" class="inline">
+                            <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST" class="inline" id="delete-gallery-form-{{ $gallery->id }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" 
+                                <button type="button" 
                                         class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors duration-200"
                                         title="Hapus"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus foto ini?')">
+                                        onclick="confirmDeleteGallery({{ $gallery->id }}, '{{ $gallery->title }}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -146,4 +146,24 @@
             </a>
         </div>
     @endif
+
+    <script>
+        function confirmDeleteGallery(galleryId, galleryTitle) {
+            Swal.fire({
+                title: 'Hapus Foto?',
+                text: `Apakah Anda yakin ingin menghapus foto "${galleryTitle}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`delete-gallery-form-${galleryId}`).submit();
+                }
+            });
+        }
+    </script>
 </x-layouts.integrated-dashboard>

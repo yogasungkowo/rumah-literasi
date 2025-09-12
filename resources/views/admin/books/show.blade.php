@@ -45,11 +45,12 @@
                                 <form action="{{ route('admin.books.destroy', $book) }}" 
                                       method="POST" 
                                       class="inline"
-                                      onsubmit="return confirm('Are you sure you want to delete this book?')">
+                                      id="delete-book-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
-                                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    <button type="button" 
+                                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                                            onclick="confirmDeleteBook('{{ $book->title }}')">
                                         Delete Book
                                     </button>
                                 </form>
@@ -132,4 +133,24 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmDeleteBook(bookTitle) {
+            Swal.fire({
+                title: 'Hapus Buku?',
+                text: `Apakah Anda yakin ingin menghapus buku "${bookTitle}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-book-form').submit();
+                }
+            });
+        }
+    </script>
 </x-layouts.admin>

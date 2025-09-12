@@ -493,7 +493,10 @@
                     </div>
 
                     <!-- Metode Pengambilan -->
-                    <div class="border-t border-gray-200 dark:border-gray-600 pt-8" x-data="{ pickupMethod: '{{ old('pickup_method', 'pickup') }}' }">
+                    <div class="border-t border-gray-200 dark:border-gray-600 pt-8" x-data="{ 
+                        pickupMethod: '{{ old('pickup_method', 'pickup') }}',
+                        adminAddress: '{{ $admin->address ?? 'Alamat admin belum tersedia' }}'
+                    }">
                         <div class="mb-6">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center mb-4">
                                 <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -536,7 +539,9 @@
                             <!-- Diantar ke Lokasi -->
                             <div class="relative">
                                 <input type="radio" name="pickup_method" value="delivery" id="pickup_method_delivery" 
-                                       class="sr-only peer" {{ old('pickup_method') === 'delivery' ? 'checked' : '' }} x-model="pickupMethod">
+                                       class="sr-only peer" {{ old('pickup_method') === 'delivery' ? 'checked' : '' }} 
+                                       x-model="pickupMethod"
+                                       @change="if(pickupMethod === 'delivery') { document.getElementById('delivery_address').value = adminAddress; }">
                                 <label for="pickup_method_delivery" 
                                        class="flex items-center p-4 border-2 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
                                        :class="pickupMethod === 'delivery' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' : 'border-gray-200 dark:border-gray-600'">
@@ -607,14 +612,21 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         </svg>
-                                        Alamat Pengantaran
+                                        Alamat Lokasi Kami
                                         <span class="text-red-500 ml-1">*</span>
                                     </span>
                                 </label>
                                 <textarea name="delivery_address" id="delivery_address" rows="3"
-                                          class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all resize-none"
-                                          placeholder="Alamat lengkap lokasi tujuan pengantaran buku..."
-                                          :required="pickupMethod === 'delivery'">{{ old('delivery_address') }}</textarea>
+                                          class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none transition-all resize-none cursor-not-allowed"
+                                          readonly
+                                          :required="pickupMethod === 'delivery'"
+                                          x-text="adminAddress">{{ old('delivery_address', $admin->address ?? '') }}</textarea>
+                                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <svg class="w-4 h-4 inline mr-1 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Alamat ini adalah alamat lokasi kami yang akan dituju untuk pengantaran donasi
+                                </p>
                             </div>
                         </div>
 
@@ -681,38 +693,63 @@
                     </div>
 
                     <!-- Catatan Tambahan -->
-                    <div class="border-t border-gray-200 dark:border-gray-600 pt-8 mt-8">
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-8 mt-8 border border-blue-200 dark:border-gray-600">
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center mb-2">
-                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
-                                </svg>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center mb-3">
+                                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                                    </svg>
+                                </div>
                                 Catatan Tambahan
                             </h3>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Berikan informasi tambahan yang dapat membantu proses donasi</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed ml-13">
+                                Berikan informasi tambahan yang dapat membantu proses donasi berjalan lebih optimal
+                            </p>
                         </div>
                         
-                        <div class="space-y-4">
-                            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                    </svg>
-                                    Pesan atau Catatan Khusus
-                                </span>
-                            </label>
-                            <textarea id="notes" 
-                                      name="notes" 
-                                      rows="4"
-                                      class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all resize-none"
-                                      placeholder="Misalnya: buku dalam kondisi khusus, waktu terbaik untuk dihubungi, atau informasi lain yang perlu kami ketahui...">{{ old('notes') }}</textarea>
-                            <div class="flex items-start p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
-                                <svg class="w-4 h-4 mr-2 mt-0.5 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                                </svg>
-                                <p class="text-sm text-blue-800 dark:text-blue-200">
-                                    <strong>Tips:</strong> Jelaskan kondisi spesifik buku, preferensi waktu kontak, atau hal khusus lainnya yang perlu kami ketahui untuk memproses donasi Anda dengan optimal.
-                                </p>
+                        <div class="space-y-6 ml-13">
+                            <div>
+                                <label for="notes" class="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                        Pesan atau Catatan Khusus
+                                    </span>
+                                </label>
+                                <textarea id="notes" 
+                                          name="notes" 
+                                          rows="4"
+                                          class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all duration-200 resize-none shadow-sm hover:shadow-md"
+                                          placeholder="Contoh: Buku dalam kondisi sangat baik, dapat dihubungi sore hari, ada buku langka yang perlu perhatian khusus, dll...">{{ old('notes') }}</textarea>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-blue-200 dark:border-gray-600 shadow-sm">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-1">Tips untuk Catatan yang Efektif:</h4>
+                                        <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                            <li class="flex items-center">
+                                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 flex-shrink-0"></span>
+                                                Kondisi spesifik buku (baru, bekas, langka, dll.)
+                                            </li>
+                                            <li class="flex items-center">
+                                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 flex-shrink-0"></span>
+                                                Waktu terbaik untuk dihubungi
+                                            </li>
+                                            <li class="flex items-center">
+                                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 flex-shrink-0"></span>
+                                                Informasi tambahan yang mendukung proses donasi
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1014,4 +1051,18 @@
             color: #60a5fa !important;
         }
     </style>
+
+    <script>
+        // Inisialisasi alamat admin ketika halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminAddress = '{{ $admin->address ?? 'Alamat admin belum tersedia' }}';
+            const deliveryAddressField = document.getElementById('delivery_address');
+            const pickupMethodDelivery = document.getElementById('pickup_method_delivery');
+            
+            // Set alamat admin jika opsi delivery sudah dipilih saat halaman dimuat
+            if (pickupMethodDelivery && pickupMethodDelivery.checked && deliveryAddressField) {
+                deliveryAddressField.value = adminAddress;
+            }
+        });
+    </script>
 </x-layouts.integrated-dashboard>

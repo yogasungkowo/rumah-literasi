@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BookDonation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -14,8 +15,10 @@ class DonationController extends Controller
      */
     public function create()
     {
+        // Ambil data admin dengan ID 1 untuk alamat pengantaran
+        $admin = User::find(1);
         
-        return view('donations.create');
+        return view('donations.create', compact('admin'));
     }
 
     /**
@@ -41,7 +44,8 @@ class DonationController extends Controller
             'books.*.language' => 'nullable|string|max:50',
             'books.*.description' => 'nullable|string',
             'pickup_method' => 'required|in:pickup,delivery',
-            'pickup_address' => 'required_if:pickup_method,delivery|nullable|string',
+            'pickup_address' => 'required_if:pickup_method,pickup|nullable|string',
+            'delivery_address' => 'required_if:pickup_method,delivery|nullable|string',
             'preferred_date' => 'nullable|date|after_or_equal:today',
             'preferred_time' => 'nullable|date_format:H:i',
             'notes' => 'nullable|string',
@@ -72,6 +76,7 @@ class DonationController extends Controller
             'total_books' => count($booksData),
             'pickup_method' => $request->pickup_method,
             'pickup_address' => $request->pickup_address,
+            'delivery_address' => $request->delivery_address,
             'preferred_date' => $request->preferred_date,
             'preferred_time' => $request->preferred_time,
             'notes' => $request->notes,
@@ -179,7 +184,8 @@ class DonationController extends Controller
             'books.*.language' => 'nullable|string|max:50',
             'books.*.description' => 'nullable|string',
             'pickup_method' => 'required|in:pickup,delivery',
-            'pickup_address' => 'required_if:pickup_method,delivery|nullable|string',
+            'pickup_address' => 'required_if:pickup_method,pickup|nullable|string',
+            'delivery_address' => 'required_if:pickup_method,delivery|nullable|string',
             'preferred_date' => 'nullable|date|after_or_equal:today',
             'preferred_time' => 'nullable|date_format:H:i',
             'notes' => 'nullable|string',
@@ -221,6 +227,7 @@ class DonationController extends Controller
             'total_books' => count($booksData),
             'pickup_method' => $request->pickup_method,
             'pickup_address' => $request->pickup_address,
+            'delivery_address' => $request->delivery_address,
             'preferred_date' => $request->preferred_date,
             'preferred_time' => $request->preferred_time,
             'notes' => $request->notes,

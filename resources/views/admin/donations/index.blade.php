@@ -224,32 +224,32 @@
                             @if($donation->status === 'pending')
                                 <!-- Quick Approve Button -->
                                 <button type="button" 
-                                        onclick="showApproveModal({{ $donation->id }}, '{{ $donation->donor_name }}')"
+                                        onclick="confirmApprove({{ $donation->id }}, '{{ $donation->donor_name }}')"
                                         class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
                                     <i class="fas fa-check mr-1"></i>Setujui
                                 </button>
                                 
                                 <!-- Quick Reject Button -->
                                 <button type="button" 
-                                        onclick="showRejectModal({{ $donation->id }}, '{{ $donation->donor_name }}')"
+                                        onclick="confirmReject({{ $donation->id }}, '{{ $donation->donor_name }}')"
                                         class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
                                     <i class="fas fa-times mr-1"></i>Tolak
                                 </button>
                             @elseif($donation->status === 'approved')
-                                <form method="POST" action="{{ route('admin.donations.mark-picked-up', $donation) }}" class="inline">
+                                <form method="POST" action="{{ route('admin.donations.mark-picked-up', $donation) }}" class="inline" id="picked-up-form-{{ $donation->id }}">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-                                            onclick="return confirm('Tandai donasi ini sudah dijemput?')">
+                                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+                                            onclick="confirmPickedUp({{ $donation->id }}, '{{ $donation->donor_name }}')">
                                         <i class="fas fa-truck mr-1"></i>Dijemput
                                     </button>
                                 </form>
                             @elseif($donation->status === 'picked_up')
-                                <form method="POST" action="{{ route('admin.donations.complete', $donation) }}" class="inline">
+                                <form method="POST" action="{{ route('admin.donations.complete', $donation) }}" class="inline" id="complete-form-{{ $donation->id }}">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
-                                            onclick="return confirm('Tandai donasi ini selesai?')">
+                                    <button type="button" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+                                            onclick="confirmComplete({{ $donation->id }}, '{{ $donation->donor_name }}')">
                                         <i class="fas fa-flag-checkered mr-1"></i>Selesai
                                     </button>
                                 </form>
@@ -274,106 +274,153 @@
         @endif
     </div>
 
-    <!-- Approve Modal -->
-    <div id="approveModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
-                <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Setujui Donasi</h3>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6">
-                        Yakin ingin menyetujui donasi dari <span id="approveDonorName" class="font-medium"></span>?
-                    </p>
-                    
-                    <form id="approveForm" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <div class="mb-4">
-                            <label for="approve_admin_notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Catatan Admin (Opsional)</label>
-                            <textarea name="admin_notes" id="approve_admin_notes" rows="3"
-                                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                      placeholder="Tambahkan catatan untuk donatur..."></textarea>
-                        </div>
-                        
-                        <div class="flex justify-end space-x-3">
-                            <button type="button" onclick="hideApproveModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
-                                Batal
-                            </button>
-                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
-                                <i class="fas fa-check mr-2"></i>Setujui Donasi
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reject Modal -->
-    <div id="rejectModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
-                <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Tolak Donasi</h3>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6">
-                        Berikan alasan penolakan donasi dari <span id="rejectDonorName" class="font-medium"></span>:
-                    </p>
-                    
-                    <form id="rejectForm" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <div class="mb-4">
-                            <label for="rejection_reason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Alasan Penolakan *</label>
-                            <textarea name="rejection_reason" id="rejection_reason" rows="4" required
-                                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                      placeholder="Jelaskan alasan mengapa donasi ini ditolak..."></textarea>
-                        </div>
-                        
-                        <div class="flex justify-end space-x-3">
-                            <button type="button" onclick="hideRejectModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
-                                Batal
-                            </button>
-                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
-                                <i class="fas fa-times mr-2"></i>Tolak Donasi
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @push('scripts')
     <script>
-        function showApproveModal(donationId, donorName) {
-            document.getElementById('approveDonorName').textContent = donorName;
-            document.getElementById('approveForm').action = `/admin/donations/${donationId}/approve`;
-            document.getElementById('approveModal').classList.remove('hidden');
+        function confirmApprove(donationId, donorName) {
+            Swal.fire({
+                title: 'Setujui Donasi?',
+                text: `Apakah Anda yakin ingin menyetujui donasi dari ${donorName}?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#16a34a',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Setujui!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                input: 'textarea',
+                inputLabel: 'Catatan Admin (Opsional)',
+                inputPlaceholder: 'Tambahkan catatan untuk donatur...',
+                inputAttributes: {
+                    'aria-label': 'Catatan Admin'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Create form and submit
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/admin/donations/${donationId}/approve`;
+                    
+                    // CSRF token
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = '_token';
+                    csrfToken.value = '{{ csrf_token() }}';
+                    form.appendChild(csrfToken);
+                    
+                    // Method PATCH
+                    const methodInput = document.createElement('input');
+                    methodInput.type = 'hidden';
+                    methodInput.name = '_method';
+                    methodInput.value = 'PATCH';
+                    form.appendChild(methodInput);
+                    
+                    // Admin notes if provided
+                    if (result.value) {
+                        const notesInput = document.createElement('input');
+                        notesInput.type = 'hidden';
+                        notesInput.name = 'admin_notes';
+                        notesInput.value = result.value;
+                        form.appendChild(notesInput);
+                    }
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
         }
 
-        function hideApproveModal() {
-            document.getElementById('approveModal').classList.add('hidden');
-            document.getElementById('approve_admin_notes').value = '';
+        function confirmReject(donationId, donorName) {
+            Swal.fire({
+                title: 'Tolak Donasi?',
+                text: `Berikan alasan penolakan donasi dari ${donorName}:`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Tolak!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                input: 'textarea',
+                inputLabel: 'Alasan Penolakan *',
+                inputPlaceholder: 'Jelaskan alasan mengapa donasi ini ditolak...',
+                inputAttributes: {
+                    'aria-label': 'Alasan Penolakan',
+                    required: true
+                },
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Alasan penolakan harus diisi!'
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Create form and submit
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/admin/donations/${donationId}/reject`;
+                    
+                    // CSRF token
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = '_token';
+                    csrfToken.value = '{{ csrf_token() }}';
+                    form.appendChild(csrfToken);
+                    
+                    // Method PATCH
+                    const methodInput = document.createElement('input');
+                    methodInput.type = 'hidden';
+                    methodInput.name = '_method';
+                    methodInput.value = 'PATCH';
+                    form.appendChild(methodInput);
+                    
+                    // Rejection reason
+                    const reasonInput = document.createElement('input');
+                    reasonInput.type = 'hidden';
+                    reasonInput.name = 'rejection_reason';
+                    reasonInput.value = result.value;
+                    form.appendChild(reasonInput);
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
         }
 
-        function showRejectModal(donationId, donorName) {
-            document.getElementById('rejectDonorName').textContent = donorName;
-            document.getElementById('rejectForm').action = `/admin/donations/${donationId}/reject`;
-            document.getElementById('rejectModal').classList.remove('hidden');
+        function confirmPickedUp(donationId, donorName) {
+            Swal.fire({
+                title: 'Tandai Sudah Diambil?',
+                text: `Apakah donasi dari ${donorName} sudah berhasil diambil?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Sudah Diambil!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`picked-up-form-${donationId}`).submit();
+                }
+            });
         }
 
-        function hideRejectModal() {
-            document.getElementById('rejectModal').classList.add('hidden');
-            document.getElementById('rejection_reason').value = '';
+        function confirmComplete(donationId, donorName) {
+            Swal.fire({
+                title: 'Selesaikan Donasi?',
+                text: `Tandai donasi dari ${donorName} sebagai selesai?`,
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonColor: '#7c3aed',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Selesai!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`complete-form-${donationId}`).submit();
+                }
+            });
         }
-
-        // Close modals when clicking outside
-        document.getElementById('approveModal').addEventListener('click', function(e) {
-            if (e.target === this) hideApproveModal();
-        });
-
-        document.getElementById('rejectModal').addEventListener('click', function(e) {
-            if (e.target === this) hideRejectModal();
-        });
 
         // Initialize Flatpickr for date filters
         document.addEventListener('DOMContentLoaded', function() {
