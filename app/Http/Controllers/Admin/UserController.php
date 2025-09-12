@@ -45,7 +45,6 @@ class UserController extends Controller
             'relawan' => User::role('Relawan')->count(),
             'peserta' => User::role('Peserta Pelatihan')->count(),
             'investor' => User::role('Investor')->count(),
-            'publik' => User::role('Publik')->count(),
         ];
 
         return view('admin.users.index', compact('users', 'roles', 'stats'));

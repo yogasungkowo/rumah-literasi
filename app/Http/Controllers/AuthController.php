@@ -76,7 +76,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'user_type' => 'required|in:publik,donatur_buku,relawan,peserta_pelatihan,investor',
+            'user_type' => 'required|in:donatur_buku,relawan,peserta_pelatihan,investor',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'organization' => 'nullable|string|max:255',
@@ -136,14 +136,13 @@ class AuthController extends Controller
     private function mapUserTypeToRole($userType)
     {
         $roleMap = [
-            'publik' => 'Publik',
             'donatur_buku' => 'Donatur Buku',
             'relawan' => 'Relawan',
             'peserta_pelatihan' => 'Peserta Pelatihan',
             'investor' => 'Investor',
         ];
 
-        return $roleMap[$userType] ?? 'Publik';
+        return $roleMap[$userType] ?? 'Donatur Buku';
     }
 
     /**
@@ -162,7 +161,7 @@ class AuthController extends Controller
         } elseif ($user->hasRole('Peserta Pelatihan')) {
             return redirect()->route('dashboard.peserta')->with('success', 'Selamat datang di Dashboard Peserta!');
         } else {
-            return redirect()->route('dashboard.publik')->with('success', 'Selamat datang!');
+            return redirect()->route('dashboard')->with('success', 'Selamat datang!');
         }
     }
 }

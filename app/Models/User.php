@@ -93,7 +93,7 @@ class User extends Authenticatable
      */
     public function getRoleNameAttribute(): string
     {
-        return $this->roles->first()?->name ?? 'publik';
+        return $this->roles->first()?->name ?? 'Guest';
     }
 
     /**
@@ -117,7 +117,7 @@ class User extends Authenticatable
             'Relawan' => route('dashboard.relawan'),
             'Peserta Pelatihan' => route('dashboard.peserta'),
             'Investor' => route('dashboard.investor'),
-            default => route('dashboard.publik'),
+            default => route('dashboard'),
         };
     }
 
