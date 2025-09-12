@@ -129,6 +129,13 @@ class Debug403Specific extends Command
             $this->line("     - Is Owner: " . ($isOwner ? 'YES' : 'NO'));
             $this->line("     - Should have access: " . ($shouldHaveAccess ? 'YES' : 'NO'));
             
+            // Additional debugging for production issue
+            $this->line("     - Debug info:");
+            $this->line("       user.id: {$user->id} (type: " . gettype($user->id) . ")");
+            $this->line("       donation.donor_id: {$donation->donor_id} (type: " . gettype($donation->donor_id) . ")");
+            $this->line("       === comparison: " . ($donation->donor_id === $user->id ? 'TRUE' : 'FALSE'));
+            $this->line("       == comparison: " . ($donation->donor_id == $user->id ? 'TRUE' : 'FALSE'));
+            
             if (!$shouldHaveAccess) {
                 $this->error("     ⚠️  AUTHORIZATION FAILED!");
             }
