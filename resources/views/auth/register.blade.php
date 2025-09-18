@@ -33,10 +33,35 @@
                     </div>
 
                     <div>
+                        <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Daftar dengan</p>
+                        <div class="relative inline-flex w-full rounded-xl bg-gray-100 dark:bg-gray-800 p-1 shadow-inner">
+                            <div id="register-switch-indicator" class="absolute top-1 bottom-1 w-1/2 bg-white dark:bg-gray-700 rounded-lg shadow-md transition-transform duration-300 ease-in-out transform"></div>
+                            <label class="relative z-10 flex-1 cursor-pointer">
+                                <input type="radio" name="register_method" value="email" checked class="sr-only register-method-radio">
+                                <span class="flex items-center justify-center px-4 py-3 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-all duration-200">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                    Email
+                                </span>
+                            </label>
+                            <label class="relative z-10 flex-1 cursor-pointer">
+                                <input type="radio" name="register_method" value="phone" class="sr-only register-method-radio">
+                                <span class="flex items-center justify-center px-4 py-3 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-all duration-200">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                    </svg>
+                                    Nomor HP
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="register-email-group" class="transition-all duration-300 ease-in-out">
                         <label for="email-address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Email
                         </label>
-                        <input id="email-address" name="email" type="email" autocomplete="email" required value="{{ old('email') }}"
+                        <input id="email-address" name="email" type="email" autocomplete="email" value="{{ old('email') }}"
                                class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('email') ? 'border-red-500' : 'border-gray-300' }}" 
                                placeholder="Masukkan email Anda">
                         @error('email')
@@ -44,25 +69,47 @@
                         @enderror
                     </div>
 
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Password
+                    <div id="register-phone-group" class="transition-all duration-300 ease-in-out" style="display:none;">
+                        <label for="phone-number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Nomor HP
                         </label>
-                        <input id="password" name="password" type="password" autocomplete="new-password" required 
-                               class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('password') ? 'border-red-500' : 'border-gray-300' }}" 
-                               placeholder="Masukkan password Anda">
+                        <input id="phone-number" name="phone" type="text" autocomplete="tel" value="{{ old('phone') }}"
+                               class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('phone') ? 'border-red-500' : 'border-gray-300' }}"
+                               placeholder="Masukkan nomor HP Anda">
+                        @error('phone')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                        <div class="relative">
+                            <input id="password" name="password" type="password" autocomplete="new-password" required
+                                   class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('password') ? 'border-red-500' : 'border-gray-300' }}"
+                                   placeholder="Buat password Anda">
+                            <button type="button" id="toggle-password" class="absolute inset-y-0 right-3 flex items-center text-gray-500">
+                                <svg id="toggle-password-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 3C6 3 2.7 5.4 1 9c1.7 3.6 5 6 9 6s7.3-2.4 9-6c-1.7-3.6-5-6-9-6zM10 13a3 3 0 100-6 3 3 0 000 6z"/>
+                                </svg>
+                            </button>
+                        </div>
                         @error('password')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div>
-                        <label for="password-confirm" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Konfirmasi Password
-                        </label>
-                        <input id="password-confirm" name="password_confirmation" type="password" autocomplete="new-password" required 
-                               class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('password_confirmation') ? 'border-red-500' : 'border-gray-300' }}" 
-                               placeholder="Konfirmasi password Anda">
+                        <label for="password-confirm" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Konfirmasi Password</label>
+                        <div class="relative">
+                            <input id="password-confirm" name="password_confirmation" type="password" autocomplete="new-password" required
+                                   class="appearance-none relative block w-full px-3 py-3 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors dark:border-gray-600 {{ $errors->has('password_confirmation') ? 'border-red-500' : 'border-gray-300' }}"
+                                   placeholder="Konfirmasi password Anda">
+                            <button type="button" id="toggle-password-confirm" class="absolute inset-y-0 right-3 flex items-center text-gray-500">
+                                <svg id="toggle-password-confirm-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 3C6 3 2.7 5.4 1 9c1.7 3.6 5 6 9 6s7.3-2.4 9-6c-1.7-3.6-5-6-9-6zM10 13a3 3 0 100-6 3 3 0 000 6z"/>
+                                </svg>
+                            </button>
+                        </div>
                         @error('password_confirmation')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
@@ -141,4 +188,108 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+            <script>
+        // Toggle register method groups with smooth animations
+        const regSwitchIndicator = document.getElementById('register-switch-indicator');
+        const regEmailGroup = document.getElementById('register-email-group');
+        const regPhoneGroup = document.getElementById('register-phone-group');
+        
+        document.querySelectorAll('.register-method-radio').forEach(function(radio, index) {
+            radio.addEventListener('change', function(e) {
+                const val = e.target.value;
+                
+                // Animate switch indicator
+                if (val === 'email') {
+                    regSwitchIndicator.style.transform = 'translateX(0%)';
+                } else {
+                    regSwitchIndicator.style.transform = 'translateX(100%)';
+                }
+                
+                // Toggle form groups with smooth fade effect
+                if (val === 'email') {
+                    // Show email, hide phone
+                    regEmailGroup.style.display = '';
+                    regPhoneGroup.style.display = 'none';
+                    
+                    // Add fade in effect
+                    regEmailGroup.style.opacity = '0';
+                    setTimeout(() => {
+                        regEmailGroup.style.opacity = '1';
+                    }, 50);
+                } else {
+                    // Show phone, hide email
+                    regPhoneGroup.style.display = '';
+                    regEmailGroup.style.display = 'none';
+                    
+                    // Add fade in effect
+                    regPhoneGroup.style.opacity = '0';
+                    setTimeout(() => {
+                        regPhoneGroup.style.opacity = '1';
+                    }, 50);
+                }
+                
+                // Update active state styling
+                document.querySelectorAll('.register-method-radio').forEach(function(r, i) {
+                    const span = r.nextElementSibling;
+                    if (r.checked) {
+                        span.classList.add('text-green-600', 'dark:text-green-400');
+                        span.classList.remove('text-gray-700', 'dark:text-gray-300');
+                    } else {
+                        span.classList.remove('text-green-600', 'dark:text-green-400');
+                        span.classList.add('text-gray-700', 'dark:text-gray-300');
+                    }
+                });
+            });
+        });
+
+        // Initialize the switch on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailRadio = document.querySelector('input[name="register_method"][value="email"]');
+            if (emailRadio && emailRadio.checked) {
+                // Ensure proper initial state
+                regEmailGroup.style.display = '';
+                regPhoneGroup.style.display = 'none';
+                regEmailGroup.style.opacity = '1';
+                
+                // Update active state
+                const emailSpan = emailRadio.nextElementSibling;
+                emailSpan.classList.add('text-green-600', 'dark:text-green-400');
+                emailSpan.classList.remove('text-gray-700', 'dark:text-gray-300');
+            }
+        });
+
+        // Password reveal toggles
+        const pwInput = document.getElementById('password');
+        const toggleBtn = document.getElementById('toggle-password');
+        const toggleIcon = document.getElementById('toggle-password-icon');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function(){
+                if (pwInput.type === 'password') {
+                    pwInput.type = 'text';
+                    toggleIcon.innerHTML = '<path d="M4.03 3.97a.75.75 0 10-1.06 1.06l1.7 1.7A9.96 9.96 0 001 10c1.7 3.6 5 6 9 6 1.87 0 3.6-.43 5.14-1.19l1.7 1.7a.75.75 0 101.06-1.06L4.03 3.97zM10 13a3 3 0 01-3-3c0-.5.12-.98.34-1.4l3.06 3.06c-.42.22-.9.34-1.4.34z" />';
+                } else {
+                    pwInput.type = 'password';
+                    toggleIcon.innerHTML = '<path d="M10 3C6 3 2.7 5.4 1 9c1.7 3.6 5 6 9 6s7.3-2.4 9-6c-1.7-3.6-5-6-9-6zM10 13a3 3 0 100-6 3 3 0 000 6z"/>';
+                }
+            });
+        }
+
+        const pwConfirmInput = document.getElementById('password-confirm');
+        const toggleBtnConfirm = document.getElementById('toggle-password-confirm');
+        const toggleIconConfirm = document.getElementById('toggle-password-confirm-icon');
+        if (toggleBtnConfirm) {
+            toggleBtnConfirm.addEventListener('click', function(){
+                if (pwConfirmInput.type === 'password') {
+                    pwConfirmInput.type = 'text';
+                    toggleIconConfirm.innerHTML = '<path d="M4.03 3.97a.75.75 0 10-1.06 1.06l1.7 1.7A9.96 9.96 0 001 10c1.7 3.6 5 6 9 6 1.87 0 3.6-.43 5.14-1.19l1.7 1.7a.75.75 0 101.06-1.06L4.03 3.97zM10 13a3 3 0 01-3-3c0-.5.12-.98.34-1.4l3.06 3.06c-.42.22-.9.34-1.4.34z" />';
+                } else {
+                    pwConfirmInput.type = 'password';
+                    toggleIconConfirm.innerHTML = '<path d="M10 3C6 3 2.7 5.4 1 9c1.7 3.6 5 6 9 6s7.3-2.4 9-6c-1.7-3.6-5-6-9-6zM10 13a3 3 0 100-6 3 3 0 000 6z"/>';
+                }
+            });
+        }
+    </script>
+    @endpush
 </x-layouts.app>

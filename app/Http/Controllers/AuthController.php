@@ -26,36 +26,46 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
             'password' => 'required|min:6',
         ], [
-            'email.required' => 'Email wajib diisi',
-            'email.email' => 'Format email tidak valid',
             'password.required' => 'Password wajib diisi',
             'password.min' => 'Password minimal 6 karakter',
         ]);
+
+        $loginMethod = $request->input('login_method', 'email');
+        if ($loginMethod === 'phone') {
+            $validator->addRules([
+                'phone' => 'required',
+            ]);
+        } else {
+            $validator->addRules([
+                'email' => 'required|email',
+            ]);
+        }
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        $credentials = $request->only('email', 'password');
         $remember = $request->filled('remember');
+        $credentials = ['password' => $request->password];
+        if ($loginMethod === 'phone') {
+            $credentials['phone'] = $request->phone;
+            $user = User::where('phone', $request->phone)->first();
+        } else {
+            $credentials['email'] = $request->email;
+            $user = User::where('email', $request->email)->first();
+        }
 
-        if (Auth::attempt($credentials, $remember)) {
-            $user = Auth::user();
-            
-            // Update last login
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user, $remember);
             $user->update(['last_login_at' => Carbon::now()]);
-            
             $request->session()->regenerate();
-
-            // Redirect based on role
             return $this->redirectBasedOnRole($user);
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.',
+            $loginMethod === 'phone' ? 'phone' : 'email' => 'Data login tidak cocok atau belum terdaftar.'
         ])->withInput();
     }
 
@@ -72,49 +82,55 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $registerMethod = $request->input('register_method', 'email');
+        $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'user_type' => 'required|in:donatur_buku,relawan,peserta_pelatihan,investor',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-            'organization' => 'nullable|string|max:255',
-        ], [
+        ];
+        if ($registerMethod === 'phone') {
+            $rules['phone'] = 'required|string|max:20|unique:users';
+            $rules['email'] = 'nullable|email|unique:users';
+        } else {
+            $rules['email'] = 'required|string|email|max:255|unique:users';
+            $rules['phone'] = 'nullable|string|max:20|unique:users';
+        }
+        $rules['address'] = 'nullable|string';
+        $rules['organization'] = 'nullable|string|max:255';
+
+        $messages = [
             'name.required' => 'Nama lengkap wajib diisi',
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid',
             'email.unique' => 'Email sudah terdaftar',
+            'phone.required' => 'Nomor HP wajib diisi',
+            'phone.unique' => 'Nomor HP sudah terdaftar',
             'password.required' => 'Password wajib diisi',
             'password.min' => 'Password minimal 6 karakter',
             'password.confirmed' => 'Konfirmasi password tidak cocok',
             'user_type.required' => 'Tipe pengguna wajib dipilih',
             'user_type.in' => 'Tipe pengguna tidak valid',
-        ]);
+        ];
 
+        $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        // Create user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
             'phone' => $request->phone,
+            'password' => Hash::make($request->password),
             'address' => $request->address,
             'organization' => $request->organization,
             'status' => 'active',
             'last_login_at' => Carbon::now(),
         ]);
 
-        // Assign role
         $role = $this->mapUserTypeToRole($request->user_type);
         $user->assignRole($role);
-
-        // Login user
         Auth::login($user);
-
         return $this->redirectBasedOnRole($user);
     }
 
