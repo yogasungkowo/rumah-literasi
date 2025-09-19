@@ -36,7 +36,7 @@ Route::get('/', function () {
 Route::get('/donasi', [DonasiController::class, 'index']);
 Route::get('/pelatihan', [PelatihanController::class, 'index'])->name('pelatihan');
 Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel');
-Route::get('/artikel/{article}', [ArticleController::class, 'show'])->name('artikel.show');
+Route::get('/artikel/{article:slug}', [ArticleController::class, 'show'])->name('artikel.show');
 Route::get('/sponsorship', [SponsorshipController::class, 'publicPage'])->name('sponsorship.public');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
