@@ -23,6 +23,9 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+        <!-- CKEditor 5 -->
+        <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
         <!-- Fallback FontAwesome dari jsDelivr jika CDN utama gagal -->
         <script>
             // Check if FontAwesome loaded, if not load from backup CDN
@@ -45,7 +48,7 @@
         </script>
 
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        
+
         <!-- Custom CSS for modern animations -->
         <style>
             @keyframes fade-in-up {
@@ -53,81 +56,85 @@
                     opacity: 0;
                     transform: translateY(30px);
                 }
+
                 100% {
                     opacity: 1;
                     transform: translateY(0);
                 }
             }
-            
+
             .animate-fade-in-up {
                 animation: fade-in-up 0.8s ease-out forwards;
             }
-            
+
             .animation-delay-200 {
                 animation-delay: 0.2s;
                 opacity: 0;
             }
-            
+
             .animation-delay-400 {
                 animation-delay: 0.4s;
                 opacity: 0;
             }
-            
+
             .animation-delay-600 {
                 animation-delay: 0.6s;
                 opacity: 0;
             }
-            
+
             /* Glassmorphism effect */
             .glass {
                 background: rgba(255, 255, 255, 0.1);
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.2);
             }
-            
+
             /* Smooth scroll behavior */
             html {
                 scroll-behavior: smooth;
             }
-            
+
             /* Custom scrollbar */
             ::-webkit-scrollbar {
                 width: 8px;
             }
-            
+
             ::-webkit-scrollbar-track {
                 background: #f1f1f1;
             }
-            
+
             ::-webkit-scrollbar-thumb {
                 background: linear-gradient(135deg, #10b981, #3b82f6);
                 border-radius: 4px;
             }
-            
+
             ::-webkit-scrollbar-thumb:hover {
                 background: linear-gradient(135deg, #059669, #2563eb);
             }
-            
+
             /* Dark mode scrollbar */
             [data-theme="dark"] ::-webkit-scrollbar-track {
                 background: #374151;
             }
-            
+
             /* Float animation */
             @keyframes float {
-                0%, 100% {
+
+                0%,
+                100% {
                     transform: translateY(0px);
                 }
+
                 50% {
                     transform: translateY(-10px);
                 }
             }
-            
+
             .animate-float {
                 animation: float 3s ease-in-out infinite;
             }
         </style>
-        
+
         <script>
             // Check for saved theme preference or default to 'light' mode
             const savedTheme = localStorage.getItem('theme') || 'light';

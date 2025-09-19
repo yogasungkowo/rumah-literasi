@@ -2,7 +2,7 @@
     use Illuminate\Support\Facades\Storage;
 @endphp
 
-<x-layouts.admin title="Books Management" description="Manage all books in the library collection">
+<x-layouts.admin title="Manajemen Buku" description="Kelola semua buku dalam koleksi">
     <!-- Action Bar -->
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div class="mb-4 sm:mb-0">

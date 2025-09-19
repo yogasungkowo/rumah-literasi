@@ -23,6 +23,7 @@
             <div class="hidden lg:flex items-center space-x-6">
                 <a href="/" class="{{ request()->is('/') || request()->is('') || request()->routeIs('home') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Beranda</a>
                 <a href="/donasi" class="{{ request()->is('donasi*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Donasi Buku</a>
+                <a href="/artikel" class="{{ request()->is('artikel*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Artikel & Berita</a>
                 <a href="/pelatihan" class="{{ request()->is('pelatihan*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Ikuti Pelatihan</a>
                 <a href="/sponsorship" class="{{ request()->is('sponsorship*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-b-2 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 border-b-2 border-transparent hover:border-green-300' }} px-3 py-2 text-sm font-medium transition-all duration-200">Sponsorship</a>
             </div>
@@ -164,6 +165,16 @@
                             </svg>
                         @endif
                         Donasi Buku
+                    </span>
+                </a>
+                <a href="/artikel" @click="mobileOpen = false" class="{{ request()->is('artikel*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-4 py-3 text-base font-medium transition-all duration-200 rounded-r-lg">
+                    <span class="flex items-center">
+                        @if(request()->is('artikel*'))
+                            <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        @endif
+                        Artikel & Berita
                     </span>
                 </a>
                 <a href="/pelatihan" @click="mobileOpen = false" class="{{ request()->is('pelatihan*') ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-600 dark:border-green-400' : 'text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent' }} block px-4 py-3 text-base font-medium transition-all duration-200 rounded-r-lg">

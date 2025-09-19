@@ -1,22 +1,26 @@
 <?php
 
+use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonasiController;
-use App\Http\Controllers\SponsorshipController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\PelatihanController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PelatihanController;
+use App\Http\Controllers\SponsorshipController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\TrainingVolunteerController;
 use App\Http\Controllers\TrainingParticipantController;
 use App\Http\Controllers\Admin\BookController as AdminBookController;
-use App\Http\Controllers\Admin\TrainingController as AdminTrainingController;
-use App\Http\Controllers\Admin\DonationController as AdminDonationController;
-use App\Http\Controllers\Admin\SponsorshipController as AdminSponsorshipController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\GalleryController;
-use App\Http\Controllers\Admin\SocialMediaController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\DonationController as AdminDonationController;
+use App\Http\Controllers\Admin\TrainingController as AdminTrainingController;
+use App\Http\Controllers\Admin\SponsorshipController as AdminSponsorshipController;
 
 // Public routes
 Route::get('/', function () {
@@ -31,6 +35,8 @@ Route::get('/', function () {
 
 Route::get('/donasi', [DonasiController::class, 'index']);
 Route::get('/pelatihan', [PelatihanController::class, 'index'])->name('pelatihan');
+Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel');
+Route::get('/artikel/{article}', [ArticleController::class, 'show'])->name('artikel.show');
 Route::get('/sponsorship', [SponsorshipController::class, 'publicPage'])->name('sponsorship.public');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
@@ -121,6 +127,10 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     // Social Media Management
     Route::resource('social-media', SocialMediaController::class);
     Route::patch('/social-media/{social_medium}/toggle-status', [SocialMediaController::class, 'toggleStatus'])->name('social-media.toggle-status');
+
+    // Article Management
+    Route::resource('articles', AdminArticleController::class);
+    Route::post('categories/store-ajax', [AdminCategoryController::class, 'storeAjax'])->name('categories.store.ajax');
 });
 
 // Donatur routes (protected by donatur role)

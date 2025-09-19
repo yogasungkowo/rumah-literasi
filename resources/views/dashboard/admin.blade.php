@@ -139,6 +139,19 @@
                 Kelola Users
             </a>
         </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center mb-4">
+                <div class="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-full mr-4">
+                    <i class="fas fa-newspaper text-2xl text-teal-600 dark:text-teal-400"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Kelola Artikel</h3>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">Buat dan kelola artikel untuk website.</p>
+            <a href="{{ route('admin.articles.index') }}" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg transition-colors inline-block text-center">
+                Kelola Artikel
+            </a>
+        </div>
     </div>
 
     <!-- Recent Activity -->
