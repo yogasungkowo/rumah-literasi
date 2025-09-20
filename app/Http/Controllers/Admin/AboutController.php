@@ -7,7 +7,6 @@ use App\Models\About;
 use App\Models\OrganizationMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 
 class AboutController extends Controller
 {
@@ -29,7 +28,7 @@ class AboutController extends Controller
                 'vision_title' => 'Visi Kami',
                 'vision_content' => 'Menjadi pusat literasi terdepan yang mampu memberikan dampak positif bagi masyarakat.',
                 'mission_title' => 'Misi Kami',
-                'mission_content' => '1. Menyediakan akses literasi yang mudah dan terjangkau\n2. Mengembangkan program pendidikan berkualitas\n3. Mendorong partisipasi masyarakat dalam kegiatan literasi',
+                'mission_content' => '1. Menyediakan akses literasi yang mudah dan terjangkau 2. Mengembangkan program pendidikan berkualitas 3. Mendorong partisipasi masyarakat dalam kegiatan literasi',
                 'team_section_title' => 'Tim Kami',
                 'team_section_subtitle' => 'Bertemu dengan tim yang berdedikasi di balik Rumah Literasi Ranggi',
             ]);
@@ -110,37 +109,31 @@ class AboutController extends Controller
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:organization_members,id',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi tetap 'photo'
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'bio' => 'nullable|string',
             'linkedin_url' => 'nullable|url',
             'instagram_url' => 'nullable|url',
             'display_order' => 'nullable|integer|min:0',
         ]);
 
-        // Buat salinan data yang divalidasi
         $dataToCreate = $validated;
-
-        // Hapus key 'photo' karena tidak ada di database
         unset($dataToCreate['photo']);
 
-        // Handle photo upload
         if ($request->hasFile('photo')) {
-            // Simpan path ke key 'photo_path'
             $dataToCreate['photo_path'] = $request->file('photo')->store('organization-members', 'public');
         }
 
         $dataToCreate['about_id'] = $about->id;
 
-        // Log data sebelum create
-        Log::info('Creating organization member with data:', $dataToCreate);
+        $newMember = OrganizationMember::create($dataToCreate);
 
-        // Gunakan data yang sudah bersih untuk create
-        $member = OrganizationMember::create($dataToCreate);
+        $newMember->photo_url = $newMember->photo_path ? asset('storage/'.$newMember->photo_path) : null;
 
-        // Log hasil create
-        Log::info('Organization member created with ID:', ['id' => $member->id]);
-
-        return redirect()->back()->with('success', 'Anggota organisasi berhasil ditambahkan!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Anggota organisasi berhasil ditambahkan!',
+            'member' => $newMember,
+        ]);
     }
 
     /**
