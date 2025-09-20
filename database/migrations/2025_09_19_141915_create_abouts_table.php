@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('subtitle')->nullable();
             $table->string('banner_image')->nullable();
             $table->longText('main_content');
-            $table->text('vision_title')->nullable()->default('Visi Kami');
+            $table->text('vision_title')->nullable();
             $table->text('vision_content')->nullable();
-            $table->text('mission_title')->nullable()->default('Misi Kami');
+            $table->text('mission_title')->nullable();
             $table->text('mission_content')->nullable();
             $table->timestamps();
         });
