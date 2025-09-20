@@ -15,7 +15,7 @@
                         </div>
                         <div class="space-y-3 flex-1">
                             <div class="flex items-center gap-3 text-xs flex-wrap">
-                                <span class="font-medium text-blue-600 dark:text-blue-400">
+                                <span class="font-medium text-green-600 dark:text-green-400">
                                     {{ $article->created_at->format('d F Y') }}
                                 </span>
                                 <span class="text-slate-400">•</span>
@@ -30,7 +30,7 @@
                                     {{ ceil(str_word_count(strip_tags($article->content)) / 200) }} menit baca
                                 </span>
                             </div>
-                            <h2 class="text-xl font-semibold text-slate-800 dark:text-white group-hover:text-blue-600 transition-colors duration-200">
+                            <h2 class="text-xl font-semibold text-slate-800 dark:text-white group-hover:text-green-700 transition-colors duration-200">
                                 <a href="{{ route('artikel.show', $article) }}">{{ $article->title }}</a>
                             </h2>
                             <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -41,7 +41,7 @@
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                     <span>{{ $article->author->name ?? 'Admin' }}</span>
                                 </div>
-                                <a href="{{ route('artikel.show', $article) }}" class="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200">
+                                <a href="{{ route('artikel.show', $article) }}" class="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-green-700 transition-colors duration-200">
                                     Baca selengkapnya
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                                 </a>
@@ -70,7 +70,7 @@
                         <div>
                             <input type="text" name="search" value="{{ request('search') }}"
                                    placeholder="Cari judul atau isi artikel..."
-                                   class="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-white">
+                                   class="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" />
                         </div>
                         <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
                             Cari
@@ -132,7 +132,7 @@
                                name="email"
                                placeholder="Email Anda"
                                required
-                               class="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-white">
+                               class="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500" />
                         <button type="submit"
                                 class="w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
                             Berlangganan

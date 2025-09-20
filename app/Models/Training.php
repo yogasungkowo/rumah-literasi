@@ -121,6 +121,14 @@ class Training extends Model
     }
 
     /**
+     * Scope for active trainings (published or ongoing)
+     */
+    public function scopeActive($query)
+    {
+        return $query->whereIn('status', ['published', 'ongoing']);
+    }
+
+    /**
      * Scope for ongoing trainings
      */
     public function scopeOngoing($query)

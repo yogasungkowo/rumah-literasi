@@ -238,13 +238,12 @@
                     </h2>
                     <div class="space-y-6 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                         <p>
-                            Rumah Literasi Ranggi adalah komunitas yang berkomitmen untuk memajukan budaya literasi di Indonesia. 
-                            Kami percaya bahwa pendidikan dan literasi adalah kunci untuk membangun masa depan yang lebih cerah dan berkelanjutan.
+                            {{ $abouts->main_content }}
                         </p>
-                        <p>
+                        {{-- <p>
                             Melalui berbagai program inovatif seperti donasi buku, pelatihan literasi, dan kemitraan sponsorship, 
                             kami berusaha menciptakan ekosistem literasi yang inklusif dan dapat diakses oleh semua kalangan.
-                        </p>
+                        </p> --}}
                     </div>
                     
                     <!-- Features List -->
@@ -312,7 +311,7 @@
                             <div class="mb-6">
                                 <div class="flex items-center justify-center mb-2">
                                     <span class="text-6xl md:text-7xl font-black bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent animate-pulse">
-                                        5,247
+                                        {{ $totalBookDonated }}
                                     </span>
                                     <div class="ml-2 flex flex-col">
                                         <span class="text-2xl font-bold text-cyan-100">+</span>
@@ -379,7 +378,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="text-lg font-bold text-gray-900 dark:text-white">500+</div>
+                                <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $participants }}+</div>
                                 <div class="text-xs lg:text-sm text-gray-600 dark:text-gray-300">Peserta Terlatih</div>
                             </div>
                         </div>
@@ -542,9 +541,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                             </svg>
                         </div>
-                        <div class="text-4xl font-bold mb-2 text-white">5,247</div>
+                        <div class="text-4xl font-bold mb-2 text-white">{{ number_format($totalBookDonated, 0, ',', '.') }}</div>
                         <div class="text-lg text-white/80 font-medium">Buku Terdonasi</div>
-                        <div class="text-sm text-white/60 mt-1">+25 minggu ini</div>
+                        <div class="text-sm text-white/60 mt-1">+{{ $donationsThisWeek }} minggu ini</div>
                     </div>
                 </div>
                 
@@ -556,9 +555,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
                         </div>
-                        <div class="text-4xl font-bold mb-2 text-white">1,829</div>
+                        <div class="text-4xl font-bold mb-2 text-white">{{ number_format($participants, 0, ',', '.') }}</div>
                         <div class="text-lg text-white/80 font-medium">Peserta Pelatihan</div>
-                        <div class="text-sm text-white/60 mt-1">67% tingkat penyelesaian</div>
+                        <div class="text-sm text-white/60 mt-1">60% tingkat penyelesaian</div>
                     </div>
                 </div>
                 
@@ -570,7 +569,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <div class="text-4xl font-bold mb-2 text-white">156</div>
+                        <div class="text-4xl font-bold mb-2 text-white">{{ number_format($totalTrainings, 0, ',', '.') }}</div>
                         <div class="text-lg text-white/80 font-medium">Program Dilaksanakan</div>
                         <div class="text-sm text-white/60 mt-1">98% rating kepuasan</div>
                     </div>
@@ -584,9 +583,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                             </svg>
                         </div>
-                        <div class="text-4xl font-bold mb-2 text-white">89</div>
+                        <div class="text-4xl font-bold mb-2 text-white">{{ number_format($totalSponsors, 0, ',', '.') }}</div>
                         <div class="text-lg text-white/80 font-medium">Sponsor Aktif</div>
-                        <div class="text-sm text-white/60 mt-1">Rp 2.8M total donasi</div>
+                        <div class="text-sm text-white/60 mt-1">Rp {{ number_format($totalDonations, 0, ',', '.') }} total donasi</div>
                     </div>
                 </div>
             </div>
@@ -659,7 +658,7 @@
                             </svg>
                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Galeri Kosong</h3>
                             <p class="text-gray-600 dark:text-gray-300">
-                                Belum ada foto yang diupload. Admin dapat menambahkan foto melalui dashboard admin.
+                                Belum ada foto yang diupload
                             </p>
                         </div>
                     </div>
@@ -723,6 +722,74 @@
             </div>
         </div>
     </div>
+
+    <!-- Latest Articles Section -->
+    @if($latestArticles->count() > 0)
+    <div class="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block bg-gradient-to-r from-green-500 to-blue-600 bg-clip-text text-transparent text-sm font-semibold tracking-wider uppercase mb-4">
+                    Artikel & Berita Terbaru
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+                    Rumah Literasi Ranggi
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Baca artikel-artikel terbaru tentang literasi, pendidikan, dan program-program kami
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                @foreach($latestArticles as $article)
+                <div class="bg-white dark:bg-gray-700 rounded-3xl shadow-xl hover:shadow-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 group">
+                    @if($article->image)
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                    </div>
+                    @endif
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            {{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
+                            <a href="{{ route('artikel.show', $article->slug) }}" class="hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                                {{ $article->title }}
+                            </a>
+                        </h3>
+                        @if($article->excerpt)
+                        <p class="text-gray-600 dark:text-gray-300 line-clamp-3">
+                            {{ $article->excerpt }}
+                        </p>
+                        @endif
+                        <div class="mt-4">
+                            <a href="{{ route('artikel.show', $article->slug) }}" class="inline-flex items-center text-green-600 dark:text-green-400 font-semibold hover:text-green-700 dark:hover:text-green-300 transition-colors">
+                                Baca Selengkapnya
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="{{ route('artikel') }}" class="inline-flex items-center justify-center bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                    Lihat Semua Artikel
+                </a>
+            </div>
+        </div>
+    </div>
+    @endif
+
 </x-layouts.app>
 
 <style>

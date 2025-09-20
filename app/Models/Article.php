@@ -66,6 +66,16 @@ class Article extends Model
     }
 
     /**
+     * Scope for published articles
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true)
+                    ->whereNotNull('published_at')
+                    ->where('published_at', '<=', now());
+    }
+
+    /**
      * Get the views attribute (alias for view_count)
      */
     public function getViewsAttribute()

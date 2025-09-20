@@ -152,6 +152,19 @@
                 Kelola Artikel
             </a>
         </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center mb-4">
+                <div class="p-3 bg-cyan-100 dark:bg-cyan-900/30 rounded-full mr-4">
+                    <i class="fas fa-info-circle text-2xl text-cyan-600 dark:text-cyan-400"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Kelola About</h3>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">Edit informasi tentang Rumah Literasi.</p>
+            <a href="{{ route('admin.about.index') }}" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-lg transition-colors inline-block text-center">
+                Kelola About
+            </a>
+        </div>
     </div>
 
     <!-- Recent Activity -->

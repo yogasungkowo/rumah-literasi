@@ -1,6 +1,13 @@
 <?php
 
+use App\Models\Book;
+use App\Models\About;
 use App\Models\Article;
+use App\Models\Gallery;
+use App\Models\Training;
+use App\Models\Sponsorship;
+use App\Models\BookDonation;
+use App\Models\TrainingParticipant;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonasiController;
@@ -9,6 +16,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PelatihanController;
+use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\SponsorshipController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\SocialMediaController;
@@ -24,13 +32,44 @@ use App\Http\Controllers\Admin\SponsorshipController as AdminSponsorshipControll
 
 // Public routes
 Route::get('/', function () {
-    $galleries = \App\Models\Gallery::active()
+
+    $books = Book::where('status', 'available')->count();
+    $donations = BookDonation::whereIn('status', ['approved', 'picked_up', 'completed'])->count();
+    $totalBookDonated = Book::whereIn('status', ['picked_up', 'completed'])->count();
+    $donationsThisWeek = BookDonation::whereIn('status', ['approved', 'picked_up', 'completed'])
+        ->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()])
+        ->count();
+
+    $participants = TrainingParticipant::count();
+
+    $totalTrainings = Training::active()->where('start_date', '>', now())->count();
+    $upcomingTrainings = Training::active()
+        ->where('start_date', '>', now())
+        ->orderBy('start_date')
+        ->get();
+
+    $totalSponsors = Sponsorship::whereIn('status', ['approved', 'active', 'completed'])->count();
+    $totalDonations = Sponsorship::whereIn('status', ['approved', 'active', 'completed'])->sum('amount');
+
+    $galleries = Gallery::active()
         ->orderBy('sort_order')
         ->orderBy('created_at', 'desc')
         ->limit(6)
         ->get();
-    
-    return view('pages.index', compact('galleries'));
+
+    $abouts = About::first();
+
+    $latestArticles = Article::published()
+        ->orderBy('created_at', 'desc')
+        ->limit(3)
+        ->get();
+
+    $upcomingTrainings = Training::active()
+        ->where('start_date', '>', now())
+        ->orderBy('start_date')
+        ->get();
+
+    return view('pages.index', compact('galleries', 'abouts', 'latestArticles', 'upcomingTrainings', 'books', 'donations', 'totalBookDonated', 'participants', 'totalTrainings', 'totalSponsors', 'donationsThisWeek', 'upcomingTrainings', 'totalDonations'));
 })->name('welcome');
 
 Route::get('/donasi', [DonasiController::class, 'index']);
@@ -127,6 +166,16 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     // Social Media Management
     Route::resource('social-media', SocialMediaController::class);
     Route::patch('/social-media/{social_medium}/toggle-status', [SocialMediaController::class, 'toggleStatus'])->name('social-media.toggle-status');
+
+    // About Management
+    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+    Route::get('/about/{about}/edit', [AboutController::class, 'edit'])->name('about.edit');
+    Route::put('/about/{about}', [AboutController::class, 'update'])->name('about.update');
+    
+    // Organization Members Management
+    Route::post('/about/{about}/members', [AboutController::class, 'storeMember'])->name('about.members.store');
+    Route::put('/about/{about}/members/{member}', [AboutController::class, 'updateMember'])->name('about.members.update');
+    Route::delete('/about/{about}/members/{member}', [AboutController::class, 'deleteMember'])->name('about.members.delete');
 
     // Article Management
     Route::resource('articles', AdminArticleController::class);
