@@ -27,12 +27,18 @@ class PelatihanController extends Controller
             $user = Auth::user();
             
             // Get user's role
-            if ($user->hasRole('Relawan')) {
-                $userRole = 'volunteer';
+            if ($user->hasRole('Admin')) {
+                $userRole = 'Admin';
+            } elseif ($user->hasRole('Relawan')) {
+                $userRole = 'Relawan';
             } elseif ($user->hasRole('Peserta Pelatihan')) {
-                $userRole = 'participant';
+                $userRole = 'Peserta Pelatihan';
                 // Get user's training registrations
                 $userRegistrations = $user->trainingParticipants()->get()->keyBy('training_id');
+            } elseif ($user->hasRole('Investor')) {
+                $userRole = 'Investor';
+            } elseif ($user->hasRole('Donatur Buku')) {
+                $userRole = 'Donatur Buku';
             }
         }
 

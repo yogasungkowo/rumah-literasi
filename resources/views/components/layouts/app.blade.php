@@ -149,10 +149,12 @@
         @stack('styles')
     </head>
 
-    <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 pt-28">
+    <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 pt-28 min-h-screen flex flex-col">
         <x-partials.navbar />
 
-        {{ $slot }}
+        <main class="flex-grow">
+            {{ $slot }}
+        </main>
 
         <x-partials.footer />
 
