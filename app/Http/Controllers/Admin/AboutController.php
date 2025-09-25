@@ -29,8 +29,6 @@ class AboutController extends Controller
                 'vision_content' => 'Menjadi pusat literasi terdepan yang mampu memberikan dampak positif bagi masyarakat.',
                 'mission_title' => 'Misi Kami',
                 'mission_content' => '1. Menyediakan akses literasi yang mudah dan terjangkau 2. Mengembangkan program pendidikan berkualitas 3. Mendorong partisipasi masyarakat dalam kegiatan literasi',
-                'team_section_title' => 'Tim Kami',
-                'team_section_subtitle' => 'Bertemu dengan tim yang berdedikasi di balik Rumah Literasi Ranggi',
             ]);
         }
 
