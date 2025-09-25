@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         // Admin User
         $admin = User::create([
             'name' => 'Administrator',
-            'email' => 'admin@rumahliterasi.com',
+            'email' => 'admin@rumahliterasiranggi.id',
             'password' => Hash::make('password123'),
             'phone' => '081234567890',
             'address' => 'Jl. Pendidikan No. 1, Jakarta',
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
         // Investor User
         $investor = User::create([
             'name' => 'Budi Santoso',
-            'email' => 'investor@example.com',
+            'email' => 'investor@rumahliterasiranggi.id',
             'password' => Hash::make('password123'),
             'phone' => '081234567891',
             'address' => 'Jl. Bisnis No. 10, Surabaya',
@@ -58,7 +58,7 @@ class UserSeeder extends Seeder
         // Donatur Buku User
         $donatur = User::create([
             'name' => 'Siti Nurhaliza',
-            'email' => 'donatur@example.com',
+            'email' => 'donatur@rumahliterasiranggi.id',
             'password' => Hash::make('password123'),
             'phone' => '081234567892',
             'address' => 'Jl. Literasi No. 5, Bandung',
@@ -75,7 +75,7 @@ class UserSeeder extends Seeder
         // Relawan User
         $relawan = User::create([
             'name' => 'Ahmad Wijaya',
-            'email' => 'relawan@example.com',
+            'email' => 'relawan@rumahliterasiranggi.id',
             'password' => Hash::make('password123'),
             'phone' => '081234567893',
             'address' => 'Jl. Volunter No. 8, Yogyakarta',
@@ -92,7 +92,7 @@ class UserSeeder extends Seeder
         // Peserta Pelatihan User
         $peserta = User::create([
             'name' => 'Dewi Sartika',
-            'email' => 'peserta@example.com',
+            'email' => 'peserta@rumahliterasiranggi.id',
             'password' => Hash::make('password123'),
             'phone' => '081234567894',
             'address' => 'Jl. Belajar No. 12, Medan',
