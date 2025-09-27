@@ -71,7 +71,7 @@ class ArticleController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'excerpt' => 'nullable|string|max:500',
+            'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
             'category_id' => 'nullable|exists:categories,id',
@@ -91,7 +91,6 @@ class ArticleController extends Controller
                 'title.string' => 'Judul artikel harus berupa teks.',
                 'title.max' => 'Judul artikel maksimal 255 karakter.',
                 'excerpt.string' => 'Cuplikan artikel harus berupa teks.',
-                'excerpt.max' => 'Cuplikan artikel maksimal 500 karakter.',
                 'content.required' => 'Konten artikel wajib diisi.',
                 'content.string' => 'Konten artikel harus berupa teks.',
                 'image.image' => 'File yang diunggah harus berupa gambar.',
@@ -191,7 +190,7 @@ class ArticleController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'excerpt' => 'nullable|string|max:500',
+            'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
             'category_id' => 'nullable|exists:categories,id',
@@ -211,7 +210,6 @@ class ArticleController extends Controller
                 'title.string' => 'Judul artikel harus berupa teks.',
                 'title.max' => 'Judul artikel maksimal 255 karakter.',
                 'excerpt.string' => 'Cuplikan artikel harus berupa teks.',
-                'excerpt.max' => 'Cuplikan artikel maksimal 500 karakter.',
                 'content.required' => 'Konten artikel wajib diisi.',
                 'content.string' => 'Konten artikel harus berupa teks.',
                 'image.image' => 'File yang diunggah harus berupa gambar.',
