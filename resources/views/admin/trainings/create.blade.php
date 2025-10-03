@@ -32,6 +32,27 @@
         </div>
     </div>
 
+    <!-- Error Alert -->
+    @if ($errors->any())
+        <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-700 p-6 rounded-lg mb-6 shadow-lg">
+            <div class="flex items-start">
+                <svg class="w-6 h-6 text-red-500 dark:text-red-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+                        Terdapat {{ $errors->count() }} kesalahan pada form:
+                    </h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-red-700 dark:text-red-400">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('admin.trainings.store') }}" enctype="multipart/form-data" class="space-y-8">
         @csrf
         
@@ -526,216 +547,279 @@
         </div>
 
         <!-- Additional Information -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div class="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-gray-700 dark:to-gray-600 p-6 border-b border-gray-200 dark:border-gray-600">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                    <i class="fas fa-info-circle mr-2 text-orange-600 dark:text-orange-400"></i>
+                    <svg class="w-5 h-5 mr-2 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
                     Informasi Tambahan
                 </h2>
                 <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Detail tambahan tentang pelatihan dan materi</p>
             </div>
             <div class="p-6 space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                        <label for="requirements" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                            <span class="flex items-center">
-                                <i class="fas fa-list-check mr-1 text-orange-500"></i>
-                                Persyaratan
-                            </span>
-                        </label>
-                        <textarea name="requirements" id="requirements" rows="4"
-                                  class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 @error('requirements') border-red-500 ring-red-500 @enderror"
-                                  placeholder="Persyaratan yang harus dipenuhi peserta...">{{ old('requirements') }}</textarea>
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <label for="requirements" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                    </svg>
+                                    Persyaratan
+                                </span>
+                            </label>
+                            <textarea name="requirements" id="requirements" rows="5"
+                                      class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 resize-none @error('requirements') border-red-500 ring-red-500 @enderror"
+                                      placeholder="Contoh:&#10;- Minimal pendidikan SMA/sederajat&#10;- Memiliki minat di bidang literasi&#10;- Dapat menggunakan komputer dasar">{{ old('requirements') }}</textarea>
                         @error('requirements')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
                                 {{ $message }}
                             </p>
-                        @enderror
-                    </div>
-                    
-                    <div>
-                        <label for="materials" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            @enderror
+                        </div>
+                        
+                        <div>
+                            <label for="materials" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             <span class="flex items-center">
-                                <i class="fas fa-box mr-1 text-orange-500"></i>
+                                <svg class="w-4 h-4 mr-1 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
                                 Materi yang Disediakan
                             </span>
                         </label>
-                        <textarea name="materials" id="materials" rows="4"
-                                  class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 @error('materials') border-red-500 ring-red-500 @enderror"
-                                  placeholder="Materi pelatihan yang akan disediakan...">{{ old('materials') }}</textarea>
+                        <textarea name="materials" id="materials" rows="5"
+                                  class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 resize-none @error('materials') border-red-500 ring-red-500 @enderror"
+                                  placeholder="Contoh:&#10;- Modul pelatihan&#10;- Sertifikat kelulusan&#10;- Snack dan makan siang&#10;- Alat tulis">{{ old('materials') }}</textarea>
                         @error('materials')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
                                 {{ $message }}
                             </p>
-                        @enderror
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                
-                <div>
-                    <label for="notes" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    
+                    <div>
+                        <label for="notes" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         <span class="flex items-center">
-                            <i class="fas fa-sticky-note mr-1 text-orange-500"></i>
+                            <svg class="w-4 h-4 mr-1 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
                             Catatan
                         </span>
                     </label>
                     <textarea name="notes" id="notes" rows="3"
-                              class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 @error('notes') border-red-500 ring-red-500 @enderror"
-                              placeholder="Catatan tambahan untuk pelatihan ini...">{{ old('notes') }}</textarea>
+                              class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 resize-none @error('notes') border-red-500 ring-red-500 @enderror"
+                              placeholder="Tambahkan catatan penting untuk pelatihan ini...">{{ old('notes') }}</textarea>
                     @error('notes')
                         <p class="mt-2 text-sm text-red-600 flex items-center">
-                            <i class="fas fa-exclamation-circle mr-1"></i>
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
                             {{ $message }}
                         </p>
                     @enderror
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Training Image -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div class="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-600 p-6 border-b border-gray-200 dark:border-gray-600">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                    <i class="fas fa-image mr-2 text-indigo-600 dark:text-indigo-400"></i>
+                    <svg class="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
                     Gambar Pelatihan
                 </h2>
                 <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Upload gambar untuk menarik minat peserta</p>
             </div>
             <div class="p-6">
-                <div class="space-y-4">
-                    <!-- File Upload Area -->
-                    <div class="relative">
-                        <label for="image" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                            <span class="flex items-center">
-                                <i class="fas fa-upload mr-1 text-indigo-500"></i>
-                                Pilih Gambar
-                            </span>
-                        </label>
-                        
-                        <!-- Custom File Upload -->
-                        <div class="relative group">
-                            <input type="file" name="image" id="image" 
-                                   accept="image/*"
-                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                   onchange="handleImagePreview(this)">
+                <div class="max-w-7xl mx-auto">
+                    <div class="space-y-4">
+                        <!-- File Upload Area -->
+                        <div class="relative">
+                            <label for="image" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                    Pilih Gambar
+                                </span>
+                            </label>
                             
-                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center group-hover:border-indigo-500 dark:group-hover:border-indigo-400 transition-all duration-200 bg-gray-50 dark:bg-gray-700/50 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/20">
-                                <div class="flex flex-col items-center">
-                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 mb-4 transition-colors duration-200"></i>
-                                    <p class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                                        Klik untuk upload gambar
-                                    </p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        atau drag & drop gambar di sini
-                                    </p>
-                                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                                        Format: JPG, PNG, GIF (Maksimal 2MB)
-                                    </p>
+                            <!-- Custom File Upload -->
+                            <div class="relative group">
+                                <input type="file" name="image" id="image" 
+                                       accept="image/*"
+                                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                       onchange="handleImagePreview(this)">
+                                
+                                <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center group-hover:border-indigo-500 dark:group-hover:border-indigo-400 transition-all duration-200 bg-gray-50 dark:bg-gray-700/50 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/20">
+                                    <div class="flex flex-col items-center">
+                                        <svg class="w-16 h-16 text-gray-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 mb-4 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                        </svg>
+                                        <p class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                                            Klik atau drag gambar ke sini
+                                        </p>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                                            Format: JPG, PNG, GIF
+                                        </p>
+                                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                                            Ukuran maksimal: 2MB | Resolusi: 1200x800px (disarankan)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            @error('image')
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+                        
+                        <!-- Image Preview Container -->
+                        <div id="image-preview-container" class="hidden">
+                            <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
+                                <div class="flex items-start space-x-4">
+                                    <div class="relative flex-shrink-0">
+                                        <img id="image-preview" 
+                                             class="w-32 h-32 object-cover rounded-lg border-2 border-indigo-200 dark:border-indigo-700 shadow-md" 
+                                             alt="Preview">
+                                        <button type="button" 
+                                                id="remove-image"
+                                                class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg transition-all duration-200 transform hover:scale-110">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white mb-1">
+                                            <svg class="w-4 h-4 inline text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            Gambar berhasil dipilih
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                                            Preview gambar yang akan diupload. Klik tombol merah untuk menghapus.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        @error('image')
-                            <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Image Preview Container -->
-                    <div id="image-preview-container" class="hidden">
-                        <div class="relative inline-block">
-                            <img id="image-preview" 
-                                 class="w-48 h-48 object-cover rounded-xl border-2 border-gray-200 dark:border-gray-600 shadow-lg" 
-                                 alt="Preview">
-                            <button type="button" 
-                                    id="remove-image"
-                                    class="absolute -top-3 -right-3 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold shadow-lg transition-all duration-200 transform hover:scale-110">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                            <i class="fas fa-check-circle text-green-500 mr-1"></i>
-                            Gambar berhasil dipilih
-                        </p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Certificate Template -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 p-6 border-b border-gray-200 dark:border-gray-600">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                    <i class="fas fa-certificate mr-2 text-emerald-600 dark:text-emerald-400"></i>
+                    <svg class="w-5 h-5 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                    </svg>
                     Template Sertifikat
                 </h2>
                 <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Upload template sertifikat yang akan diberikan kepada peserta</p>
             </div>
             <div class="p-6">
-                <div class="space-y-4">
-                    <!-- File Upload Area -->
-                    <div class="relative">
-                        <label for="certificate_template" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                            <span class="flex items-center">
-                                <i class="fas fa-file-pdf mr-1 text-emerald-500"></i>
-                                Pilih Template Sertifikat
-                            </span>
-                        </label>
-                        
-                        <!-- Custom File Upload -->
-                        <div class="relative group">
-                            <input type="file" name="certificate_template" id="certificate_template" 
-                                   accept=".pdf"
-                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                   onchange="handleCertificatePreview(this)">
+                <div class="max-w-7xl mx-auto">
+                    <div class="space-y-4">
+                        <!-- File Upload Area -->
+                        <div class="relative">
+                            <label for="certificate_template" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                    </svg>
+                                    Pilih Template Sertifikat (PDF)
+                                </span>
+                            </label>
                             
-                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center group-hover:border-emerald-500 dark:group-hover:border-emerald-400 transition-all duration-200 bg-gray-50 dark:bg-gray-700/50 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20">
-                                <div class="flex flex-col items-center">
-                                    <i class="fas fa-file-pdf text-4xl text-gray-400 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 mb-4 transition-colors duration-200"></i>
-                                    <p class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                                        Klik untuk upload template sertifikat
-                                    </p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        atau drag & drop file PDF di sini
-                                    </p>
-                                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                                        Format: PDF (Maksimal 3MB)
-                                    </p>
+                            <!-- Custom File Upload -->
+                            <div class="relative group">
+                                <input type="file" name="certificate_template" id="certificate_template" 
+                                       accept=".pdf"
+                                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                       onchange="handleCertificatePreview(this)">
+                                
+                                <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center group-hover:border-emerald-500 dark:group-hover:border-emerald-400 transition-all duration-200 bg-gray-50 dark:bg-gray-700/50 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20">
+                                    <div class="flex flex-col items-center">
+                                        <svg class="w-16 h-16 text-gray-400 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 mb-4 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                        </svg>
+                                        <p class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                                            Klik atau drag file PDF ke sini
+                                        </p>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                                            Format: PDF
+                                        </p>
+                                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                                            Ukuran maksimal: 3MB | Template akan digunakan untuk generate sertifikat peserta
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
+                            
+                            @error('certificate_template')
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
                         
-                        @error('certificate_template')
-                            <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <i class="fas fa-exclamation-circle mr-1"></i>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Certificate Preview Container -->
-                    <div id="certificate-preview-container" class="hidden">
-                        <div class="relative inline-block bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700 rounded-xl p-4">
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-file-pdf text-2xl text-emerald-600 dark:text-emerald-400"></i>
-                                <div>
-                                    <p id="certificate-name" class="text-sm font-medium text-gray-900 dark:text-white"></p>
-                                    <p id="certificate-size" class="text-xs text-gray-500 dark:text-gray-400"></p>
+                        <!-- Certificate Preview Container -->
+                        <div id="certificate-preview-container" class="hidden">
+                            <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-4 border border-emerald-200 dark:border-emerald-700">
+                                <div class="flex items-start space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-800/50 rounded-lg flex items-center justify-center">
+                                            <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white truncate" id="certificate-name">
+                                            certificate-template.pdf
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" id="certificate-size">
+                                            0 KB
+                                        </p>
+                                        <div class="flex items-center mt-2">
+                                            <svg class="w-4 h-4 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            <span class="text-xs text-green-600 dark:text-green-400 font-medium">File berhasil dipilih</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" 
+                                            id="remove-certificate"
+                                            class="flex-shrink-0 bg-red-500 hover:bg-red-600 text-white rounded-lg px-3 py-2 text-xs font-medium shadow-sm transition-all duration-200 transform hover:scale-105">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
-                            <button type="button" 
-                                    id="remove-certificate"
-                                    class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg transition-all duration-200 transform hover:scale-110">
-                                <i class="fas fa-times"></i>
-                            </button>
                         </div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                            <i class="fas fa-check-circle text-green-500 mr-1"></i>
-                            Template sertifikat berhasil dipilih
-                        </p>
                     </div>
                 </div>
             </div>
@@ -768,7 +852,6 @@
         const startDatePicker = flatpickr("#start_date", {
             dateFormat: "Y-m-d",
             minDate: "today",
-            locale: "id",
             allowInput: true,
             placeholder: "Pilih tanggal mulai...",
             onChange: function(selectedDates, dateStr, instance) {
@@ -783,7 +866,6 @@
         const endDatePicker = flatpickr("#end_date", {
             dateFormat: "Y-m-d",
             minDate: "today",
-            locale: "id",
             allowInput: true,
             placeholder: "Pilih tanggal selesai..."
         });
@@ -822,7 +904,6 @@
             if (!dateInput._flatpickr) {
                 flatpickr(dateInput, {
                     dateFormat: "Y-m-d",
-                    locale: "id",
                     allowInput: true,
                     minDate: document.getElementById('start_date').value || "today",
                     maxDate: document.getElementById('end_date').value || null,
@@ -1071,7 +1152,6 @@
             if (dateInput && !dateInput._flatpickr) {
                 flatpickr(dateInput, {
                     dateFormat: "Y-m-d",
-                    locale: "id",
                     allowInput: true,
                     minDate: document.getElementById('start_date').value || "today",
                     maxDate: document.getElementById('end_date').value || null,

@@ -32,6 +32,27 @@
         </div>
     </div>
 
+    <!-- Error Alert -->
+    @if ($errors->any())
+        <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-700 p-6 rounded-lg mb-6 shadow-lg">
+            <div class="flex items-start">
+                <svg class="w-6 h-6 text-red-500 dark:text-red-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">
+                        Terdapat {{ $errors->count() }} kesalahan pada form:
+                    </h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-red-700 dark:text-red-400">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('admin.trainings.update', $training) }}" enctype="multipart/form-data" class="space-y-8">
         @csrf
         @method('PUT')

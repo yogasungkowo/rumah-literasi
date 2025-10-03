@@ -1,10 +1,10 @@
 <x-layouts.admin title="Tambah Artikel" description="Buat artikel baru">
     <div class="space-y-6">
         <div class="flex items-center justify-between">
-            <div>
+            {{-- <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Artikel</h1>
                 <p class="text-gray-600 dark:text-gray-400">Buat artikel baru untuk koleksi</p>
-            </div>
+            </div> --}}
             <a href="{{ route('admin.articles.index') }}"
                 class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
